@@ -5,7 +5,7 @@ namespace App\Http\Controllers\PurchaseOrders;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\PurchaseOrder as Po;
+use App\Models\Purchaseorder as Po;
 
 class PurchaseOrder extends Controller
 {
