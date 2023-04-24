@@ -15,7 +15,6 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('permissions')->truncate();
         $super_admin_tasks = DB::table('permissions')->where('usergroup_id',1)->pluck('task_id');
         $new_tasks = DB::table('tasks')->whereNotIn('id',$super_admin_tasks)->pluck('id');
         foreach ($new_tasks as $new_task){
