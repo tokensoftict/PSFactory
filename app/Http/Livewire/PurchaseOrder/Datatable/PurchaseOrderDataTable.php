@@ -4,7 +4,7 @@ namespace App\Http\Livewire\PurchaseOrder\Datatable;
 
 use App\Classes\Settings;
 use App\Events\CompletePuchaseOrderEvent;
-use App\Models\PurchaseOrder;
+use App\Models\Purchaseorder;
 use App\Traits\SimpleDatatableComponentTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
