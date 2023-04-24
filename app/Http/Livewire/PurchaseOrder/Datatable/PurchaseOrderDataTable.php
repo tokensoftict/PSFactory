@@ -19,13 +19,13 @@ class PurchaseOrderDataTable extends DataTableComponent
 
     public array $filters = [];
 
-    protected $model = PurchaseOrder::class;
+    protected $model = Purchaseorder::class;
 
 
 
     public function builder(): Builder
     {
-        return PurchaseOrder::query()->select('*')->filterdata($this->filters);
+        return Purchaseorder::query()->select('*')->filterdata($this->filters);
 
     }
 
