@@ -128,7 +128,7 @@ class InvoicePolicy
     {
         if(!userCanView("invoiceandsales.print_afour")) return false;
 
-        if($invoice->status_id !== status("Dispatched"))  return false;
+        if($invoice->status_id !== status("Dispatched") && $invoice->status_id !== status("Paid"))  return false;
 
         return true;
     }

@@ -90,9 +90,6 @@ class User extends Authenticatable
         'remember_token'
     ];
 
-    protected $with = ['usergroup'];
-
-
     public function isSuperAmin()
     {
         return $this->usergroup_id === 1;

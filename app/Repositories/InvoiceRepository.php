@@ -63,7 +63,7 @@ class InvoiceRepository
                     'cost_price' => $item->stock->cost_price,
                     'selling_price' =>  $item->stock->selling_price,
                     'profit' =>  $item->stock->selling_price - $item->stock->cost_price,
-                    'incentives' => (($item->incentives_percentage / 100) * $item->stock->selling_price) *$item->quantity,
+                    'incentives' => ((($item->incentives_percentage / 100) * $item->stock->selling_price) * $batch['qty']),
                     'quantity' => $batch['qty'],
                     'invoice_date' => $item->invoice_date,
                     'sales_time' => $item->sales_time,
@@ -155,8 +155,7 @@ class InvoiceRepository
             $items[$key]['total_cost_price'] =  $_stock[$items[$key]['stock_id']]['cost_price'] * $items[$key]['quantity'];
             $items[$key]['total_selling_price'] =  $_stock[$items[$key]['stock_id']]['selling_price'] * $items[$key]['quantity'];
             $items[$key]['total_profit'] =  $items[$key]['profit'] * $items[$key]['quantity'];
-            $items[$key]['total_incentives'] =  ( $_stock[$items[$key]['stock_id']]['selling_price'] * $_stock[$items[$key]['stock_id']]['incentives_percentage']) *  $items[$key]['quantity'];
-
+            $items[$key]['total_incentives'] =  ($_stock[$items[$key]['stock_id']]['incentives_percentage']/100) * $items[$key]['quantity'];
             $items[$key]['discount_type'] = "None";
             $items[$key]['discount_amount'] = 0;
             $invoiceItems[] =new Invoiceitem($items[$key]);

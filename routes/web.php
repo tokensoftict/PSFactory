@@ -160,7 +160,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('RawMaterialManager')->namespace('RawMaterialManager')->group(function () {
 
             Route::prefix('materialtypes')->as('materialtypes.')->group(function () {
-                Route::get('', ['as' => 'index', 'uses' => 'MaterialTypeController@index', 'visible' => true, 'custom_label'=>'Material Types Manager']);
+                Route::get('', ['as' => 'index', 'uses' => 'MaterialTypeController@index', 'visible' => true, 'custom_label'=>'Material Types']);
                 Route::get('list', ['as' => 'list', 'uses' => 'MaterialTypeController@listAll']);
                 Route::get('create', ['as' => 'create', 'uses' => 'MaterialTypeController@create']);
                 Route::post('', ['as' => 'store', 'uses' => 'MaterialTypeController@store']);
@@ -173,7 +173,7 @@ Route::middleware(['auth'])->group(function () {
 
 
             Route::prefix('rawmaterial')->as('rawmaterial.')->group(function () {
-                Route::get('', ['as' => 'index', 'uses' => 'RawMaterialController@index', 'visible' => true, 'custom_label'=>'Raw Material Manager']);
+                Route::get('', ['as' => 'index', 'uses' => 'RawMaterialController@index', 'visible' => true, 'custom_label'=>'Material Manager']);
                 Route::get('list', ['as' => 'list', 'uses' => 'RawMaterialController@listAll']);
                 Route::get('create', ['as' => 'create', 'uses' => 'RawMaterialController@create']);
                 Route::post('', ['as' => 'store', 'uses' => 'RawMaterialController@store']);
@@ -184,7 +184,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('{id}', ['as' => 'destroy', 'uses' => 'RawMaterialController@destroy']);
 
 
-                Route::get('material/requests', ['as' => 'request', 'uses' => 'RawMaterialController@requests', 'visible' => true, 'custom_label'=>'List Material Requests']);
+                Route::get('material/requests', ['as' => 'request', 'uses' => 'RawMaterialController@requests', 'visible' => true, 'custom_label'=>'Material Requests']);
 
                 Route::get('material/requests/new', ['as' => 'new_request', 'uses' => 'RawMaterialController@new_request',  'custom_label'=>'Request For Material']);
 
@@ -198,7 +198,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-                Route::get('material/returns', ['as' => 'returns', 'uses' => 'RawMaterialController@returns', 'visible' => true, 'custom_label'=>'List Material Returns']);
+                Route::get('material/returns', ['as' => 'returns', 'uses' => 'RawMaterialController@returns', 'visible' => true, 'custom_label'=>'Material Returns']);
 
                 Route::get('material/returns/new', ['as' => 'new_return', 'uses' => 'RawMaterialController@new_return',  'custom_label'=>'Return Material']);
 

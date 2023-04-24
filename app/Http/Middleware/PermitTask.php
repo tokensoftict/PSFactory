@@ -19,16 +19,17 @@ class PermitTask
     public function handle(Request $request, Closure $next)
     {
 
-        $myAccess =  $request->user()->usergroup;
+        $group_id =  $request->user()->usergroup_id;
 
-        if (!$myAccess->status) abort('403');
+        $myAccess =  accessGroup($group_id);
 
+        if (!$myAccess) abort('403');
 
         $validTask = userCanView(Route::currentRouteName());
 
         session()->put('current_route', Route::currentRouteName());
 
-        if(session()->get('past_page') != Route::currentRouteName() && $myAccess->id !=1)
+        if(session()->get('past_page') != Route::currentRouteName() && $group_id !=1)
         {
             session()->put('past_page',Route::currentRouteName());
         }

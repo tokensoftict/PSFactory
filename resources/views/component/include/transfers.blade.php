@@ -97,25 +97,6 @@
                         </div>
                     </div>
 
-                @elseif(isset($this->productTransfer->status_id) && $this->productTransfer->status_id == status('Pending'))
-
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label>Quantity Received (carton)</label>
-                                <input type="number"  placeholder="Quantity Received (carton)" class="form-control" wire:model.defer="quantity_carton"/>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="mb-3">
-                                <label>Approved Received (pieces)</label>
-                                <input type="number"  placeholder="Approved Received (pieces)" class="form-control" wire:model.defer="quantity_pieces"/>
-                            </div>
-                        </div>
-                    </div>
-
-
                 @endif
             </div>
 

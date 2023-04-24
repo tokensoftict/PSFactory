@@ -107,8 +107,8 @@ class ProductTransferListDatatable extends DataTableComponent
     {
         $this->productTransfer->update(
             [
-                'approved_quantity' => $this->quantity_carton,
-                'approved_pieces' => $this->quantity_pieces,
+                'approved_quantity' =>  $this->productTransfer->quantity,
+                'approved_pieces' => $this->productTransfer->pieces,
                 'resolve_by_id' => auth()->id(),
                 'status_id' => status('Approved'),
                 'resolve_time' => Carbon::now()->toDateTimeLocalString()
@@ -118,11 +118,11 @@ class ProductTransferListDatatable extends DataTableComponent
 
         $transfer_data = [
             'production_id' => $this->productTransfer->transferable->id,
-            'pieces' => $this->quantity_pieces,
+            'pieces' => $this->productTransfer->pieces,
             'batch_number' => $this->productTransfer->transferable->batch_number,
             'received_date' => dailyDate(),
             'expiry_date' => $this->productTransfer->transferable->expiry_date,
-            'quantity' => $this->quantity_carton,
+            'quantity' => $this->productTransfer->quantity,
             'stock_id' => $this->productTransfer->transferable->stock_id
         ];
 
@@ -137,12 +137,12 @@ class ProductTransferListDatatable extends DataTableComponent
             'stock_id' => $this->productTransfer->transferable->stock_id,
             'stockbatch_id' =>  $id->id,
             'user_id' => auth()->id(),
-            'in' => $this->quantity_carton,
+            'in' => $this->productTransfer->quantity,
             'date_added'=>dailyDate(),
             'out' => 0,
             'sold' =>  0,
             'return' => 0,
-            'pieces' => $this->quantity_pieces,
+            'pieces' => $this->productTransfer->pieces,
             'total' =>  $this->productTransfer->stock->quantity,
             'total_pieces' => $this->productTransfer->stock->pieces,
             'type' => 'RECEIVED'
@@ -160,7 +160,7 @@ class ProductTransferListDatatable extends DataTableComponent
                 'position' => 'center',
                 'timer' => 1500,
                 'toast' => false,
-                'text' =>  $this->productTransfer->stock->name." ".$this->quantity_carton." carton and ".$this->quantity_pieces." pieces has been received successfully!.",
+                'text' =>  $this->productTransfer->stock->name." ".$this->productTransfer->quantity." carton and ".$this->productTransfer->pieces." pieces has been received successfully!.",
             ]
         );
 

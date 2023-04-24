@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 
+use App\Models\State;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -15,6 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(StateSeeder::class);
         $this->call(BanksSeeder::class);
         $this->call(GroupSeeder::class);
         Artisan::call('task:generate');

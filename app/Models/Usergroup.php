@@ -6,9 +6,11 @@
 
 namespace App\Models;
 
+use App\Traits\ModelFilterTraits;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Usergroup
@@ -26,44 +28,38 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Usergroup extends Model
 {
-	protected $table = 'usergroups';
 
-	protected $casts = [
-		'status' => 'bool'
-	];
+    use  ModelFilterTraits;
 
-	protected $fillable = [
-		'name',
-		'status'
-	];
+    protected $table = 'usergroups';
 
-    public static $rules = [
-        'name' => 'required|string|unique:groups',
+    protected $casts = [
+        'status' => 'bool'
     ];
 
-    public static $rules_update = [
-        'name' => 'sometimes|required|string',
+    protected $fillable = [
+        'name',
+        'status'
     ];
 
-    protected $with = ['permissions'];
-
-	public function permissions()
-	{
-		return $this->hasMany(Permission::class);
-	}
-
-	public function users()
-	{
-		return $this->hasMany(User::class);
-	}
 
 
-    public function tasks()
+    public function permissions()
+    {
+        return $this->hasMany(Permission::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function tasks()  : belongsToMany
     {
         return $this->belongstoMany(Task::class, 'permissions');
     }
 
-    public function group_tasks()
+    public function group_tasks() : belongsToMany
     {
         return $this->belongsToMany(Task::class, 'permissions')->withTimestamps();
     }

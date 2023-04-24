@@ -28,46 +28,7 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Email Address</th>
-                        <th>Address</th>
-                        <th>Phone Number</th>
-                        <th>Type</th>
-                        <th>Credit Balance</th>
-                        <th>Deposit  Balance</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($this->get() as $customer)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $customer->firstname }} {{ $customer->lastname }}</td>
-                            <td>{{ $customer->email }}</td>
-                            <td>{{ $customer->address }}</td>
-                            <td>{{ $customer->phone_number }}</td>
-                            <td>{{ ucwords(strtolower($customer->type)) }}</td>
-                            <td>{{ money($customer->credit_balance) }}</td>
-                            <td>{{ money($customer->deposit_balance) }}</td>
-                            <td>
-                                @if(userCanView('customer.update'))
-                                    <a class="btn btn-outline-primary btn-sm edit" wire:click="edit({{ $customer->id }})" href="javascript:void(0);" >
-
-                                        <span wire:loading wire:target="edit({{ $customer->id }})" class="spinner-border spinner-border-sm me-2" role="status"></span>
-
-                                        <i wire:loading.remove wire:target="edit({{ $customer->id }})" class="fas fa-pencil-alt"></i>
-
-                                    </a>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+               <livewire:customer.datatable.customer-data-table :filter="[]"/>
             </div>
         </div>
     </div>
@@ -125,7 +86,15 @@
                                             <option value="INDIVIDUAL">INDIVIDUAL</option>
                                         </select>
                                     </div>
-
+                                    <div class="mb-3">
+                                        <label>State</label>
+                                        <select class="form-control" wire:model.defer="state_id" name="type">
+                                            <option value="">Select State</option>
+                                            @foreach($this->states as $state)
+                                                <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <div class="mb-3">
                                         <label>Address</label>
                                         <textarea class="form-control" wire:model.defer="address"  name="address" placeholder="Address"></textarea>

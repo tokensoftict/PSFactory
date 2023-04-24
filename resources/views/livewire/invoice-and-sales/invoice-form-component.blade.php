@@ -241,7 +241,15 @@
                                             <option value="INDIVIDUAL">INDIVIDUAL</option>
                                         </select>
                                     </div>
-
+                                    <div class="mb-3">
+                                        <label>State</label>
+                                        <select class="form-control" wire:model.defer="state_id" name="type">
+                                            <option value="">Select State</option>
+                                            @foreach($this->states as $state)
+                                                <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <div class="mb-3">
                                         <label>Address</label>
                                         <textarea class="form-control" wire:model.defer="address"  name="address" placeholder="Address"></textarea>

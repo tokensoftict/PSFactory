@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Customer
  *
  * @property int $id
+ * @property int $state_id
  * @property string $type
  * @property string|null $firstname
  * @property string|null $lastname
@@ -39,6 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|Invoice[] $invoices
  * @property Collection|Paymentmethoditem[] $paymentmethoditems
  * @property Collection|Payment[] $payments
+ * @property State $state
  *
  * @package App\Models
  */
@@ -131,4 +133,9 @@ class Customer extends Model
 	{
 		return $this->hasMany(Payment::class);
 	}
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 }

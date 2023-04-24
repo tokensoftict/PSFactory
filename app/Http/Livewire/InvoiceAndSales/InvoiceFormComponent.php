@@ -5,6 +5,7 @@ namespace App\Http\Livewire\InvoiceAndSales;
 use App\Jobs\AddLogToCustomerLedger;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\State;
 use App\Repositories\InvoiceRepository;
 use App\Traits\SimpleComponentTrait;
 use Livewire\Component;
@@ -36,6 +37,9 @@ class InvoiceFormComponent extends Component
     public String $phone_number = "";
     public String $email = "";
     public String $type = "COMPANY";
+    public String $state_id = "";
+
+    public $states;
 
 
     public function boot(InvoiceRepository $invoiceRepository)
@@ -49,6 +53,8 @@ class InvoiceFormComponent extends Component
          $this->invoiceData['invoice_date'] = dailyDate();
          $this->invoiceData['customer_id'] = null;
          $this->invoiceData['invoice_number'] = invoiceOrderReferenceNumber();
+
+        $this->states = states();
 
          $this->data = [];
 
@@ -84,6 +90,7 @@ class InvoiceFormComponent extends Component
             'company_name' =>'required',
             'firstname' =>'required',
             'lastname' => 'required',
+            'state_id' =>'required',
             'phone_number' => 'required|digits_between:11,11|unique:customers,phone_number',
         ]);
 
@@ -96,6 +103,8 @@ class InvoiceFormComponent extends Component
         $customer->phone_number = $this->phone_number;
         $customer->type = $this->type;
         $customer->address = $this->address;
+        $customer->state_id = $this->state_id;
+
 
         $customer->save();
 

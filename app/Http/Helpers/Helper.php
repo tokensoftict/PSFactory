@@ -2,6 +2,7 @@
 
 
 use App\Models\Paymentmethod;
+use App\Models\Usergroup;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -23,7 +24,7 @@ function loadUserMenu($group_id = NULL)
     $group_id = $group_id === NULL ? auth()->user()->usergroup_id : $group_id;
 
     return Cache::remember('route-permission-'.$group_id,86400, function() use ($group_id){
-        return \App\Models\Usergroup::with(['tasks'=>function ($q) {
+        return Usergroup::with(['tasks'=>function ($q) {
             $q->join('modules', 'modules.id', '=', 'tasks.module_id');
             $q->orderBy('tasks.module_id', "ASC")->orderBy('tasks.id');
         }])->find($group_id)->tasks;
@@ -32,10 +33,35 @@ function loadUserMenu($group_id = NULL)
 }
 
 
+function accessGroups()
+{
+    return Cache::remember('usergroups',86400, function(){
+        return Usergroup::where('status', 1)->get();
+    });
+}
+
+function accessGroup($group_id)
+{
+    $group_id = $group_id === NULL ? auth()->user()->usergroup_id : $group_id;
+
+    return accessGroups()->filter(function($item) use($group_id){
+        return $item->id === $group_id;
+    })->first();
+}
+
+
+
 function paymentMethods()
 {
     return Cache::remember('paymentMethods', 86400, function(){
         return  Paymentmethod::where('status', 1)->get();
+    });
+}
+
+function states()
+{
+    return Cache::remember('paymentMethods', 86400, function(){
+        return  \App\Models\State::select('id','name')->get();
     });
 }
 
