@@ -138,7 +138,7 @@
                         <td x-text="(index+1)"></td>
                         <td class="text-left" x-text="pItem.name"></td>
                         <td class="text-center" x-text="pItem.expiry_date"></td>
-                        <td class="text-center" x-text="numberFormat(pItem.measurement) + ' '+pItem.unit"></td>
+                        <td class="text-center" x-text="pItem.measurement + ' '+pItem.unit"></td>
                         <td class="text-end" x-text="numberFormat(pItem.cost_price)"></td>
                         <td class="text-end" x-text="numberFormat(pItem.total)"></td>
                         <td class="text-end"><button class="btn btn-sm btn-primary" x-on:click="deleteItem(pItem.purchase_id)">Delete</button> </td>
