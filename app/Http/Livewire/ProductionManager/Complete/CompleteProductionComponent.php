@@ -20,7 +20,7 @@ class CompleteProductionComponent extends Component
 
 
     protected array $messages = [
-        //'data.rough_quantity.required' => 'Rough Quantity is required',
+        'data.rough_quantity.required' => 'Rough Quantity is required',
         'data.yield_quantity.required' => 'Yield Quantity is required',
         'data.quantity_1.required' => 'Quantity 1 Field is required',
         'data.quantity_2.required' => 'Quantity 2 Field is required',
@@ -50,7 +50,7 @@ class CompleteProductionComponent extends Component
     {
 
         $this->validate([
-           // 'data.rough_quantity' => 'required',
+           'data.rough_quantity' => 'required',
             'data.yield_quantity' => 'required',
             'data.quantity_1' => 'required',
             'data.quantity_2' =>  'required',
@@ -77,7 +77,7 @@ class CompleteProductionComponent extends Component
 
         // construct the material to return from here
 
-        $returnqty =  ($this->production->expected_quantity - $this->production->yield_quantity);
+        $returnqty =  ($this->production->expected_quantity - ($this->production->yield_quantity + $this->production->rough_quantity));
 
         $packagingItems = $this->production->production_material_items()->where('department_id',2)->where('extra',0)->get();
 

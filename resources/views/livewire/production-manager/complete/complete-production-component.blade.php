@@ -71,22 +71,23 @@
 
         <div class="col-lg-2 col-sm-6 col-12">
             <div class="mb-3">
-                <label>Yield Quantity</label>
-                <input type="number" class="form-control" wire:model.defer="data.yield_quantity" placeholder="Yield Quantity">
-                @error('data.yield_quantity') <span class="text-danger">{{ $message }}</span> @enderror
-            </div>
-        </div>
-        <!--
-
-        <div class="col-lg-2 col-sm-6 col-12">
-            <div class="mb-3">
                 <label>Rough Quantity</label>
                 <input type="number" class="form-control" wire:model.defer="data.rough_quantity" placeholder="Rough Quantity">
                 @error('data.rough_quantity') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
         </div>
 
--->
+
+
+        <div class="col-lg-2 col-sm-6 col-12">
+            <div class="mb-3">
+                <label>Yield Quantity</label>
+                <input type="number" class="form-control" wire:model.defer="data.yield_quantity" placeholder="Yield Quantity">
+                @error('data.yield_quantity') <span class="text-danger">{{ $message }}</span> @enderror
+            </div>
+        </div>
+
+
 
         <div class="col-lg-2 col-sm-6 col-12">
             <div class="mb-3">

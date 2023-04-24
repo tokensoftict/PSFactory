@@ -19,7 +19,16 @@ class MaterialReturnDatatable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return  MaterialReturn::query()->select("*")->filterdata($this->filters);
+        return  MaterialReturn::query()->select("*")
+            ->whereHas('material_return_items', function($query){
+                if(auth()->user()->department_id === NULL)
+                {
+                    $query->whereIn('department_id', [1,2]);
+                }else {
+                    $query->where('department_id', auth()->user()->department_id); // only show material returns items the login user can approve or has approved.
+                }
+            })
+            ->filterdata($this->filters);
 
     }
 

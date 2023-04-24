@@ -17,6 +17,8 @@ Route::get('/', ['as' => 'index', 'uses' => 'Auth\LoginController@index']);
 
 Route::post('login', ['as' => 'login_process', 'uses' => 'Auth\LoginController@loginprocess']);
 
+Route::get('/auth', ['as' => 'login', 'uses' => 'Auth\LoginController@index']);
+
 Route::match(['get', 'post'], 'logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
 Route::middleware(['auth'])->group(function () {
