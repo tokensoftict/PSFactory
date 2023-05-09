@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+  /*
         Schema::table('stockbatches', function (Blueprint $table) {
             $table->decimal('cost_price')->nullable()->after('production_id');
         });
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->decimal('total_cost_price')->nullable()->after('cost_price');
             $table->integer('rough')->default(0)->after('cost_price');
         });
-
+*/
         Schema::table('productions', function (Blueprint $table) {
             $table->decimal('cost_price')->nullable()->after('stock_id');
             $table->renameColumn('quantity_1', 'starting_unscrabler');
@@ -38,7 +39,7 @@ return new class extends Migration
             $table->bigInteger('ending_unibloc')->default(0)->nullable()->after('ending_unscrabler');
             $table->bigInteger('ending_oriental')->default(0)->nullable()->after('ending_unibloc');
             $table->bigInteger('ending_labelling')->default(0)->nullable()->after('ending_oriental');
-            $table->foreignId('department_id')->nullable()->after('invoice_id')->constrained()->nullOnDelete();
+            $table->foreignId('department_id')->nullable()->after('ending_oriental')->constrained()->nullOnDelete();
         });
 
 
