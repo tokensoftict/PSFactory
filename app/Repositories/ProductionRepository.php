@@ -52,6 +52,7 @@ class ProductionRepository
         'data.production_time'  => "required",
         'data.status_id'  => "required",
         'data.productionline_id'  => "required",
+        'data.department_id'  => "required",
     ];
 
     public  static array $messages = [
@@ -82,7 +83,7 @@ class ProductionRepository
 
         $production->update();
 
-        $production->materialRequest()->delete(); // already requested material
+        $production->material_request()->delete(); // already requested material
 
         $this->saveProductionMaterial($production);
 
@@ -139,7 +140,7 @@ class ProductionRepository
 
         $production->update();
 
-        $production->materialRequest()->delete(); // already requested material
+        $production->material_request()->delete(); // already requested material
 
         $this->saveProductionMaterial($production);
 
@@ -208,6 +209,25 @@ class ProductionRepository
     public function destroy($id) : void
     {
         $this->get($id)->delete();
+    }
+
+
+    public function calculateProductionCostPrice(Production $production) : string|bool
+    {
+        $totalUsed = $production->production_material_items->sum('total_cost_price');
+
+       $cost_price = abs(round($totalUsed / $production->yield_quantity));
+
+       if($cost_price >= $production->stock->selling_price)
+       {
+           return "Cost Price Generated is greater or equal to current Selling Price (".money($production->stock->selling_price).") Cost Price =".money($cost_price)." Please re-confirm selling price";
+       }
+
+       $production->cost_price = abs(round($totalUsed / $production->yield_quantity));
+
+       $production->update();
+
+       return true;
     }
 
 }

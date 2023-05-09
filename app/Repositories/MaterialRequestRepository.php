@@ -58,6 +58,16 @@ class MaterialRequestRepository
 
         $request = MaterialRequest::create($data);
 
+        if($request->request_type === Production::class)
+        {
+            if($request->request->material_request_id == NULL)
+            {
+                $request->request->material_request_id = $request->id;
+                $request->request->update(); // stop it from updating material request when requesting for extra material
+            }
+
+        }
+
         $items = [];
 
         foreach ($material_items as $material_item)

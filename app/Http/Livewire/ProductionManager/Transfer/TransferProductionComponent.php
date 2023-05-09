@@ -5,6 +5,9 @@ namespace App\Http\Livewire\ProductionManager\Transfer;
 use App\Models\Production;
 use App\Models\ProductTransfer;
 use App\Models\Stockbatch;
+use App\Repositories\ProductionRepository;
+use App\Repositories\ProductProductionTemplateRepository;
+use App\Repositories\ProductRepository;
 use Carbon\Carbon;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -44,6 +47,25 @@ class TransferProductionComponent extends Component
 
     public function transferProduction()
     {
+
+       $price =  (new ProductionRepository())->calculateProductionCostPrice($this->production);
+
+       if(is_string($price))
+       {
+           $this->alert(
+               "error",
+               "Production Transfer",
+               [
+                   'position' => 'center',
+                   'timer' => 7000,
+                   'toast' => false,
+                   'text' => $price,
+               ]
+           );
+
+           return false;
+       }
+
         $product_transfer = [
             'transfer_date' => dailyDate(),
             'transfer_time' => Carbon::now()->toDateTimeLocalString(),
@@ -54,8 +76,13 @@ class TransferProductionComponent extends Component
             'transferable_id' => $this->production->id,
             'transfer_by_id' => auth()->id(),
             'status_id' => status('Pending'),
-
         ];
+
+        ProductTransfer::where([
+            'stock_id' =>  $this->production->stock_id,
+            'transferable_type' => Production::class,
+            'transferable_id' => $this->production->id,
+        ])->delete();
 
         ProductTransfer::create($product_transfer);
 
@@ -63,14 +90,14 @@ class TransferProductionComponent extends Component
 
         $this->production->update();
 
-        $this->production->stock->updateAvailableQuantity();
+        //$this->production->stock->updateAvailableQuantity();
 
         $this->alert(
             "success",
             "Production",
             [
                 'position' => 'center',
-                'timer' => 6000,
+                'timer' => 3000,
                 'toast' => false,
                 'text' =>  $this->data['tt_transfer']." has been transferred successfully!.",
             ]

@@ -72,7 +72,8 @@ class InvoiceReturnsItem extends Model
 		'total_cost_price',
 		'total_selling_price',
 		'total_profit',
-        'stock_id'
+        'stock_id',
+        'department_id'
 	];
 
     protected $with = ['stock'];

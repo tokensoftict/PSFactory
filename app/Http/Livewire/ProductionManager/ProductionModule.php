@@ -43,6 +43,7 @@ class ProductionModule extends Component
         'data.production_time.required'  => "Production Time is required",
         'data.status_id.required'  => "Please select production status",
         'data.productionline_id.required'  => "Please select production line",
+        'data.department_id' => "Please select a department"
     ];
 
     public function boot(ProductionRepository $productionRepository)
@@ -54,6 +55,8 @@ class ProductionModule extends Component
     {
 
         $this->data = ProductionRepository::$fields;
+
+        $this->data['department_id'] =  salesDepartments(true)->first()->id;
 
         $this->data['user_id'] =  auth()->id();
 

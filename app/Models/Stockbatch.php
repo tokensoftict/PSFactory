@@ -38,7 +38,8 @@ class Stockbatch extends Model
 		'quantity' => 'float',
 		'stock_id' => 'int',
         'production_id' => 'int',
-        'pieces' => 'float'
+        'pieces' => 'float',
+        'cost_price' => 'float',
 	];
 
 	protected $dates = [
@@ -53,6 +54,7 @@ class Stockbatch extends Model
 		'stock_id',
         'pieces',
         'batch_number',
+        'cost_price',
         'production_id',
 	];
 

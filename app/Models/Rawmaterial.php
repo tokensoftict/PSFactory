@@ -45,7 +45,7 @@ class Rawmaterial extends Model
         'cost_price' => 'float',
         'materialtype_id' => 'int',
         'department_id' => 'int',
-        'status' => 'bool'
+        'status' => 'bool',
     ];
 
     protected $fillable = [
@@ -56,7 +56,8 @@ class Rawmaterial extends Model
         'materialtype_id',
         'department_id',
         'expiry',
-        'status'
+        'status',
+        'cost_price'
     ];
 
 

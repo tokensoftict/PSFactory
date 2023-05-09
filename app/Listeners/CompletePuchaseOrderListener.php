@@ -40,6 +40,7 @@ class CompletePuchaseOrderListener
 
                 $item->batch_id = Rawmaterialbatch::create([
                     'received_date' => $event->purchaseorder->purchase_date,
+                    'cost_price' => $item->cost_price,
                     'expiry_date' => $item->expiry_date,
                     'measurement' =>  $item->measurement,
                     'rawmaterial_id' => $item->purchase_id,

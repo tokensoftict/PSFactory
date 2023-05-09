@@ -911,4 +911,45 @@ function can(array $permissions, $model): bool
     return  false;
 }
 
+function departments($active = false)
+{
+    $depts =  Cache::remember('departments', 86400, function(){
+        return DB::table('departments')->get();
+    });
+    if($active === true) return $depts->filter(function($item){
+        return $item->status == true;
+    });
 
+    return $depts;
+}
+
+
+function storeDepartments($active = false)
+{
+    return departments($active)->filter(function($item){
+       return $item->department_type === "Store";
+    });
+}
+
+
+function salesDepartments($active = false)
+{
+    return departments($active)->filter(function($item){
+        return $item->department_type === "Sales";
+    });
+}
+
+
+function department_by_id($id)
+{
+    return departments(true)->filter(function($item) use($id){
+        return $item->id === $id;
+    })->first();
+}
+
+function department_by_quantity_column($name)
+{
+    return departments(true)->filter(function($item) use($name){
+        return $item->quantity_column === $name;
+    })->first();
+}

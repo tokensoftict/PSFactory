@@ -34,7 +34,17 @@ class RemoveMaterial
         {
             if($event->add === false) {
                 $batches = $material->rawmaterial->getBatches($material->convert_measurement);
+
                 $material->rawmaterial->remove($batches);
+
+                $collectedBatches = collect($batches);
+
+                $material->requesttype->cost_price = ($collectedBatches->sum('cost_price') / $collectedBatches->count());
+
+                $material->requesttype->total_cost_price = ( $material->requesttype->cost_price * $material->convert_measurement);
+
+                $material->requesttype->update();
+
                 $bincards[] = [
                     'rawmaterialbatch_id' => NULL,
                     'rawmaterial_id' => $material->rawmaterial->id,

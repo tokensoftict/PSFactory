@@ -117,7 +117,8 @@ class Invoice extends Model
 		'picked_by',
 		'checked_by',
 		'packed_by',
-		'dispatched_by'
+		'dispatched_by',
+        'department_id'
 	];
 
     protected $with =['invoiceitems.stock'];

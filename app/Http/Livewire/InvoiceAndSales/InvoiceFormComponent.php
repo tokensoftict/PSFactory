@@ -38,6 +38,7 @@ class InvoiceFormComponent extends Component
     public String $email = "";
     public String $type = "COMPANY";
     public String $state_id = "";
+    public array $departments = [];
 
     public $states;
 
@@ -50,13 +51,16 @@ class InvoiceFormComponent extends Component
     public function mount()
     {
 
-         $this->invoiceData['invoice_date'] = dailyDate();
-         $this->invoiceData['customer_id'] = null;
-         $this->invoiceData['invoice_number'] = invoiceOrderReferenceNumber();
+        $this->invoiceData['invoice_date'] = dailyDate();
+        $this->invoiceData['customer_id'] = null;
+        $this->invoiceData['invoice_number'] = invoiceOrderReferenceNumber();
+        $this->invoiceData['department_id'] = salesDepartments(true)->first()->id;
+
+        $this->departments = salesDepartments(true)->toArray();
 
         $this->states = states();
 
-         $this->data = [];
+        $this->data = [];
 
         if(isset($this->invoice->id))
         {

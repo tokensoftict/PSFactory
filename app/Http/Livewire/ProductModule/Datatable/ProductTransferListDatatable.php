@@ -123,7 +123,8 @@ class ProductTransferListDatatable extends DataTableComponent
             'received_date' => dailyDate(),
             'expiry_date' => $this->productTransfer->transferable->expiry_date,
             'quantity' => $this->productTransfer->quantity,
-            'stock_id' => $this->productTransfer->transferable->stock_id
+            'stock_id' => $this->productTransfer->transferable->stock_id,
+            'cost_price' =>  $this->productTransfer->transferable->cost_price
         ];
 
         $id = Stockbatch::create($transfer_data);

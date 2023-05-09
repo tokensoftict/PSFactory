@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $production_date
  * @property Carbon|null $expiry_date
  * @property int $stock_id
+ * @property float|null $cost_price
  * @property int|null $productionline_id
  * @property int $production_template_id
  * @property int|null $material_request_id
@@ -26,9 +27,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $rough_quantity
  * @property float $yield_quantity
  * @property string|null $batch_number
- * @property float $quantity_1
- * @property float $quantity_2
- * @property float $quantity_3
+ * @property float $starting_unscrabler
+ * @property float $starting_unibloc
+ * @property float $starting_oriental
  * @property Carbon|null $production_time
  * @property int $status_id
  * @property string|null $remark
@@ -36,6 +37,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $completed_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property int|null $starting_labelling
+ * @property int|null $ending_unscrabler
+ * @property int|null $ending_unibloc
+ * @property int|null $ending_oriental
+ * @property int|null $ending_labelling
  *
  * @property User $user
  * @property MaterialRequest|null $material_request
@@ -49,24 +55,31 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Production extends Model
 {
-	protected $table = 'productions';
 
     use ModelFilterTraits;
 
+	protected $table = 'productions';
+
 	protected $casts = [
 		'stock_id' => 'int',
+		'cost_price' => 'float',
 		'productionline_id' => 'int',
 		'production_template_id' => 'int',
 		'material_request_id' => 'int',
 		'expected_quantity' => 'float',
 		'rough_quantity' => 'float',
 		'yield_quantity' => 'float',
-		'quantity_1' => 'float',
-		'quantity_2' => 'float',
-		'quantity_3' => 'float',
+		'starting_unscrabler' => 'float',
+		'starting_unibloc' => 'float',
+		'starting_oriental' => 'float',
 		'status_id' => 'int',
 		'user_id' => 'int',
-		'completed_id' => 'int'
+		'completed_id' => 'int',
+		'starting_labelling' => 'int',
+		'ending_unscrabler' => 'int',
+		'ending_unibloc' => 'int',
+		'ending_oriental' => 'int',
+		'ending_labelling' => 'int'
 	];
 
 	protected $dates = [
@@ -80,6 +93,7 @@ class Production extends Model
 		'production_date',
 		'expiry_date',
 		'stock_id',
+		'cost_price',
 		'productionline_id',
 		'production_template_id',
 		'material_request_id',
@@ -87,14 +101,19 @@ class Production extends Model
 		'rough_quantity',
 		'yield_quantity',
 		'batch_number',
-		'quantity_1',
-		'quantity_2',
-		'quantity_3',
+		'starting_unscrabler',
+		'starting_unibloc',
+		'starting_oriental',
 		'production_time',
 		'status_id',
 		'remark',
 		'user_id',
-		'completed_id'
+		'completed_id',
+		'starting_labelling',
+		'ending_unscrabler',
+		'ending_unibloc',
+		'ending_oriental',
+		'ending_labelling'
 	];
 
 	public function user()
@@ -106,16 +125,6 @@ class Production extends Model
 	{
 		return $this->belongsTo(MaterialRequest::class);
 	}
-
-    public function materialRequest()
-    {
-        return $this->belongsTo(MaterialRequest::class);
-    }
-
-    public function items()
-    {
-        return $this->production_material_items();
-    }
 
 	public function production_template()
 	{
@@ -141,6 +150,4 @@ class Production extends Model
 	{
 		return $this->hasMany(ProductionMaterialItem::class);
 	}
-
-
 }

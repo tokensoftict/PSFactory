@@ -68,7 +68,8 @@ class InvoiceReturn extends Model
 		'approved_by',
 		'return_date',
 		'return_time',
-        'invoice_returns_reason_id'
+        'invoice_returns_reason_id',
+        'department_id'
 	];
 
     protected $with = ['invoice_returns_items'];

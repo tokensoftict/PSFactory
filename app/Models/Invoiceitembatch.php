@@ -76,7 +76,8 @@ class Invoiceitembatch extends Model
 		'incentives',
 		'quantity',
 		'invoice_date',
-		'sales_time'
+		'sales_time',
+        'department_id'
 	];
 
 

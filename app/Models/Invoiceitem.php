@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $discount_type
  * @property float|null $discount_amount
  * @property int|null $discount_added_by
+ * @property int|null $department_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -95,7 +96,8 @@ class Invoiceitem extends Model
 		'total_incentives',
 		'discount_type',
 		'discount_amount',
-		'discount_added_by'
+		'discount_added_by',
+        'department_id'
 	];
 
     protected $appends = ['name','av_qty'];

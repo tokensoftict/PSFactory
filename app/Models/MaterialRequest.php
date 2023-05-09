@@ -87,8 +87,5 @@ class MaterialRequest extends Model
 		return $this->hasMany(MaterialRequestItem::class);
 	}
 
-	public function productions()
-	{
-		return $this->hasMany(Production::class);
-	}
+
 }

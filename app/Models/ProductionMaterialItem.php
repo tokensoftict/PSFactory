@@ -59,7 +59,8 @@ class ProductionMaterialItem extends Model
 		'measurement' => 'float',
 		'convert_measurement' => 'float',
 		'returns' => 'float',
-		'approved_by' => 'int'
+		'approved_by' => 'int',
+        'rough' => 'int'
 	];
 
 	protected $dates = [
@@ -86,7 +87,10 @@ class ProductionMaterialItem extends Model
 		'production_time',
 		'approved_by',
 		'approved_date',
-		'approved_time'
+		'approved_time',
+        'cost_price',
+        'total_cost_price',
+        'rough'
 	];
 
 

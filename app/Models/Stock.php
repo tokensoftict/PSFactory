@@ -48,89 +48,103 @@ class Stock extends Model
 {
     use ModelFilterTraits;
 
-	protected $table = 'stocks';
+    protected $table = 'stocks';
 
-	protected $casts = [
-		'category_id' => 'int',
-		'selling_price' => 'float',
-		'cost_price' => 'float',
-		'expiry' => 'bool',
-		'carton' => 'int',
-		'status' => 'bool',
-		'quantity' => 'float',
+    protected $casts = [
+        'category_id' => 'int',
+        'selling_price' => 'float',
+        'cost_price' => 'float',
+        'expiry' => 'bool',
+        'carton' => 'int',
+        'status' => 'bool',
+        'quantity' => 'float',
         'incentives_percentage'=>'float',
         'pieces' => 'float',
-		'user_id' => 'int',
-		'last_updated_by' => 'int'
-	];
+        'user_id' => 'int',
+        'last_updated_by' => 'int'
+    ];
 
-	protected $fillable = [
-		'name',
-		'description',
-		'code',
-		'category_id',
-		'selling_price',
-		'cost_price',
-		'expiry',
-		'carton',
-		'status',
-		'quantity',
+    protected $fillable = [
+        'name',
+        'description',
+        'code',
+        'category_id',
+        'selling_price',
+        'cost_price',
+        'expiry',
+        'carton',
+        'status',
+        'quantity',
         'incentives_percentage',
-		'image',
-		'user_id',
+        'image',
+        'user_id',
         'pieces',
-		'last_updated_by'
-	];
+        'last_updated_by'
+    ];
 
-	public function category()
-	{
-		return $this->belongsTo(Category::class);
-	}
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
-	public function user()
-	{
-		return $this->belongsTo(User::class);
-	}
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function last_updated()
-	{
-		return $this->belongsTo(User::class,'last_updated_by');
-	}
+    {
+        return $this->belongsTo(User::class,'last_updated_by');
+    }
 
-	public function invoiceitembatches()
-	{
-		return $this->hasMany(Invoiceitembatch::class);
-	}
+    public function invoiceitembatches()
+    {
+        return $this->hasMany(Invoiceitembatch::class);
+    }
 
-	public function invoiceitems()
-	{
-		return $this->hasMany(Invoiceitem::class);
-	}
+    public function invoiceitems()
+    {
+        return $this->hasMany(Invoiceitem::class);
+    }
 
-	public function nearoutofstocks()
-	{
-		return $this->hasMany(Nearoutofstock::class);
-	}
+    public function nearoutofstocks()
+    {
+        return $this->hasMany(Nearoutofstock::class);
+    }
 
-	public function stockbatches()
-	{
-		return $this->hasMany(Stockbatch::class);
-	}
+    public function stockbatches()
+    {
+        return $this->hasMany(Stockbatch::class);
+    }
 
-	public function stockbincards()
-	{
-		return $this->hasMany(Stockbincard::class);
-	}
+    public function stockbincards()
+    {
+        return $this->hasMany(Stockbincard::class);
+    }
 
-	public function stockopenings()
-	{
-		return $this->hasMany(Stockopening::class);
-	}
+    public function stockopenings()
+    {
+        return $this->hasMany(Stockopening::class);
+    }
 
     public function updateAvailableQuantity()
     {
-        $this->quantity = $this->stockbatches()->where('quantity',">",0)->sum('quantity');
-        $this->pieces = $this->stockbatches()->where('pieces',">",0)->sum('pieces');
+        $depts = salesDepartments(true);
+
+        foreach ($depts as $dept) {
+
+            if($dept->quantity_column != "quantity")
+            {
+                $column_pack =  $dept->quantity_column.'quantity';
+                $column_pieces = $dept->quantity_column.'pieces';
+            }else{
+                $column_pack = "quantity";
+                $column_pieces = "pieces";
+            }
+
+            $this->{$column_pack} = $this->stockbatches()->where($column_pack, ">", 0)->sum($column_pack);
+            $this->{$column_pieces} = $this->stockbatches()->where($column_pieces, ">", 0)->sum($column_pieces);
+        }
         $this->update();
     }
 
@@ -148,9 +162,7 @@ class Stock extends Model
 
 
 
-    public function pingSaleableBatches($quantity){
-
-        $from = "quantity";
+    public function pingSaleableBatches($quantity, $from = "quantity"){
 
         $batch_ids = [];
 

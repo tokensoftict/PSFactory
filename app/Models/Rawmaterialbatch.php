@@ -38,7 +38,8 @@ class Rawmaterialbatch extends Model
 	protected $casts = [
 		'measurement' => 'float',
 		'rawmaterial_id' => 'int',
-		'supplier_id' => 'int'
+		'supplier_id' => 'int',
+        'cost_price' => 'float'
 	];
 
 	protected $dates = [
@@ -51,7 +52,8 @@ class Rawmaterialbatch extends Model
 		'expiry_date',
 		'measurement',
 		'rawmaterial_id',
-		'supplier_id'
+		'supplier_id',
+        'cost_price'
 	];
 
     protected $with = ['rawmaterial','supplier'];

@@ -17,20 +17,31 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property int $id
  * @property string $name
+ * @property string|null $quantity_column
+ * @property string $department_type
  * @property bool $status
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
+ * @property Collection|InvoiceReturn[] $invoice_returns
+ * @property Collection|InvoiceReturnsItem[] $invoice_returns_items
+ * @property Collection|Invoiceitembatch[] $invoiceitembatches
+ * @property Collection|Invoiceitem[] $invoiceitems
+ * @property Collection|Invoice[] $invoices
+ * @property Collection|MaterialRequestItem[] $material_request_items
+ * @property Collection|MaterialReturnItem[] $material_return_items
+ * @property Collection|ProductionMaterialItem[] $production_material_items
  * @property Collection|Purchaseorderitem[] $purchaseorderitems
+ * @property Collection|Purchaseorder[] $purchaseorders
+ * @property Collection|Rawmaterial[] $rawmaterials
+ * @property Collection|User[] $users
  *
  * @package App\Models
  */
 class Department extends Model
 {
 	use SoftDeletes, ModelFilterTraits;
-
-
 	protected $table = 'departments';
 
 	protected $casts = [
@@ -39,11 +50,68 @@ class Department extends Model
 
 	protected $fillable = [
 		'name',
+		'quantity_column',
+		'department_type',
 		'status'
 	];
+
+	public function invoice_returns()
+	{
+		return $this->hasMany(InvoiceReturn::class);
+	}
+
+	public function invoice_returns_items()
+	{
+		return $this->hasMany(InvoiceReturnsItem::class);
+	}
+
+	public function invoiceitembatches()
+	{
+		return $this->hasMany(Invoiceitembatch::class);
+	}
+
+	public function invoiceitems()
+	{
+		return $this->hasMany(Invoiceitem::class);
+	}
+
+	public function invoices()
+	{
+		return $this->hasMany(Invoice::class);
+	}
+
+	public function material_request_items()
+	{
+		return $this->hasMany(MaterialRequestItem::class);
+	}
+
+	public function material_return_items()
+	{
+		return $this->hasMany(MaterialReturnItem::class);
+	}
+
+	public function production_material_items()
+	{
+		return $this->hasMany(ProductionMaterialItem::class);
+	}
 
 	public function purchaseorderitems()
 	{
 		return $this->hasMany(Purchaseorderitem::class);
+	}
+
+	public function purchaseorders()
+	{
+		return $this->hasMany(Purchaseorder::class);
+	}
+
+	public function rawmaterials()
+	{
+		return $this->hasMany(Rawmaterial::class);
+	}
+
+	public function users()
+	{
+		return $this->hasMany(User::class);
 	}
 }

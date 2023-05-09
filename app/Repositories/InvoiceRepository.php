@@ -25,7 +25,7 @@ class InvoiceRepository
         $stockBatches = [];
         foreach ($items as $item)
         {
-            $batches = $item->stock->pingSaleableBatches($item->quantity);
+            $batches = $item->stock->pingSaleableBatches($item->quantity, $item->department_id);
 
             if($batches === false)
             {
@@ -65,6 +65,7 @@ class InvoiceRepository
                     'profit' =>  $item->stock->selling_price - $item->stock->cost_price,
                     'incentives' => ((($item->incentives_percentage / 100) * $item->stock->selling_price) * $batch['qty']),
                     'quantity' => $batch['qty'],
+                    'department_id' => $item->department_id,
                     'invoice_date' => $item->invoice_date,
                     'sales_time' => $item->sales_time,
                 ]);
@@ -158,6 +159,7 @@ class InvoiceRepository
             $items[$key]['total_incentives'] =  ($_stock[$items[$key]['stock_id']]['incentives_percentage']/100) * $items[$key]['quantity'];
             $items[$key]['discount_type'] = "None";
             $items[$key]['discount_amount'] = 0;
+            $items[$key]['department_id'] = $data['department_id'];
             $invoiceItems[] =new Invoiceitem($items[$key]);
         }
 
