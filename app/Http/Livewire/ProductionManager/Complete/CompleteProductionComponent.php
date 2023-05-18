@@ -103,8 +103,6 @@ class CompleteProductionComponent extends Component
                 $this->productionItems[$key]['error'] = "This Rough Field is required!..";
             }
 
-            $validate =  ($items['measurement'] - $this->data['yield_quantity']) - $items['rough'];
-
             //temporary fix for production now
             $yield_quantity = $this->data['yield_quantity'];
 
@@ -112,6 +110,8 @@ class CompleteProductionComponent extends Component
             {
                 $yield_quantity = ($this->data['yield_quantity'] / $this->production->stock->carton);
             }
+
+            $validate =  ($items['measurement'] - $yield_quantity) - $items['rough'];
 
             if($validate < 0)
             {
