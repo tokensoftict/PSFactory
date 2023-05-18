@@ -71,7 +71,7 @@ class MaterialReturnDatatable extends DataTableComponent
                             $html .= '<a href="' . route('rawmaterial.showreturns', $row->id) . '" class="dropdown-item">View Return </a></li>';
                         }
 
-                        if(userCanView('rawmaterial.edit_return') && $row->status->id == 2) {
+                        if(userCanView('rawmaterial.edit_return') && $row->status->id == 5) {
                             $html .= '<a href="' . route('rawmaterial.edit_return', $row->id) . '" class="dropdown-item">Edit Return </a></li>';
                         }
 
