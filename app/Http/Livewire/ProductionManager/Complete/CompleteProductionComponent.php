@@ -108,7 +108,7 @@ class CompleteProductionComponent extends Component
 
             if($items['rawmaterial_id'] == 14)
             {
-                $yield_quantity = ($this->data['yield_quantity'] / $this->production->stock->carton);
+                $yield_quantity = floor(($this->data['yield_quantity'] / $this->production->stock->carton));
             }
 
             $validate =  ($items['measurement'] - $yield_quantity) - $items['rough'];
@@ -153,7 +153,7 @@ class CompleteProductionComponent extends Component
 
             if($items['rawmaterial_id'] == 14)
             {
-                $yield_quantity = ($this->data['yield_quantity'] / $this->production->stock->carton);
+                $yield_quantity = floor(($this->data['yield_quantity'] / $this->production->stock->carton));
             }
 
             $item->returns =  ($items['measurement'] - $yield_quantity) - $items['rough'];
