@@ -44,7 +44,14 @@ class ProductRepository
     {
         $name = explode(" ",$name);
 
-        return  Stock::query()->with(['category'])->where('quantity', '>', 0)->where(function($query) use(&$name){
+        $dept = salesDepartment_by_id(request()->get('department_id'));
+
+        if(!$dept) return [];
+
+        return  Stock::query()
+            ->with(['category'])
+            ->where($dept->quantity_column.'quantity', '>', 0)
+            ->where(function($query) use(&$name){
             foreach ($name as $char) {
                 $query->where('name', 'LIKE', "%$char%");
             }

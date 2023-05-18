@@ -88,6 +88,11 @@ class InvoiceReturnsItem extends Model
 		return $this->belongsTo(Customer::class);
 	}
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
 	public function invoice()
 	{
 		return $this->belongsTo(Invoice::class);
@@ -102,4 +107,13 @@ class InvoiceReturnsItem extends Model
 	{
 		return $this->belongsTo(Status::class);
 	}
+
+    public function scopefilterdepartment($query)
+    {
+        $department_id = auth()->user()->department_id;
+
+        if($department_id !== NULL) return $query;
+
+        return $query->where($this->table.'.department_id', $department_id);
+    }
 }

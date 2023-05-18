@@ -102,6 +102,12 @@
             <strong  class="d-block pb-1 pt-1">{!! twelveHourClock($this->invoice->sales_time) !!}</strong>
             <br/>
 
+
+            <span class="d-block pb-1 pt-1"> Department : </span>
+            <strong  class="d-block pb-1 pt-1">{{ $this->invoice->department->name }}</strong>
+            <br/>
+
+
             <hr/>
             <h3>Invoice Properties</h3>
             <hr/>

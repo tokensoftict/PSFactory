@@ -64,6 +64,9 @@ class Stock extends Model
         'last_updated_by' => 'int'
     ];
 
+    protected $guarded = [];
+
+/*
     protected $fillable = [
         'name',
         'description',
@@ -81,7 +84,7 @@ class Stock extends Model
         'pieces',
         'last_updated_by'
     ];
-
+*/
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -163,6 +166,17 @@ class Stock extends Model
 
 
     public function pingSaleableBatches($quantity, $from = "quantity"){
+
+        if(is_numeric($from))
+        {
+            $from = salesDepartment_by_id($from)->quantity_column;
+            if(!empty($from)) {
+                $from = "quantity";
+            }
+            else {
+                $from = $from."quantity";
+            }
+        }
 
         $batch_ids = [];
 

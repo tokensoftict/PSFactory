@@ -22,7 +22,7 @@ class ShowProductionComponent extends Component
 
     public function mount()
     {
-        $this->departments = Department::where('status', 1)->get();
+        $this->departments = Department::where('status', 1)->where('department_type', 'Store')->get();
     }
 
     public function render()

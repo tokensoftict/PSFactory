@@ -125,4 +125,13 @@ class ProductionMaterialItem extends Model
 	{
 		return $this->belongsTo(Status::class);
 	}
+
+    public function scopefilterdepartment($query)
+    {
+        $department_id = auth()->user()->department_id;
+
+        if($department_id !== NULL) return $query;
+
+        return $query->where($this->table.'.department_id', $department_id);
+    }
 }

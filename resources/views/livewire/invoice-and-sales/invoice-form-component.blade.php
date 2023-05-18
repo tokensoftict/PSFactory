@@ -47,7 +47,7 @@
                                     <th class="text-center" width="25%">Quantity</th>
                                     <th class="text-center" width="15%">Price</th>
                                     <th class="text-center">Total</th>
-                                    <th class="text-right">Action</th>
+                                    <th class="text-end">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody id="appender">
@@ -59,9 +59,9 @@
 
                                             <div class="input-group form-group mb-0" style="width:120px;">
                                                 <a x-on:click="incrementQuantity(index)" class="btn btn-sm btn-primary">
-                                                   <i class="fa fa-plus"></i>
+                                                    <i class="fa fa-plus"></i>
                                                 </a>
-                                                <input type="number" x-on:keyup="typeQuantity(index)"  x-model="items[index]['quantity']" value="1" class="form-control form-control-sm text-center">
+                                                <input type="number" x-on:change="typeQuantity(index)" x-on:keyup="typeQuantity(index)"  x-model="items[index]['quantity']" value="1" class="form-control form-control-sm text-center">
                                                 <a x-on:click="decrementQuantity(index)" class="btn btn-sm btn-danger">
                                                     <i class="fa fa-minus"></i>
                                                 </a>
@@ -70,7 +70,7 @@
                                         </td>
                                         <td class="text-center" x-html="numberFormat(product.selling_price)"></td>
                                         <td class="text-center" x-html="numberFormat(product.total_selling_price)"></td>
-                                        <td class="text-right"><button class="btn btn-sm btn-primary" x-on:click="deleteItem(product.stock_id)"><i class="fa fa-trash"></i> </button> </td>
+                                        <td class="text-end"><button class="btn btn-sm btn-danger" x-on:click="deleteItem(product.stock_id)"><i class="fa fa-trash"></i> </button> </td>
                                     </tr>
                                 </template>
                                 </tbody>
@@ -117,7 +117,7 @@
                                         <label for="exampleInputEmail1">Customer Name</label>
                                         <input type="text" x-model="searchCustomerString" class="form-control" x-on:keyup.debounce="searchCustomer(this.value)"  placeholder="Search for customer by phone number, name or email address">
                                         @if(userCanView('customer.create'))
-                                        <a href="#" wire:click="newCustomer" class="text-success" style="display: block;text-align: center">Add New Customer</a>
+                                            <a href="#" wire:click="newCustomer" class="text-success" style="display: block;text-align: center">Add New Customer</a>
                                         @endif
                                     </div>
                                     <template x-if="(searchCustomers.length > 0)">
@@ -153,10 +153,22 @@
                                 </div>
 
                                 <div class="col-sm-12">
+
+                                    <div class="mb-3">
+                                        <label for="invoice_date">Department</label>
+                                        <select class="form-control" wire:model="invoiceData.department_id">
+                                            @foreach($this->departments as $department)
+                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+
                                     <div class="mb-3">
                                         <label for="invoice_date">Invoice / Sales date</label>
                                         <input readonly="" id="invoice_date" class="form-control" value="{{ dailyDate() }}" placeholder="Invoice / Sales date" type="text">
                                     </div>
+
                                     <div class="mb-3">
                                         <label for="invoice_number">Invoice Reference</label>
                                         <input readonly=""  x-model="invoice_number" x-ref="invoice_number" id="invoice_number" class="form-control" placeholder="Invoice Number" type="text">
@@ -281,231 +293,235 @@
         {
             return {
                 items : @this.get('items') ? JSON.parse(@this.get('items')) : [] ,
-                searchString : "",
-                searchproduct : [],
-                searchCustomers : [],
-                customer_id : @this.get('invoiceData.customer_id') ?  @this.get('invoiceData.customer_id') :  {"firstname" : ""},
-                netTotal : 0.00,
-                quantity : [],
-                searchCustomerString : "",
-                selectedProduct : {},
-                invoice_date : @this.get('invoiceData.invoice_date') ?  @this.get('invoiceData.invoice_date') : '{{ dailyDate() }}',
-                invoice_number : (@this.get('invoiceData.invoice_number')  ?  @this.get('invoiceData.invoice_number') : 'xxxx-INV-xxxx'.replace(/[xy]/g, function(c) {
-                    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                    return v.toString(8);
-                })),
-                selectProduct(product){
-                    this.selectedProduct = product;
-                    this.selling_price = product.selling_price;
-                    this.searchproduct = [];
-                    this.searchString = "";
-                    this.addItem();
-                },
-                addItem() {
-                    if((this.items.filter(e => e.stock_id === this.selectedProduct.id)).length > 0){
-                        alert("Product already exists");
-                        return;
-                    }
+            searchString : "",
+            searchproduct : [],
+            searchCustomers : [],
+            department_id : @this.get('invoiceData.department_id') ?  @this.get('invoiceData.department_id') : '3',
+            customer_id : @this.get('invoiceData.customer_id') ?  @this.get('invoiceData.customer_id') :  {"firstname" : ""},
+            netTotal : 0.00,
+            quantity : [],
+            searchCustomerString : "",
+            selectedProduct : {},
+            invoice_date : @this.get('invoiceData.invoice_date') ?  @this.get('invoiceData.invoice_date') : '{{ dailyDate() }}',
+            invoice_number : (@this.get('invoiceData.invoice_number')  ?  @this.get('invoiceData.invoice_number') : 'xxxx-INV-xxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(8);
+        })),
+            selectProduct(product){
+            this.selectedProduct = product;
+            this.selling_price = product.selling_price;
+            this.searchproduct = [];
+            this.searchString = "";
+            this.addItem();
+        },
+            addItem() {
+            if((this.items.filter(e => e.stock_id === this.selectedProduct.id)).length > 0){
+                alert("Product already exists");
+                return;
+            }
 
-                    this.items.push({
-                        "stock_id" : this.selectedProduct.id,
-                        "quantity" : 1,
-                        "name" : this.selectedProduct.name,
-                        "added_by" : '{{ auth()->id() }}',
-                        'cost_price' : this.selectedProduct.cost_price,
-                        'selling_price' : this.selectedProduct.selling_price,
-                        'profit' : (this.selectedProduct.selling_price - this.selectedProduct.cost_price),
-                        'total_cost_price' : this.selectedProduct.cost_price,
-                        'total_selling_price' : this.selectedProduct.selling_price,
-                        'total_profit' :  (this.selectedProduct.selling_price - this.selectedProduct.cost_price),
-                        'total_incentives' :  this.selectedProduct.selling_price,
-                        'discount_type' : "None",
-                        'av_qty' : this.selectedProduct.quantity,
-                        'discount_amount' : 0,
+            this.items.push({
+                "stock_id" : this.selectedProduct.id,
+                "quantity" : 1,
+                "name" : this.selectedProduct.name,
+                "added_by" : '{{ auth()->id() }}',
+                'cost_price' : this.selectedProduct.cost_price,
+                'selling_price' : this.selectedProduct.selling_price,
+                'profit' : (this.selectedProduct.selling_price - this.selectedProduct.cost_price),
+                'total_cost_price' : this.selectedProduct.cost_price,
+                'total_selling_price' : this.selectedProduct.selling_price,
+                'total_profit' :  (this.selectedProduct.selling_price - this.selectedProduct.cost_price),
+                'total_incentives' :  this.selectedProduct.selling_price,
+                'discount_type' : "None",
+                'av_qty' : '{{ $this->selectedDepartment->quantity_column }}'+this.selectedProduct.quantity,
+                'discount_amount' : 0,
 
-                    });
+            });
 
-                    this.searchproduct = [];
-                    this.searchString = "";
-                    this.quantity = "";
-                    this.cost_price = "";
-                    this.expiry_date = "";
-                    this.selectedProduct = {};
+            this.searchproduct = [];
+            this.searchString = "";
+            this.quantity = "";
+            this.cost_price = "";
+            this.expiry_date = "";
+            this.selectedProduct = {};
 
-                    this.totalInvoice();
-                },
+            this.totalInvoice();
+        },
 
-                incrementQuantity(index)
+            incrementQuantity(index)
+            {
+                let qty =  parseInt(this.items[index]['quantity']) + 1;
+                if(qty < this.items[index]['av_qty'])
                 {
-                    let qty =  parseInt(this.items[index]['quantity']) + 1;
-                    if(qty < this.items[index]['av_qty'])
-                    {
-                        this.items[index]['quantity'] = qty;
-                        this.items[index]['total_cost_price'] = this.items[index]['cost_price'] * this.items[index]['quantity'];
-                        this.items[index]['total_selling_price'] = this.items[index]['selling_price'] * this.items[index]['quantity'];
-                        this.items[index]['total_profit'] =  (this.items[index]['selling_price'] - this.items[index]['cost_price']) * this.items[index]['quantity'];
-                        this.items[index]['total_incentives'] =  this.items[index]['selling_price'] * this.items[index]['quantity'];
-                        this.totalInvoice();
-                    }
-                },
-
-                typeQuantity(index)
-                {
-                    if(this.items[index]['quantity'] > this.items[index]['av_qty'])
-                    {
-                        alert("Total available quantity is "+this.items[index]['av_qty']);
-                        this.items[index]['quantity'] = this.items[index]['av_qty'];
-                    }
+                    this.items[index]['quantity'] = qty;
                     this.items[index]['total_cost_price'] = this.items[index]['cost_price'] * this.items[index]['quantity'];
                     this.items[index]['total_selling_price'] = this.items[index]['selling_price'] * this.items[index]['quantity'];
                     this.items[index]['total_profit'] =  (this.items[index]['selling_price'] - this.items[index]['cost_price']) * this.items[index]['quantity'];
                     this.items[index]['total_incentives'] =  this.items[index]['selling_price'] * this.items[index]['quantity'];
                     this.totalInvoice();
-                },
+                }
+            },
 
-                decrementQuantity(index)
+            typeQuantity(index)
+            {
+                if(this.items[index]['quantity'] > this.items[index]['av_qty'])
                 {
-                    let qty =  parseInt(this.items[index]['quantity']) - 1;
-                    if(qty > 0)
-                    {
-                        this.items[index]['quantity'] = qty;
-                        this.items[index]['total_cost_price'] = this.items[index]['cost_price'] * this.items[index]['quantity'];
-                        this.items[index]['total_selling_price'] = this.items[index]['selling_price'] * this.items[index]['quantity'];
-                        this.items[index]['total_profit'] =  (this.items[index]['selling_price'] - this.items[index]['cost_price']) * this.items[index]['quantity'];
-                        this.items[index]['total_incentives'] =  this.items[index]['selling_price'] * this.items[index]['quantity'];
-                        this.totalInvoice();
-                    }
-                },
+                    alert("Total available quantity is "+this.items[index]['av_qty']);
+                    this.items[index]['quantity'] = this.items[index]['av_qty'];
+                }
+                this.items[index]['total_cost_price'] = this.items[index]['cost_price'] * this.items[index]['quantity'];
+                this.items[index]['total_selling_price'] = this.items[index]['selling_price'] * this.items[index]['quantity'];
+                this.items[index]['total_profit'] =  (this.items[index]['selling_price'] - this.items[index]['cost_price']) * this.items[index]['quantity'];
+                this.items[index]['total_incentives'] =  this.items[index]['selling_price'] * this.items[index]['quantity'];
+                this.totalInvoice();
+            },
 
-                deleteItem(id) {
-                    this.items = this.items.filter(item => id !== item.stock_id);
+            decrementQuantity(index)
+            {
+                let qty =  parseInt(this.items[index]['quantity']) - 1;
+                if(qty > 0)
+                {
+                    this.items[index]['quantity'] = qty;
+                    this.items[index]['total_cost_price'] = this.items[index]['cost_price'] * this.items[index]['quantity'];
+                    this.items[index]['total_selling_price'] = this.items[index]['selling_price'] * this.items[index]['quantity'];
+                    this.items[index]['total_profit'] =  (this.items[index]['selling_price'] - this.items[index]['cost_price']) * this.items[index]['quantity'];
+                    this.items[index]['total_incentives'] =  this.items[index]['selling_price'] * this.items[index]['quantity'];
                     this.totalInvoice();
-                },
+                }
+            },
 
-                totalInvoice() {
-                    this.netTotal = this.numberFormat(this.items.length > 0 ? this.items.reduce((result, item) => {
-                        return result + item.total_selling_price;
-                    }, 0) : 0);
-                    return true;
-                },
+            deleteItem(id) {
+            this.items = this.items.filter(item => id !== item.stock_id);
+            this.totalInvoice();
+        },
 
-                async searchCustomer()
-                {
-                    if (this.searchCustomerString !== "" && this.searchCustomerString.length > 3) {
-                        this.searchCustomers = await (await fetch('{{ route('findcustomer') }}?query=' + this.searchCustomerString
-                        )).
-                        json();
-                    }
-                    else{
-                        this.searchCustomers = [];
-                    }
-                },
+            totalInvoice() {
+            this.netTotal = this.numberFormat(this.items.length > 0 ? this.items.reduce((result, item) => {
+                return result + item.total_selling_price;
+            }, 0) : 0);
+            return true;
+        },
 
-                newCustomerEvent()
-                {
-                    let myModal = "";
-                    $(document).ready(function(){
-                        myModal = new bootstrap.Modal(document.getElementById("simpleComponentModal"), {});
-                    });
-                    window.addEventListener('openModal', (e) => {
-                        myModal.show();
-                    });
-
-                    window.addEventListener('newCustomer', (event) => {
-                        this.customer_id = event.detail.customer;
-                        myModal.hide();
-                    });
-                    window.addEventListener('invoiceLink', (event) => {
-                        setTimeout(()=>{
-                            window.location.href = event.detail.link;
-                        },1500)
-                    });
-                },
-                selectCus(customer)
-                {
-                    this.customer_id = customer;
-                    this.searchCustomerString = "";
+            async searchCustomer()
+            {
+                if (this.searchCustomerString !== "" && this.searchCustomerString.length > 3) {
+                    this.searchCustomers = await (await fetch('{{ route('findcustomer') }}?query=' + this.searchCustomerString
+                    )).
+                    json();
+                }
+                else{
                     this.searchCustomers = [];
-                },
-                async searchProduct() {
-                    if (this.searchString !== "" && this.searchString.length > 3) {
-                        this.searchproduct = await (await fetch('{{ route('findstock') }}?query=' + this.searchString
-                        )).
-                        json();
-                    }else
-                    {
-                        this.searchproduct = [];
-                    }
+                }
+            },
 
-                },
+            newCustomerEvent()
+            {
+                let myModal = "";
+                $(document).ready(function(){
+                    myModal = new bootstrap.Modal(document.getElementById("simpleComponentModal"), {});
+                });
+                window.addEventListener('openModal', (e) => {
+                    myModal.show();
+                });
 
-                datepickerInit(referred){
-                    this.picker =  new Pikaday(
-                        {
-                            field: document.getElementById(referred),
-                            format: 'YYYY-MM-DD',
-                            onSelect: (date) => {
-                                this[referred] = this.picker.getMoment().format('YYYY-MM-DD')
-                            }
-                        }
-                    );
-                },
-                select2Alpine(referred) {
-                    this.select2 = $(document.getElementById(referred)).select2();
-                    if(this[referred]  === ""){
-                        this[referred] =  this.select2.val();
-                    }
-                    this.select2.on("select2:select", (event) => {
-                        this[referred] = event.target.value;
-                    });
+                window.addEventListener('newCustomer', (event) => {
+                    this.customer_id = event.detail.customer;
+                    myModal.hide();
+                });
+                window.addEventListener('departmentChange', (event) => {
+                    this.department_id = event.detail.department;
+                });
+                window.addEventListener('invoiceLink', (event) => {
+                    setTimeout(()=>{
+                        window.location.href = event.detail.link;
+                    },1500)
+                });
+            },
+            selectCus(customer)
+            {
+                this.customer_id = customer;
+                this.searchCustomerString = "";
+                this.searchCustomers = [];
+            },
+            async searchProduct() {
+            if (this.searchString !== "" && this.searchString.length > 3) {
+                this.searchproduct = await (await fetch('{{ route('findstock') }}?query=' + this.searchString + '&department_id='+this.department_id
+                )).
+                json();
+            }else
+            {
+                this.searchproduct = [];
+            }
 
-                },
+        },
 
-                numberFormat(amount, decimalCount = 2, decimal = ".", thousands = ",") {
-                    try {
-                        decimalCount = Math.abs(decimalCount);
-                        decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-
-                        const negativeSign = amount < 0 ? "-" : "";
-
-                        let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
-                        let j = (i.length > 3) ? i.length % 3 : 0;
-
-                        return "&#8358;"+negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
-                    } catch (e) {
-                        console.log(e)
-                    }
-                },
-
-                saveInvoice()
+            datepickerInit(referred){
+            this.picker =  new Pikaday(
                 {
-
-                    if(this.invoice_date === "") {
-                        alert("Please select invoice date")
-                        return ;
+                    field: document.getElementById(referred),
+                    format: 'YYYY-MM-DD',
+                    onSelect: (date) => {
+                        this[referred] = this.picker.getMoment().format('YYYY-MM-DD')
                     }
+                }
+            );
+        },
+            select2Alpine(referred) {
+            this.select2 = $(document.getElementById(referred)).select2();
+            if(this[referred]  === ""){
+                this[referred] =  this.select2.val();
+            }
+            this.select2.on("select2:select", (event) => {
+                this[referred] = event.target.value;
+            });
 
-                    if(this.customer_id.firstname === "") {
-                        alert("You have not select a customer for this invoice,  please select a customer by searching!...")
-                        return ;
-                    }
+        },
 
-                    if(this.items.length === 0)
-                    {
-                        alert("Invoice items list is empty, please add at least one product to generate invoice")
-                        return ;
-                    }
+            numberFormat(amount, decimalCount = 2, decimal = ".", thousands = ",") {
+            try {
+                decimalCount = Math.abs(decimalCount);
+                decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
 
+                const negativeSign = amount < 0 ? "-" : "";
 
-                    @this.set('invoiceData.invoice_number',this.invoice_number, true);
-                    @this.set('invoiceData.invoice_date',this.invoice_date, true);
-                    @this.set('invoiceData.customer_id',this.customer_id.id, true);
-                    @this.set('items', JSON.stringify(this.items), true);
-                    @this.generateInvoice();
+                let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+                let j = (i.length > 3) ? i.length % 3 : 0;
+
+                return "&#8358;"+negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+            saveInvoice()
+            {
+
+                if(this.invoice_date === "") {
+                    alert("Please select invoice date")
+                    return ;
+                }
+
+                if(this.customer_id.firstname === "") {
+                    alert("You have not select a customer for this invoice,  please select a customer by searching!...")
+                    return ;
+                }
+
+                if(this.items.length === 0)
+                {
+                    alert("Invoice items list is empty, please add at least one product to generate invoice")
+                    return ;
                 }
 
 
-            };
+                @this.set('invoiceData.invoice_number',this.invoice_number, true);
+                @this.set('invoiceData.invoice_date',this.invoice_date, true);
+                @this.set('invoiceData.customer_id',this.customer_id.id, true);
+                @this.set('items', JSON.stringify(this.items), true);
+                @this.generateInvoice();
+            }
+
+
+        };
 
 
 

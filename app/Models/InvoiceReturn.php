@@ -10,6 +10,7 @@ use App\Traits\ModelFilterTraits;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class InvoiceReturn
@@ -79,6 +80,11 @@ class InvoiceReturn extends Model
         return $this->belongsTo(InvoiceReturnsReason::class, 'invoice_returns_reason_id');
     }
 
+    public function department() : BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
 	public function create_by()
 	{
 		return $this->belongsTo(User::class, 'created_by');
@@ -108,4 +114,13 @@ class InvoiceReturn extends Model
 	{
 		return $this->hasMany(InvoiceReturnsItem::class);
 	}
+
+    public function scopefilterdepartment($query)
+    {
+        $department_id = auth()->user()->department_id;
+
+        if($department_id !== NULL) return $query;
+
+        return $query->where($this->table.'.department_id', $department_id);
+    }
 }

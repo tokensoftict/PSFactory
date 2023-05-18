@@ -153,6 +153,11 @@ class Invoice extends Model
         return $this->belongsTo(User::class, 'dispatched_by');
     }
 
+    public function department() : BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
 	public function customer()
 	{
 		return $this->belongsTo(Customer::class);
@@ -236,4 +241,15 @@ class Invoice extends Model
     {
         return $this->morphMany(Paymentmethoditem::class,'invoice');
     }
+
+
+    public function scopefilterdepartment($query)
+    {
+        $department_id = auth()->user()->department_id;
+
+        if($department_id !== NULL) return $query;
+
+        return $query->where($this->table.'.department_id', $department_id);
+    }
+
 }

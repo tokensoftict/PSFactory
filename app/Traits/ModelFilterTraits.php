@@ -18,6 +18,11 @@ trait ModelFilterTraits
             }
         }
 
+        if(method_exists($this, 'scopefilterdepartment'))
+        {
+            $query->filterdepartment();
+        }
+
         return $query;
     }
 

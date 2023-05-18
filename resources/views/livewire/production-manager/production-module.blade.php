@@ -100,6 +100,21 @@
                 @endif
             </div>
         </div>
+
+        <div class="col-lg-3 col-sm-6 col-12"  wire:ignore>
+            <div class="mb-3">
+                <label>Department</label>
+                <select class="form-control" wire:model.defer="data.department_id" x-init="select2Alpine('department_id')" id="department_id"  x-ref="department_id" x-model="department_id" name="department_id">
+                    @foreach(salesDepartments(true) as $department)
+                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                    @endforeach
+                </select>
+                @if ($errors->has('data.department_id'))
+                    <span class="text-danger">{{ $errors->first('data.department_id') }}</span>
+                @endif
+            </div>
+        </div>
+
     </div>
 
 
@@ -131,6 +146,7 @@
                 "production_date" : @this.get("data.production_date") ? @this.get("data.production_date") : "" ,
                 "stock_id" : @this.get("data.stock_id") ? @this.get("data.stock_id") : "" ,
                 "status_id" : @this.get("data.status_id") ? @this.get("data.status_id") : "" ,
+                "department_id" : @this.get("data.department_id") ? @this.get("data.department_id") : "" ,
                 datepickerInit(referred){
                     this.picker =  new Pikaday(
                         {

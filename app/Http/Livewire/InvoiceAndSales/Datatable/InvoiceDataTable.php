@@ -35,6 +35,8 @@ class InvoiceDataTable extends DataTableComponent
             Column::make("Customer", "customer.firstname")
                 ->format(fn($value, $row, Column $column)=> $row->customer->firstname." ".$row->customer->lastname)
                 ->sortable()->searchable(),
+            Column::make("Department", "department.name")
+                ->sortable()->searchable(),
             Column::make("Sub total", "sub_total")
                 ->format(fn($value, $row, Column $column)=> money($row->sub_total))
                 ->sortable(),

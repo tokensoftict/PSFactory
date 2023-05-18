@@ -34,6 +34,8 @@ class ProductionManagerDatatableComponent extends DataTableComponent
                 ->sortable()->searchable(),
             Column::make("Product", "stock.name")
                 ->sortable()->searchable(),
+            Column::make("Department", "department.name")
+                ->sortable()->searchable(),
             Column::make("Template", "production_template.name")
                 ->sortable()->searchable(),
             Column::make("Batch Number", "batch_number")

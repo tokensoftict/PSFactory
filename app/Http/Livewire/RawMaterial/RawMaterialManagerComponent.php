@@ -30,7 +30,7 @@ class RawMaterialManagerComponent extends Component
                 ]
             ],
             'department_id' => ['label' => 'Department', 'type'=>'select',
-                'options'=> Department::all()->toArray()
+                'options'=> Department::where('department_type','Store')->get()->toArray()
             ],
         ];
 

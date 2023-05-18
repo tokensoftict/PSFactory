@@ -105,6 +105,24 @@ class ProductTransferListDatatable extends DataTableComponent
 
     public function approve()
     {
+
+        $dept = $this->productTransfer->transferable->department;
+
+        if(!$dept)
+        {
+            $this->alert(
+                "error",
+                "Product Inventory",
+                [
+                    'position' => 'center',
+                    'timer' => 1500,
+                    'toast' => false,
+                    'text' =>  "Error while transferring product, unable to determine department",
+                ]
+            );
+            return false;
+        }
+
         $this->productTransfer->update(
             [
                 'approved_quantity' =>  $this->productTransfer->quantity,
@@ -118,11 +136,11 @@ class ProductTransferListDatatable extends DataTableComponent
 
         $transfer_data = [
             'production_id' => $this->productTransfer->transferable->id,
-            'pieces' => $this->productTransfer->pieces,
+            $dept->quantity_column.'pieces' => $this->productTransfer->pieces,
             'batch_number' => $this->productTransfer->transferable->batch_number,
             'received_date' => dailyDate(),
             'expiry_date' => $this->productTransfer->transferable->expiry_date,
-            'quantity' => $this->productTransfer->quantity,
+            $dept->quantity_column.'quantity' => $this->productTransfer->quantity,
             'stock_id' => $this->productTransfer->transferable->stock_id,
             'cost_price' =>  $this->productTransfer->transferable->cost_price
         ];
@@ -168,6 +186,8 @@ class ProductTransferListDatatable extends DataTableComponent
         $this->emit('$refresh');
 
         $this->dispatchBrowserEvent('closeModal');
+
+        return true;
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\MaterialApprovedEvent;
 use App\Jobs\AddLogToRawMaterialBinCard;
+use App\Models\ProductionMaterialItem;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -32,18 +33,23 @@ class RemoveMaterial
 
         foreach ($event->materials as $material)
         {
+
             if($event->add === false) {
+
                 $batches = $material->rawmaterial->getBatches($material->convert_measurement);
 
                 $material->rawmaterial->remove($batches);
 
-                $collectedBatches = collect($batches);
+                if ($material->requesttype_type == ProductionMaterialItem::class){
 
-                $material->requesttype->cost_price = ($collectedBatches->sum('cost_price') / $collectedBatches->count());
+                    $collectedBatches = collect($batches);
 
-                $material->requesttype->total_cost_price = ( $material->requesttype->cost_price * $material->convert_measurement);
+                    $material->requesttype->cost_price = ($collectedBatches->sum('cost_price') / $collectedBatches->count());
 
-                $material->requesttype->update();
+                    $material->requesttype->total_cost_price = ($material->requesttype->cost_price * $material->convert_measurement);
+
+                    $material->requesttype->update();
+                }
 
                 $bincards[] = [
                     'rawmaterialbatch_id' => NULL,

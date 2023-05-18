@@ -22,7 +22,7 @@ class InvoiceFormComponent extends Component
     public string $invoice_date = "";
     public array $selectCustomer;
 
-    public  $invoiceData = [];
+    public array $invoiceData = [];
 
 
     private InvoiceRepository $invoiceRepository;
@@ -38,7 +38,10 @@ class InvoiceFormComponent extends Component
     public String $email = "";
     public String $type = "COMPANY";
     public String $state_id = "";
+
     public array $departments = [];
+
+    private  $selectedDepartment;
 
     public $states;
 
@@ -56,8 +59,6 @@ class InvoiceFormComponent extends Component
         $this->invoiceData['invoice_number'] = invoiceOrderReferenceNumber();
         $this->invoiceData['department_id'] = salesDepartments(true)->first()->id;
 
-        $this->departments = salesDepartments(true)->toArray();
-
         $this->states = states();
 
         $this->data = [];
@@ -68,11 +69,24 @@ class InvoiceFormComponent extends Component
             $this->invoiceData['invoice_date'] = $this->invoice->invoice_date;
             $this->invoiceData['customer_id'] = $this->invoice->customer->toArray();
             $this->invoiceData['invoice_number'] = $this->invoice->invoice_number;
+            $this->invoiceData['department_id'] = $this->invoice->department_id;
         }
     }
 
+    private function initDepartment()
+    {
+        $this->selectedDepartment = department_by_id($this->invoiceData['department_id']);
+
+        $this->departments = salesDepartments(true)->toArray();
+
+        $this->dispatchBrowserEvent('departmentChange', ['department'=> $this->invoiceData['department_id']]);
+    }
+
+
     public function render()
     {
+        $this->initDepartment();
+
         return view('livewire.invoice-and-sales.invoice-form-component');
     }
 

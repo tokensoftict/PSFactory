@@ -36,33 +36,47 @@
     </div>
 
     <div class="row mt-3">
-        <address class="pt-1 col-4">
+        <address class="pt-1 col-3">
             <h6 class="pb-2"><strong>Basic Information</strong>:</h6>
             <span class="d-block pb-2 "> <strong>Created By :</strong> {{ $this->production->user->name }}</span>
             <span class="d-block pb-2"><strong>Date :</strong> {{ str_date($this->production->production_date) }}</span>
+            <span class="d-block pb-2"><strong>Expiry Date :</strong> {{ str_date($this->production->expiry_date) }}</span>
             <span class="d-block pb-2"> <strong>Status : </strong>{!! showStatus($this->production->status) !!}</span>
             <span class="d-block pb-2 "> <strong>Completed By :</strong> {{ $this->production->completed_by->name ?? "" }}</span>
             <span class="d-block pb-2 "> <strong>Remark :</strong> {{ $this->production->remark }}</span>
+            <span class="d-block pb-2"> <strong>Production Line : </strong>{{ $this->production->productionline->name }}</span>
+            <span class="d-block pb-2"> <strong>Department : </strong>{{ $this->production->department?->name }}</span>
         </address>
 
-        <address class="pt-1 col-4">
+        <address class="pt-1 col-3">
             <h6 class="pb-2"><strong>Production Information</strong>:</h6>
             <span class="d-block pb-2"> <strong>Time : </strong>{{ twelveHourClock($this->production->production_time) }}</span>
             <span class="d-block pb-2"> <strong>Product :</strong> <b class="text-primary">{{ $this->production->stock->name }}</b></span>
             <span class="d-block pb-2"> <strong>Template :</strong> <b class="text-green">{{ $this->production->production_template->name }}</b></span>
             <span class="d-block pb-2"> <strong>Batch Number : </strong>{{ $this->production->batch_number }}</span>
             <span class="d-block pb-2"> <strong>Expected Quantity : </strong>{{ $this->production->expected_quantity }}</span>
-            <span class="d-block pb-2"> <strong>Production Line : </strong>{{ $this->production->productionline->name }}</span>
+            <span class="d-block pb-2"> <strong>Yield Quantity: </strong>{{ $this->production->yield_quantity }}</span>
         </address>
 
 
-        <address class="pt-1 col-4">
-            <h6 class="pb-2"><strong>Quantity Information</strong>:</h6>
-            <span class="d-block pb-2"> <strong>Yield : </strong>{{ $this->production->yield_quantity }}</span>
-            <!--<span class="d-block pb-2"> <strong>Rough : </strong>{{ $this->production->rough_quantity }}</span>-->
-            <span class="d-block pb-2"> <strong>Starting Quantity : </strong>{{ $this->production->quantity_1 }}</span>
-            <span class="d-block pb-2"> <strong>Middle Quantity : </strong>{{ $this->production->quantity_2 }}</span>
-            <span class="d-block pb-2"> <strong>End Quantity : </strong>{{ $this->production->quantity_3 }}</span>
+        <address class="pt-1 col-3">
+            <h6 class="pb-2"><strong>Process Information</strong>:</h6>
+            <span class="d-block pb-2"><strong>Starting Unscrabler : </strong>{{ $this->production->starting_unscrabler }}</span>
+            <span class="d-block pb-2"><strong>Starting Unibloc : </strong>{{ $this->production->starting_unibloc }}</span>
+            <span class="d-block pb-2"><strong>Starting Oriental : </strong>{{ $this->production->starting_oriental }}</span>
+            <span class="d-block pb-2"><strong>Starting Labelling : </strong>{{ $this->production->starting_labelling }}</span>
+            <span class="d-block pb-2"><strong>Ending Unscrabler : </strong>{{ $this->production->ending_unscrabler }}</span>
+            <span class="d-block pb-2"><strong>Ending Unibloc : </strong>{{ $this->production->ending_unibloc }}</span>
+            <span class="d-block pb-2"><strong>Ending Oriental : </strong>{{ $this->production->ending_oriental }}</span>
+            <span class="d-block pb-2"><strong>Ending Labelling : </strong>{{ $this->production->ending_labelling }}</span>
+        </address>
+
+        <address class="pt-1 col-3">
+            <h6 class="pb-2"><strong>Result Information</strong>:</h6>
+            <span class="d-block pb-2"><strong>Unscrabler : </strong>{{$this->production->ending_unscrabler -$this->production->starting_unscrabler }}</span>
+            <span class="d-block pb-2"><strong>Unibloc : </strong>{{$this->production->ending_unibloc- $this->production->starting_unibloc }}</span>
+            <span class="d-block pb-2"><strong>Oriental : </strong>{{ $this->production->ending_oriental-$this->production->starting_oriental }}</span>
+            <span class="d-block pb-2"><strong>Labelling : </strong>{{ $this->production->ending_labelling- $this->production->starting_labelling }}</span>
         </address>
 
     </div>
@@ -80,28 +94,46 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Department</th>
+                        <th>Total Cost Price</th>
                         <th>Measurement / Pieces</th>
                         <th>Unit</th>
+                        <th>Rough</th>
                         <th>Returns</th>
-                        <th>Status</th>
-                        <th>Extra</th>
-                        <th>Remaining</th>
                         <th>Resolved Date</th>
                         <th>Resolved Time</th>
                         <th>Resolved By</th>
                     </tr>
                     </thead>
-                    @foreach($this->production->production_material_items()->where('department_id', $department->id)->get() as $item)
+                    @foreach($this->production->production_material_items()
+            ->with(['rawmaterial','rawmaterial.department', 'rawmaterial.materialtype','approved'])
+            ->select(
+            'rawmaterial_id',
+                DB::raw('MAX(rough) as rough'),
+                    DB::raw('MAX(returns) as returns'),
+            DB::raw('SUM(measurement) as measurement'),
+            DB::raw('SUM(total_cost_price) as total_cost_price'),
+            DB::raw('Max(approved_date) as approved_date'),
+             DB::raw('Max(approved_time) as approved_time'),
+               DB::raw('Max(approved_by) as approved_by'),
+                  DB::raw('Max(approved_by) as approved_by'),
+        )
+            ->where('department_id', $department->id)
+            ->groupBy('rawmaterial_id')
+            ->get()
+            ->map(function($item){
+                $item['rough'] = $item['rough'] > 0 ? $item['rough'] : 0;
+                $item['returns'] =  $item['returns'] > 0 ?  $item['returns'] : 0;
+                return $item;
+            }) as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->rawmaterial->name }}</td>
                             <td>{{ $department->name  }}</td>
-                            <td>{{ money($item->measurement)  }} {{ $item->unit }}</td>
-                            <td>{{ $item->unit }}</td>
-                            <td>{{ money($item->returns) }} {{ $item->unit }}</td>
-                            <td>{!! showStatus($item->status_id) !!}</td>
-                            <td>{!! $item->extra ? 'Yes' : 'No' !!}</td>
-                            <td>{{ money($item->measurement - $item->returns) }} {{ $item->unit }}</td>
+                            <td>{{ money($item->total_cost_price)  }}</td>
+                            <td>{{ money($item->measurement)  }} {{ $item->rawmaterial->materialtype->production_measurement_unit }}</td>
+                            <td>{{ $item->rawmaterial->materialtype->production_measurement_unit }}</td>
+                            <td>{{ $item->rough }} {{ $item->rawmaterial->materialtype->production_measurement_unit }}</td>
+                            <td>{{ $item->returns }} {{ $item->rawmaterial->materialtype->production_measurement_unit }}</td>
                             <td>{{ $item->approved_date ?  eng_str_date($item->approved_date) : "" }}</td>
                             <td>{{ $item->approved_time ? twelveHourClock($item->approved_time) : "" }}</td>
                             <td>{{ $item->approved->name ?? "" }}</td>

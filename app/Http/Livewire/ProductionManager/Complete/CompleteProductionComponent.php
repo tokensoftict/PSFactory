@@ -19,18 +19,16 @@ class CompleteProductionComponent extends Component
 
     public array $data;
 
-    public array $productionItems;
-
     protected array $messages = [
         'data.ending_unscrabler.required' => 'End Unscrabler Field is required',
         'data.ending_unibloc.required' => 'End UniBloc Field is required',
         'data.ending_oriental.required' => 'End Oriental Field is required',
         'data.ending_labelling.required' => 'End Labelling Field is required',
 
-        'data.starting_unscrabler.required' => 'End Unscrabler Field is required',
-        'data.starting_unibloc.required' => 'End UniBloc Field is required',
-        'data.starting_oriental.required' => 'End Oriental Field is required',
-        'data.starting_labelling.required' => 'End Labelling Field is required',
+        'data.starting_unscrabler.required' => 'Starting Unscrabler Field is required',
+        'data.starting_unibloc.required' => 'Starting UniBloc Field is required',
+        'data.starting_oriental.required' => 'Starting Oriental Field is required',
+        'data.starting_labelling.required' => 'Starting Labelling Field is required',
         'productionItems.*.rough' => 'This Rough Field is required',
         'data.yield_quantity.required' => 'Yield Quantity is required',
         'data.expiry_date.required' => 'Expiry Date is required',
@@ -103,13 +101,13 @@ class CompleteProductionComponent extends Component
                 $this->productionItems[$key]['error'] = "This Rough Field is required!..";
             }
 
-            $validate =  ($this->production->expected_quantity - $this->data['yield_quantity']) - $items['rough'];
+            $validate =  ($items['measurement'] - $this->data['yield_quantity']) - $items['rough'];
 
             if($validate < 0)
             {
                 $error = true;
                 $this->productionItems[$key]['error'] = "
-                Invalid Rough Amount, Return value can not be less than zero (".$this->production->expected_quantity." - ".$this->data['yield_quantity'].") - ".$items['rough'].") = ".$validate.")";
+                Invalid Rough Amount, Return value can not be less than zero (".$items->measurement." - ".$this->data['yield_quantity'].") - ".$items['rough'].") = ".$validate.")";
             }
         }
 
@@ -136,33 +134,39 @@ class CompleteProductionComponent extends Component
 
         foreach ($this->productionItems as $items)
         {
+
             $item = $this->production->production_material_items()->whereRawmaterialId($items['rawmaterial_id'])->whereExtra(0)->first();
 
             $item->rough = $items['rough'];
 
-            $item->returns =  ($this->production->expected_quantity - $this->data['yield_quantity']) - $items['rough'];
+            $item->returns =  ($items['measurement'] - $this->data['yield_quantity']) - $items['rough'];
 
             $item->update();
 
-            $data['material_return_items'][] = [
-                'rawmaterial_id' => $items['rawmaterial_id'],
-                'name' => $item->rawmaterial->name,
-                'unit' => $item->unit,
-                'measurement' =>  $item->returns,
-                'extra' => 0,
-                'returntype_id' => $item->id
-            ];
+            if( $item->returns > 0) {
+
+                $data['material_return_items'][] = [
+                    'rawmaterial_id' => $items['rawmaterial_id'],
+                    'name' => $item->rawmaterial->name,
+                    'unit' => $item->unit,
+                    'measurement' => $item->returns,
+                    'extra' => 0,
+                    'returntype_id' => $item->id
+                ];
+            }
 
         }
 
+        if(count($data['material_return_items']) > 0) {
 
-        MaterialReturn::where('return_type', Production::class)->where('return_id',$this->production->id)->delete();
+            MaterialReturn::where('return_type', Production::class)->where('return_id', $this->production->id)->delete();
+
+            $repo->createReturn($data);
+        }
+
+
 
         $this->production->update($this->data);
-
-
-        $repo->createReturn($data);
-
 
         $this->alert(
             "success",

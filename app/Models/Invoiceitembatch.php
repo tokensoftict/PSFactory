@@ -93,6 +93,11 @@ class Invoiceitembatch extends Model
 		return $this->belongsTo(Invoice::class);
 	}
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
 	public function invoiceitem()
 	{
 		return $this->belongsTo(Invoiceitem::class);
@@ -107,4 +112,13 @@ class Invoiceitembatch extends Model
 	{
 		return $this->belongsTo(Stockbatch::class);
 	}
+
+    public function scopefilterdepartment($query)
+    {
+        $department_id = auth()->user()->department_id;
+
+        if($department_id !== NULL) return $query;
+
+        return $query->where($this->table.'.department_id', $department_id);
+    }
 }

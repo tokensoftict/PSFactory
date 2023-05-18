@@ -26,24 +26,25 @@ class StoresettingsComponent extends Component
 
     public function mount()
     {
-        //$this->settings->all()
         $this->store = $this->settings->all();
-       /*
-        $this->store =  [
-            'name' => NULL,
-            'tax' => NULL,
-            'threshold_days'=> NULL,
-            'supply_days' => NULL,
-            'qty_to_buy_threshold' => NULL,
-            'product_near_expiry_days' => NULL,
-            'material_near_expiry_days' => NULL,
-            'first_address' => NULL,
-            'second_address' => NULL,
-            'contact_number' => NULL,
-            'logo' => NULL,
-            'footer_notes' => NULL
-        ];
-        */
+        if(count($this->store) == 0) {
+
+             $this->store =  [
+                 'name' => NULL,
+                 'tax' => NULL,
+                 'threshold_days'=> NULL,
+                 'supply_days' => NULL,
+                 'qty_to_buy_threshold' => NULL,
+                 'product_near_expiry_days' => NULL,
+                 'material_near_expiry_days' => NULL,
+                 'first_address' => NULL,
+                 'second_address' => NULL,
+                 'contact_number' => NULL,
+                 'logo' => NULL,
+                 'footer_notes' => NULL
+             ];
+
+        }
     }
 
     public function render()

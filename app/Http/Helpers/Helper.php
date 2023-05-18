@@ -60,7 +60,7 @@ function paymentMethods()
 
 function states()
 {
-    return Cache::remember('paymentMethods', 86400, function(){
+    return Cache::remember('states', 86400, function(){
         return  \App\Models\State::select('id','name')->get();
     });
 }
@@ -943,7 +943,14 @@ function salesDepartments($active = false)
 function department_by_id($id)
 {
     return departments(true)->filter(function($item) use($id){
-        return $item->id === $id;
+        return $item->id == $id;
+    })->first();
+}
+
+function salesDepartment_by_id($id)
+{
+    return salesDepartments(true)->filter(function($item) use($id){
+        return $item->id == $id;
     })->first();
 }
 

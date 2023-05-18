@@ -36,6 +36,8 @@ class InvoiceReturnItemsDatatable extends DataTableComponent
             Column::make("Product", "stock.name")
                 ->format(fn($value, $row, Column $column)=> $value)
                 ->sortable()->searchable(),
+            Column::make("Department", "department.name")
+                ->sortable()->searchable(),
             Column::make("Quantity", "quantity")
                 ->format(fn($value, $row, Column $column)=> $value)
                 ->sortable(),

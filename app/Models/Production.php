@@ -42,6 +42,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $ending_unibloc
  * @property int|null $ending_oriental
  * @property int|null $ending_labelling
+ * @property int|null $department_id
  *
  * @property User $user
  * @property MaterialRequest|null $material_request
@@ -113,7 +114,8 @@ class Production extends Model
 		'ending_unscrabler',
 		'ending_unibloc',
 		'ending_oriental',
-		'ending_labelling'
+		'ending_labelling',
+        'department_id'
 	];
 
 	public function user()
@@ -136,6 +138,11 @@ class Production extends Model
 		return $this->belongsTo(Productionline::class);
 	}
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
 	public function status()
 	{
 		return $this->belongsTo(Status::class);
@@ -150,4 +157,13 @@ class Production extends Model
 	{
 		return $this->hasMany(ProductionMaterialItem::class);
 	}
+
+    public function scopefilterdepartment($query)
+    {
+        $department_id = auth()->user()->department_id;
+
+        if($department_id === NULL) return $query;
+
+        return $query->where($this->table.'.department_id', $department_id);
+    }
 }

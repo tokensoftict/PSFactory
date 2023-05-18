@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-  /*
+
         Schema::table('stockbatches', function (Blueprint $table) {
             $table->decimal('cost_price')->nullable()->after('production_id');
         });
@@ -27,18 +27,18 @@ return new class extends Migration
             $table->decimal('total_cost_price')->nullable()->after('cost_price');
             $table->integer('rough')->default(0)->after('cost_price');
         });
-*/
+
         Schema::table('productions', function (Blueprint $table) {
             $table->decimal('cost_price')->nullable()->after('stock_id');
             $table->renameColumn('quantity_1', 'starting_unscrabler');
             $table->renameColumn('quantity_2', 'starting_unibloc');
             $table->renameColumn('quantity_3', 'starting_oriental');
-            $table->bigInteger('starting_labelling')->default(0)->nullable()->after('quantity_3');
+            $table->decimal('starting_labelling')->default(0)->nullable()->after('quantity_3');
 
-            $table->bigInteger('ending_unscrabler')->default(0)->nullable()->after('starting_labelling');
-            $table->bigInteger('ending_unibloc')->default(0)->nullable()->after('ending_unscrabler');
-            $table->bigInteger('ending_oriental')->default(0)->nullable()->after('ending_unibloc');
-            $table->bigInteger('ending_labelling')->default(0)->nullable()->after('ending_oriental');
+            $table->decimal('ending_unscrabler')->default(0)->nullable()->after('starting_labelling');
+            $table->decimal('ending_unibloc')->default(0)->nullable()->after('ending_unscrabler');
+            $table->decimal('ending_oriental')->default(0)->nullable()->after('ending_unibloc');
+            $table->decimal('ending_labelling')->default(0)->nullable()->after('ending_oriental');
             $table->foreignId('department_id')->nullable()->after('ending_oriental')->constrained()->nullOnDelete();
         });
 
@@ -110,6 +110,7 @@ return new class extends Migration
             $table->dropColumn('ending_unibloc');
             $table->dropColumn('ending_oriental');
             $table->dropColumn('ending_labelling');
+            $table->dropConstrainedForeignId('department_id');
         });
 
 

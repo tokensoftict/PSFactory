@@ -118,6 +118,11 @@ class Invoiceitem extends Model
 		return $this->belongsTo(Customer::class);
 	}
 
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'discount_added_by');
@@ -142,4 +147,13 @@ class Invoiceitem extends Model
 	{
 		return $this->hasMany(Invoiceitembatch::class);
 	}
+
+    public function scopefilterdepartment($query)
+    {
+        $department_id = auth()->user()->department_id;
+
+        if($department_id !== NULL) return $query;
+
+        return $query->where($this->table.'.department_id', $department_id);
+    }
 }

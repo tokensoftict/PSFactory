@@ -65,6 +65,9 @@ class ProductTransfer extends Model
 		'resolve_time'
 	];
 
+    protected $guarded = [];
+
+/*
 	protected $fillable = [
 		'transfer_date',
 		'transfer_time',
@@ -81,6 +84,8 @@ class ProductTransfer extends Model
 		'resolve_date',
 		'resolve_time'
 	];
+
+    */
 
     public function transfer_by()
     {
