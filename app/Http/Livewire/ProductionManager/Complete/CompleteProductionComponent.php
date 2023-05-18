@@ -107,7 +107,7 @@ class CompleteProductionComponent extends Component
             {
                 $error = true;
                 $this->productionItems[$key]['error'] = "
-                Invalid Rough Amount, Return value can not be less than zero (".$items->measurement." - ".$this->data['yield_quantity'].") - ".$items['rough'].") = ".$validate.")";
+                Invalid Rough Amount, Return value can not be less than zero (".$items['measurement']." - ".$this->data['yield_quantity'].") - ".$items['rough'].") = ".$validate.")";
             }
         }
 
