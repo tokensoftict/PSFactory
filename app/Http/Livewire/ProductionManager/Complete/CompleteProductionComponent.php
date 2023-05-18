@@ -96,6 +96,8 @@ class CompleteProductionComponent extends Component
 
         foreach ($this->productionItems as $key=>$items)
         {
+            unset($this->productionItems[$key]['error']);
+
             if($items['rough'] == ""){
                 $error = true;
                 $this->productionItems[$key]['error'] = "This Rough Field is required!..";
@@ -103,11 +105,19 @@ class CompleteProductionComponent extends Component
 
             $validate =  ($items['measurement'] - $this->data['yield_quantity']) - $items['rough'];
 
+            //temporary fix for production now
+            $yield_quantity = $this->data['yield_quantity'];
+
+            if($items['rawmaterial_id'] == 14)
+            {
+                $yield_quantity = ($this->data['yield_quantity'] / $this->production->stock->carton);
+            }
+
             if($validate < 0)
             {
                 $error = true;
                 $this->productionItems[$key]['error'] = "
-                Invalid Rough Amount, Return value can not be less than zero (".$items['measurement']." - ".$this->data['yield_quantity'].") - ".$items['rough'].") = ".$validate.")";
+                Invalid Rough Amount, Return value can not be less than zero (".$items['measurement']." - ".$yield_quantity.") - ".$items['rough'].") = ".$validate.")";
             }
         }
 
@@ -139,7 +149,14 @@ class CompleteProductionComponent extends Component
 
             $item->rough = $items['rough'];
 
-            $item->returns =  ($items['measurement'] - $this->data['yield_quantity']) - $items['rough'];
+            $yield_quantity = $this->data['yield_quantity'];
+
+            if($items['rawmaterial_id'] == 14)
+            {
+                $yield_quantity = ($this->data['yield_quantity'] / $this->production->stock->carton);
+            }
+
+            $item->returns =  ($items['measurement'] - $yield_quantity) - $items['rough'];
 
             $item->update();
 
