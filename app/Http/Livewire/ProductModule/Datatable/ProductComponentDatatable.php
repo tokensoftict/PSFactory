@@ -33,6 +33,8 @@ class ProductComponentDatatable extends DataTableComponent
             Column::make("Category", "category.name")
                 ->format(fn($value, $row, Column $column)=> isset($row->category->name) ? $row->category->name : "Un-categorized")
                 ->sortable()->searchable(),
+            Column::make("Lead Time", "lead_time")
+                ->sortable(),
             Column::make("Cost Price", "cost_price")
                 ->format(fn($value, $row, Column $column)=> number_format($row->cost_price,2))
                 ->sortable(),

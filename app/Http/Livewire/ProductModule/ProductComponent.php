@@ -24,6 +24,7 @@ class ProductComponent extends Component
     public String $cost_price = "";
     public String $expiry = "";
     public String $carton = "1";
+    public String $lead_time = "";
     public String $code = "";
     public String $name = "";
     public String $incentives_percentage = "0";
@@ -57,6 +58,7 @@ class ProductComponent extends Component
             $this->incentives_percentage = $this->product->incentives_percentage;
             $this->code = $this->product->code;
             $this->category_id = $this->product->category_id ?? "";
+            $this->lead_time = $this->product->lead_time ?? 0;
 
         }
 
@@ -78,7 +80,8 @@ class ProductComponent extends Component
             'expiry' => 'required',
             'name' =>  'required',
             'carton' => 'required',
-            'incentives_percentage' => 'required'
+            'incentives_percentage' => 'required',
+            'lead_time' => 'required'
         ]);
 
 
@@ -92,6 +95,7 @@ class ProductComponent extends Component
             'incentives_percentage' => $this->incentives_percentage,
             'expiry' => $this->expiry == "Yes" ? 1 : 0,
             'carton' => empty($this->carton) ? 1 : $this->carton,
+            'lead_time' => $this->lead_time,
             'user_id' => auth()->id(),
             'last_updated_by' => auth()->id()
         ];

@@ -68,6 +68,14 @@
 
             <div class="col-lg-3 col-sm-6 col-12">
                 <div class="mb-3">
+                    <label>Lead Time</label>
+                    <input name="lead_time" placeholder="Lead Time" wire:model.defer="lead_time" class="form-control" type="number">
+                    @error('carton') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-12">
+                <div class="mb-3">
                     <label>Incentives Percentage</label>
                     <input name="incentives_percentage" placeholder="Incentive Percentage" wire:model.defer="incentives_percentage" class="form-control" type="value" step="0.000000001">
                     @error('incentives_percentage') <span class="text-danger">{{ $message }}</span> @enderror

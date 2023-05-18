@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $quantity
  * @property float $incentives_percentage
  * @property float $pieces
+ * @property float $lead_time
  * @property string|null $image
  * @property int|null $user_id
  * @property int|null $last_updated_by

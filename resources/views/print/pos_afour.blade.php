@@ -167,6 +167,7 @@
         <tr class="product_row">
             <td>#</td>
             <td align="left"><b>Name</b></td>
+            <td align="center"><b>Batch Number</b></td>
             <td align="center"><b>Quantity</b></td>
             <td align="center"><b>Price</b></td>
             <td align="center"><b>Discount Price</b></td>
@@ -174,9 +175,16 @@
         </tr>
         <tbody id="appender">
         @foreach($invoice->invoiceitems as $item)
+            @php
+                $batchNumber = [];
+               foreach($item->invoiceitembatches as $batch){
+                    $batchNumber[] =  $batch->stockbatch->batch_number. " - ".$batch->quantity." qty";
+                }
+            @endphp
             <tr>
                 <td align="left">{{ $loop->iteration }}</td>
                 <td align="left" class="text-left">{{ $item->stock->name }}</td>
+                <td align="center">{{ implode("<br/>", $batchNumber) }}</td>
                 <td align="center" class="text-center">{{ $item->quantity }}</td>
                 <td align="center" class="text-center">{{ number_format($item->selling_price,2) }}</td>
                 <td align="right" class="text-right">{{ number_format(($item->selling_price-$item->discount_amount),2) }}</td>
@@ -190,6 +198,7 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
             <th  align="right" class="text-right">Sub Total</th>
             <th  align="right" class="text-right">{{ number_format($invoice->sub_total,2) }}</th>
         </tr>
@@ -198,10 +207,12 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
             <th  align="right" class="text-right">Discount</th>
             <th  align="right" class="text-right">-{{ number_format($invoice->discount_amount,2) }}</th>
         </tr>
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>

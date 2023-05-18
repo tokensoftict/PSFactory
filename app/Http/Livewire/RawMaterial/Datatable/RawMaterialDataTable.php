@@ -37,6 +37,8 @@ class RawMaterialDataTable extends DataTableComponent
             Column::make("Cost price", "cost_price")
                 ->format(fn($value, $row, Column $column)=> money($row->cost_price))
                 ->sortable(),
+            Column::make("Lead Time", "lead_time")
+                ->sortable(),
             Column::make("Department", "department.name")
                 ->searchable()
                 ->sortable(),
