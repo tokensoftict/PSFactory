@@ -28,9 +28,9 @@ class MaterialReturnRepository
             'return_id' => $materialReturn->return_id ??  "",
             "status_id" =>  $materialReturn->status_id ?? status('Pending'),
             'description' => "",
-            'material_return_items' => $materialReturn->material_return_items->count() > 0 ? json_encode($materialReturn->material_return_items->map(function($item){
+            'material_return_items' => $materialReturn->material_return_items->count() > 0 ? json_encode($materialReturn->material_return_items->map(function($item) use($materialReturn){
                 $item->extra = ($item->extra == "1" ?  "1" : "0");
-                return Arr::only($item->toArray(), ['name','rawmaterial_id','department_id','measurement','unit','extra']);
+                return Arr::only($item->toArray(), ['name','rawmaterial_id','edited_measurement','department_id','measurement','unit','extra']);
             })->toArray()) : json_encode([])
         ];
     }
@@ -62,6 +62,10 @@ class MaterialReturnRepository
                     'returntype_type' => $return->return_type == Production::class ? ProductionMaterialItem::class : $return->return_type,
                     'department_id' =>  $material->department_id,
                     'status_id' => status('Pending'),
+                    'edited_measurement' => UnitConverterRepository::convert(
+                        $material->materialtype->storage_measurement_unit,
+                        $material->materialtype->production_measurement_unit,
+                        $material_item['measurement']),
                     'convert_measurement' =>  UnitConverterRepository::convert(
                         $material->materialtype->storage_measurement_unit,
                         $material->materialtype->production_measurement_unit,
@@ -90,7 +94,7 @@ class MaterialReturnRepository
             ->where('extra', $extra)?->first()?->id;
     }
 
-    public function updateReturn(MaterialReturn $return, $data) : MaterialReturn {
+    public function updateReturn(MaterialReturn $return, $data) : MaterialReturn|false {
 
         $data['return_time'] =  Carbon::now()->toDateTimeLocalString();
         $data['return_type'] = !empty($data['return_id']) ? Production::class : "App\\Models\\Othereturns";
@@ -100,17 +104,21 @@ class MaterialReturnRepository
 
         unset($data['material_return_items']);
 
-        $return->update($data);
+
 
         foreach ($return->material_return_items as $returnItem)
         {
             if($returnItem->returntype_type === ProductionMaterialItem::class){
-                $returnItem->returntype->delete();
+                //$returnItem->returntype->delete(); // dont delete return
+
+                $returnItem->returntype->returns = $returnItem->edited_measurement;
+
+                $returnItem->returntype->update();
+
             }
 
         }
 
-        $return->material_return_items()->delete();
 
         $items = [];
 
@@ -129,19 +137,43 @@ class MaterialReturnRepository
                         $material->materialtype->storage_measurement_unit,
                         $material->materialtype->production_measurement_unit,
                         $material_item['measurement']),
+                    'edited_measurement' => $return->return_type == Production::class ? $material_item['edited_measurement'] : UnitConverterRepository::convert(
+                        $material->materialtype->storage_measurement_unit,
+                        $material->materialtype->production_measurement_unit,
+                        $material_item['measurement']),
                     'unit' => $material->materialtype->storage_measurement_unit,
                     'convert_unit' => $material->materialtype->production_measurement_unit,
 
                 ]);
 
-            if(isset($material_item['returntype_id']) && is_numeric($material_item['returntype_id'])){
-                $it['returntype_id'] = $material_item['returntype_id'];
-            }else{
-                $it['returntype_id'] = ($return->return_type == Production::class) ? $this->getProductionExtraMaterialRequest($return->return, $material_item['rawmaterial_id'], $material_item['extra']) : $return->return_id;
+            if($return->return_type == Production::class) {
+                $prod_item = $return->return->production_material_items()->where('rawmaterial_id', $material_item['rawmaterial_id'])->where('extra', '0')->first();
+                if($prod_item)
+                {
+                    $it['returntype_id'] = $prod_item->id;
+                    $prod_item->returns =  $it['edited_measurement'];
+                    $prod_item->update();
+                }else{
+                  return false;
+                }
+
+            }else {
+                $it['returntype_id'] = NULL;
             }
 
+
+/*
+            if(isset($material_item['returntype_id']) && is_numeric($material_item['returntype_id'])){
+                $it['returntype_id'] = $material_item['returntype_id'];
+            } cdrey
+            else{
+                $it['returntype_id'] = NULL;
+                //$it['returntype_id'] = ($return->return_type == Production::class) ? $this->getProductionExtraMaterialRequest($return->return, $material_item['rawmaterial_id'], $material_item['extra']) : $return->return_id;
+            }
+*/
             $items[] = new MaterialReturnItem($it);
         }
+        $return->material_return_items()->delete();
 
         $return->material_return_items()->saveMany( $items);
 

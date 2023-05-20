@@ -41,7 +41,9 @@ class StoresettingsComponent extends Component
                  'second_address' => NULL,
                  'contact_number' => NULL,
                  'logo' => NULL,
-                 'footer_notes' => NULL
+                 'footer_notes' => NULL,
+                 'material_qty_to_buy_threshold' => NULL,
+                 'material_threshold_days' => NULL
              ];
 
         }

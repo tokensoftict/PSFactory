@@ -90,11 +90,34 @@
                     <th>#</th>
                     <th class="text-left">Material Name</th>
                     <th class="text-center">Measurement</th>
-                    <th class="text-center">Extra</th>
+                    @if($this->materialReturn->return_type !== \App\Models\Production::class)
                     <th class="text-end">Action</th>
+                    @else
+                        <th class="text-end">Unit</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody>
+                @if($this->materialReturn->return_type === \App\Models\Production::class)
+                    <template x-for="(pItem,index) in material_return_items" :key="pItem.rawmaterial_id">
+                    <tr>
+                        <td x-text="(index+1)"></td>
+                        <td class="text-left" >
+                            <span class="d-block" x-text="pItem.name"></span>
+
+                            <span class="text-danger d-block mt-1" x-show="pItem.error.length > 0" x-text="pItem.error"></span>
+                        </td>
+                        <!--  x-text="parseFloat(pItem.measurement) + ' '+pItem.unit"  -->
+                        <td class="text-center">
+                            <input type="number" x-model="material_return_items[index]['edited_measurement']" class="form-control" style="width: 30%"  step="0.00000000000000001"  placeholder="Quantity / Measurement"/>
+                        </td>
+                        <td class="text-center" x-text="pItem.unit">
+
+                        </td>
+
+                    </tr>
+                    </template>
+                @else
                 <template x-for="(pItem,index) in material_return_items" :key="pItem.rawmaterial_id">
                     <tr>
                         <td x-text="(index+1)"></td>
@@ -104,15 +127,12 @@
                             <span class="text-danger d-block mt-1" x-show="pItem.error.length > 0" x-text="pItem.error"></span>
                         </td>
                         <td class="text-center" x-text="parseFloat(pItem.measurement) + ' '+pItem.unit"></td>
-                        <td class="text-center">
-                            <select class="form-control" x-model="material_return_items[index].extra">
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
-                        </td>
+
                         <td class="text-end"><button class="btn btn-sm btn-primary" x-on:click="deleteItem(pItem.rawmaterial_id)">Delete</button> </td>
                     </tr>
                 </template>
+                @endif
+
                 </tbody>
             </table>
         </div>

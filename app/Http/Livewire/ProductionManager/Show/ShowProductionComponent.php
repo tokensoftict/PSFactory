@@ -4,12 +4,13 @@ namespace App\Http\Livewire\ProductionManager\Show;
 
 use App\Models\Department;
 use App\Models\Production;
+use App\Traits\ProductionTrait;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class ShowProductionComponent extends Component
 {
-    use LivewireAlert;
+    use LivewireAlert, ProductionTrait;
 
     public Production $production;
 
@@ -30,23 +31,5 @@ class ShowProductionComponent extends Component
         return view('livewire.production-manager.show.show-production-component');
     }
 
-
-    public function deleteProduction()
-    {
-        $this->production->delete();
-
-        $this->alert(
-            "success",
-            "Production",
-            [
-                'position' => 'center',
-                'timer' => 6000,
-                'toast' => false,
-                'text' =>  "Production has been deleted successfully!.",
-            ]
-        );
-
-        return redirect()->route('production.index');
-    }
 
 }

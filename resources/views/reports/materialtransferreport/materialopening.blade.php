@@ -33,6 +33,7 @@
 
 @section('content')
     <div class="table-responsive">
-    <livewire:raw-material.requests.datatable.material-request-items-datatable :filters="$filters['filters']"/>
+    <livewire:raw-material.datatable.material-opening-data-table :filters="$filters['filters']"/>
     </div>
+
 @endsection

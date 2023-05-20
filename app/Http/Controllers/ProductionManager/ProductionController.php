@@ -64,6 +64,11 @@ class ProductionController extends Controller
 
     }
 
+    public function rollback(Production $production)
+    {
+
+    }
+
 
     public function complete(Production $production)
     {

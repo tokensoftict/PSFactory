@@ -48,6 +48,8 @@ class RawMaterialDataTable extends DataTableComponent
                 ->searchable(),
             BooleanColumn::make('Expiry','expiry')
                 ->yesNo(),
+            BooleanColumn::make('Divide By Carton','divide_by_carton')
+                ->yesNo(),
             Column::make("Status", "id")
                 ->format(function ($value, $row, Column $column) {
                     if (userCanView('rawmaterial.toggle')) {

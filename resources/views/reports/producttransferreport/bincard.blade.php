@@ -32,5 +32,7 @@
 @endsection
 
 @section('content')
+    <div class="table-responsive">
     <livewire:product-module.datatable.product-bin-card-component-datatable :filters="$filters['filters']"/>
+    </div>
 @endsection

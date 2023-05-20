@@ -166,4 +166,10 @@ class Production extends Model
 
         return $query->where($this->table.'.department_id', $department_id);
     }
+
+
+    public function return()
+    {
+        return $this->morphOne(MaterialReturn::class,'return');
+    }
 }

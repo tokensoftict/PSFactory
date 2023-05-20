@@ -5,6 +5,7 @@ namespace App\Http\Livewire\ProductionManager\Complete;
 use App\Jobs\AddLogToRawMaterialBinCard;
 use App\Models\MaterialReturn;
 use App\Models\Production;
+use App\Models\Rawmaterial;
 use App\Repositories\MaterialReturnRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -106,7 +107,9 @@ class CompleteProductionComponent extends Component
             //temporary fix for production now
             $yield_quantity = $this->data['yield_quantity'];
 
-            if($items['rawmaterial_id'] == 14)
+            $mat = Rawmaterial::find($items['rawmaterial_id']);
+
+            if($mat->divide_by_carton === true)
             {
                 $yield_quantity = floor(($this->data['yield_quantity'] / $this->production->stock->carton));
             }
@@ -151,7 +154,9 @@ class CompleteProductionComponent extends Component
 
             $yield_quantity = $this->data['yield_quantity'];
 
-            if($items['rawmaterial_id'] == 14)
+            $mat = Rawmaterial::find($items['rawmaterial_id']);
+
+            if($mat->divide_by_carton === true) //14
             {
                 $yield_quantity = floor(($this->data['yield_quantity'] / $this->production->stock->carton));
             }

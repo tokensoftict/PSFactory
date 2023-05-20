@@ -4,7 +4,7 @@
         <h2>
             Production Name : {{ $this->production->name }}
 
-            @can(['edit','transfer','complete', 'delete'], $this->production)
+            @if(can(['edit','transfer','complete', 'delete'], $this->production))
                 <div class="btn-group float-end" role="group" aria-label="Button group with nested dropdown">
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -17,6 +17,9 @@
                             @can('transfer', $this->production)
                                 <li><a class="dropdown-item" href="{{ route('production.transfer', $this->production->id) }}">Transfer Production</a></li>
                             @endcan
+                            @can('rollback', $this->production)
+                                    <li><a onclick="confirm('Are you sure you want to rollback this production to complete  ?') || event.stopImmediatePropagation()" wire:click.prevent="rollbackProduction({{ $this->production->id }})" href="javascript:" class="dropdown-item">RollBack Complete</a></li>
+                            @endcan
                             @can('complete', $this->production)
                                 <li><a class="dropdown-item" href="{{ route('production.complete', $this->production->id) }}">Complete Production</a></li>
                             @endcan
@@ -25,7 +28,7 @@
                             @endcan
                         </ul>
                     </div>
-                    @endcan
+                    @endif
                 </div>
         </h2>
         <br/>

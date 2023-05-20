@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $measurement
  * @property string|null $unit
  * @property float $convert_measurement
+ * @property float $edited_measurement
  * @property string|null $convert_unit
  * @property int|null $resolve_by_id
  * @property Carbon|null $resolve_date
@@ -53,6 +54,7 @@ class MaterialReturnItem extends Model
 		'status_id' => 'int',
 		'measurement' => 'float',
 		'convert_measurement' => 'float',
+        'edited_measurement' => 'float',
 		'resolve_by_id' => 'int',
 	];
 
@@ -70,6 +72,7 @@ class MaterialReturnItem extends Model
 		'department_id',
 		'status_id',
 		'measurement',
+        'edited_measurement',
 		'unit',
 		'convert_measurement',
 		'convert_unit',

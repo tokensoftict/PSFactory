@@ -32,5 +32,7 @@
 @endsection
 
 @section('content')
+    <div class="table-responsive">
     <livewire:invoice-and-sales.returns.datatable.invoice-return-items-datatable :filters="$filters['filters']" />
+    </div>
 @endsection

@@ -20,6 +20,8 @@ return new class extends Migration
         Schema::table('rawmaterials', function (Blueprint $table) {
             $table->decimal('lead_time')->default(0)->after('measurement');
         });
+
+
     }
 
     /**
@@ -33,8 +35,9 @@ return new class extends Migration
             $table->dropColumn('lead_time');
         });
 
-        Schema::table('rawmaterialbatches', function (Blueprint $table) {
+        Schema::table('rawmaterials', function (Blueprint $table) {
             $table->dropColumn('lead_time');
         });
+
     }
 };

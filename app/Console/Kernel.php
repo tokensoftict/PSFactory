@@ -16,6 +16,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        $schedule->command('open:stock')->dailyAt('06:00')->appendOutputTo('storage/app/stockopening.txt');
+
+        $schedule->command('open:material')->dailyAt('06:30')->appendOutputTo('storage/app/materialopening.txt');
+
+        $schedule->command('neartoutof:product')->dailyAt('7:30')->appendOutputTo('storage/app/stockopening.txt');
+
+        $schedule->command('neartoutof:material')->dailyAt('8:30')->appendOutputTo('storage/app/stockopening.txt');
+
     }
 
     /**

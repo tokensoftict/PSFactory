@@ -131,6 +131,28 @@ class Stock extends Model
         return $this->hasMany(Stockopening::class);
     }
 
+    public function totalBalance()
+    {
+        $quantity = 0;
+
+        $depts = salesDepartments(true);
+
+        foreach ($depts as $dept) {
+
+            if($dept->quantity_column != "quantity")
+            {
+                $column_pack =  $dept->quantity_column.'quantity';
+                $column_pieces = $dept->quantity_column.'pieces';
+            }else{
+                $column_pack = "quantity";
+                $column_pieces = "pieces";
+            }
+
+            $quantity += $this->stockbatches()->where($column_pack, ">", 0)->sum($column_pack);
+        }
+        return $quantity;
+    }
+
     public function updateAvailableQuantity()
     {
         $depts = salesDepartments(true);

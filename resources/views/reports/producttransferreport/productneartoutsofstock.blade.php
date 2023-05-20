@@ -27,12 +27,13 @@
 
 @section('pageHeaderAction')
 
-    <x-report-filter-component :filters="$filters"/>
+
 
 @endsection
 
 @section('content')
     <div class="table-responsive">
-    <livewire:raw-material.requests.datatable.material-request-items-datatable :filters="$filters['filters']"/>
+        <livewire:product-module.datatable.product-nearoutotstock :filters="$filters['filters']"/>
     </div>
+
 @endsection

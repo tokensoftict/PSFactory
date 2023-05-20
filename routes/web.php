@@ -305,6 +305,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('{production}/show', ['as' => 'show', 'uses' => 'ProductionController@show']);
                 Route::get('create', ['as' => 'create', 'uses' => 'ProductionController@create', 'visible' => true, 'custom_label'=> 'New Production']);
                 Route::post('', ['as' => 'store', 'uses' => 'ProductionController@store']);
+                Route::get('/rollback', ['as' => 'rollback', 'uses' => 'ProductionController@rollback']);
                 Route::get('{production}/edit', ['as' => 'edit', 'uses' => 'ProductionController@edit']);
                 Route::put('{production}', ['as' => 'update', 'uses' => 'ProductionController@update']);
                 Route::get('{production}/delete', ['as' => 'destroy', 'uses' => 'ProductionController@destroy']);
@@ -446,6 +447,10 @@ Route::middleware(['auth'])->group(function () {
 
             Route::prefix('productTransferReport')->as('producttransferreport.')->namespace('ProductTransferReport')->group(function(){
 
+                Route::match(['get','post'],'product_opening', ['as' => 'product_opening', 'uses' => 'ProductTransferReportController@product_opening', 'custom_label'=>'Product Opening Report']);
+
+                Route::match(['get','post'],'product_nearoutofstock', ['as' => 'product_nearoutofstock', 'uses' => 'ProductTransferReportController@product_nearoutofstock', 'custom_label'=>'Product Near OS Report']);
+
                 Route::match(['get','post'],'by_date', ['as' => 'by_date', 'uses' => 'ProductTransferReportController@index', 'custom_label'=>'Product Transfer Report By Date']);
 
                 Route::match(['get','post'],'by_system_user', ['as' => 'by_system_user', 'uses' => 'ProductTransferReportController@by_system_user', 'custom_label'=>'Product Transfer Report By System User']);
@@ -464,7 +469,12 @@ Route::middleware(['auth'])->group(function () {
 
             Route::prefix('materialTransferReport')->as('materialtransferreport.')->namespace('MaterialTransferReport')->group(function(){
 
+                Route::match(['get','post'],'opening_report', ['as' => 'opening_report', 'uses' => 'MaterialTransferReportController@opening_report', 'custom_label'=>'Material Opening Report']);
+
+                Route::match(['get','post'],'material_nearos', ['as' => 'material_nearos', 'uses' => 'MaterialTransferReportController@material_nearos', 'custom_label'=>'Material Near OS Report']);
+
                 Route::match(['get','post'],'by_date', ['as' => 'by_date', 'uses' => 'MaterialTransferReportController@index', 'custom_label'=>'Material Request Report By Date']);
+
 
                 Route::match(['get','post'],'by_system_user', ['as' => 'by_system_user', 'uses' => 'MaterialTransferReportController@by_system_user', 'custom_label'=>'Material Request Report By System User']);
 

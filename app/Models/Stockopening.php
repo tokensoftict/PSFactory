@@ -42,12 +42,7 @@ class Stockopening extends Model
 		'date_added'
 	];
 
-	protected $fillable = [
-		'stock_id',
-		'quantity',
-		'average_cost_price',
-		'date_added'
-	];
+    protected $guarded = [];
 
 	public function stock()
 	{

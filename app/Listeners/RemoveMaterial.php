@@ -63,7 +63,7 @@ class RemoveMaterial
                     'type' => 'TRANSFER'
                 ];
             }else{
-                $material->rawmaterial->add($material->convert_measurement);
+                $material->rawmaterial->add($material->edited_measurement);
                 $bincards[] = [
                     'rawmaterialbatch_id' => NULL,
                     'rawmaterial_id' => $material->rawmaterial->id,
@@ -71,7 +71,7 @@ class RemoveMaterial
                     'in' => 0,
                     'date_added' => dailyDate(),
                     'out' => 0,
-                    'return' => $material->convert_measurement,
+                    'return' => $material->edited_measurement,
                     'total' => $material->rawmaterial->measurement,
                     'type' => 'RETURN'
                 ];

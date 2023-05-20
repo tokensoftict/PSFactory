@@ -59,13 +59,13 @@ class CreateNewRawmaterialReturnsComponent extends Component
             $material_items = json_decode($this->data['material_return_items'], true);
             foreach ($material_items as $key=>$item) {
                 $count = $production->production_material_items()->where('rawmaterial_id', $item['rawmaterial_id'])->
-                       where('extra',(bool)$item['extra'])->first();
+                      first();
                if(!$count){
                    $error = true;
                    if($item['extra'] == "1"){
-                       $material_items[$key]["error"] = $item['name']." is not part of raw material list of selected production";
+                       $material_items[$key]["error"] = $item['name']." is not part of raw material listed of selected production";
                    }else{
-                       $material_items[$key]["error"] = $item['name']." is not part of extra raw material lis of selected production";
+                       $material_items[$key]["error"] = $item['name']." is not part of extra raw material listed of selected production";
                    }
 
                }
@@ -105,18 +105,30 @@ class CreateNewRawmaterialReturnsComponent extends Component
             $message = "Return has been sent successfully!";
         }
 
-
-        $this->alert(
-            "success",
-            "Material Return",
-            [
-                'position' => 'center',
-                'timer' => 6000,
-                'toast' => false,
-                'text' =>  $message,
-            ]
-        );
-
+        if($return === false)
+        {
+            $this->alert(
+                "error",
+                "Unknown error occurred!...",
+                [
+                    'position' => 'center',
+                    'timer' => 6000,
+                    'toast' => false,
+                    'text' =>  $message,
+                ]
+            );
+        }else {
+            $this->alert(
+                "success",
+                "Material Return",
+                [
+                    'position' => 'center',
+                    'timer' => 6000,
+                    'toast' => false,
+                    'text' => $message,
+                ]
+            );
+        }
         return redirect()->route('rawmaterial.returns');
     }
 

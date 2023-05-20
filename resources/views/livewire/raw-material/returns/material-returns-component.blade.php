@@ -89,9 +89,10 @@
                         <th>#</th>
                         <th>Material Name</th>
                         <th>Department</th>
-                        <th>Return</th>
                         <th>Status</th>
                         <th>Convert Measurement</th>
+                        <th>Edited Measurement</th>
+                        <th>Difference</th>
                         <th>Resolved Date</th>
                         <th>Resolved Time</th>
                         <th>Resolved By</th>
@@ -103,9 +104,10 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->department->name }}</td>
-                            <td>{{ $item->measurement }} {{ $item->unit }}</td>
                             <td>{!! showStatus($item->status_id) !!}</td>
                             <td> {{ $item->convert_measurement }} {{ $item->convert_unit }}</td>
+                            <td> {{ $item->edited_measurement }} {{ $item->convert_unit }}</td>
+                            <td> {{ $item->convert_measurement -$item->edited_measurement }} {{ $item->convert_unit }}</td>
                             <td>{{ $item->resolve_date ? eng_str_date($item->resolve_date) : "" }}</td>
                             <td>{{ $item->resolve_time ? twelveHourClock($item->resolve_time) : "" }}</td>
                             <td>{{ $item->resolve_by->name ?? ""  }}</td>

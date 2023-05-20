@@ -32,5 +32,7 @@
 @endsection
 
 @section('content')
+    <div class="table-responsive">
     <livewire:production-manager.datatable.production-manager-datatable-component :filters="$filters['filters']"/>
+    </div>
 @endsection

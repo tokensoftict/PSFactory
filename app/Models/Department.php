@@ -132,6 +132,16 @@ class Department extends Model
                 $table->decimal($value."quantity")->default(0)->after("quantity");
             });
 
+            Schema::table("stocks", function (Blueprint $table) use(& $value) {
+                $table->decimal($value."pieces")->default(0)->after("pieces");
+                $table->decimal($value."quantity")->default(0)->after("quantity");
+            });
+
+            Schema::table("stockopenings", function (Blueprint $table) use(& $value) {
+                $table->decimal($value."pieces")->default(0)->after("pieces");
+                $table->decimal($value."quantity")->default(0)->after("quantity");
+            });
+
             $model->quantity_column = $value;
         });
 

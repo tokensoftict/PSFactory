@@ -21,6 +21,8 @@
 
 
 @section('content')
-    <livewire:production-manager.datatable.production-manager-datatable-component :filters="$filter"/>
+    <div class="table-responsive">
+        <livewire:production-manager.datatable.production-manager-datatable-component :filters="$filter"/>
+    </div>
 @endsection
 

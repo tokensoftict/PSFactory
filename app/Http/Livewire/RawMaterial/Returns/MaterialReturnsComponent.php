@@ -72,7 +72,7 @@ class MaterialReturnsComponent extends Component
         {
             if($item->returntype_type === ProductionMaterialItem::class) { // if this is a production return
                 $item->returntype->update([
-                     'returns' =>   ($item->returntype->returns + $item->convert_measurement)
+                     'returns' =>   $item->edited_measurement //($item->returntype->returns + $item->edited_measurement)
                 ]);
             }
 

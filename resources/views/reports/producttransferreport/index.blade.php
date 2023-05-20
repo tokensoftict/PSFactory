@@ -32,7 +32,9 @@
 @endsection
 
 @section('content')
+    <div class="table-responsive">
     <livewire:product-module.datatable.product-transfer-list-datatable :filters="$filters['filters']"/>
+    </div>
 
     <script>
         window.onload = function (){

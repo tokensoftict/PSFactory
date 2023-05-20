@@ -24,20 +24,28 @@
                     <input  type="text"   wire:model.defer="store.tax"  class="form-control" name="tax" placeholder="VAT"/>
                     @error('store.tax') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+
                 <div class="mb-3">
-                    <label>Threshold Days</label>
+                    <label>Product Threshold Days</label>
                     <input  type="number"  wire:model.defer="store.threshold_days"  required class="form-control" name="threshold_days" placeholder="Threshold Days"/>
                     @error('store.threshold_days') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+
                 <div class="mb-3">
-                    <label>NOS Lead Time</label>
-                    <input  type="number" wire:model.defer="store.supply_days" required class="form-control" name="supply_days" placeholder="Number Of Days to Supply"/>
-                    @error('store.supply_days') <span class="text-danger">{{ $message }}</span> @enderror
+                    <label>Material Threshold Days</label>
+                    <input  type="number"  wire:model.defer="store.material_threshold_days"  required class="form-control" name="threshold_days" placeholder="Threshold Days"/>
+                    @error('store.threshold_days') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+
                 <div class="mb-3">
-                    <label>Quantity to Buy Threshold</label>
+                    <label>Product Quantity to Buy Threshold</label>
                     <input  type="number" step="0.000001" wire:model.defer="store.qty_to_buy_threshold" required class="form-control" name="qty_to_buy_threshold" placeholder="Quantity to Buy Threshold"/>
                     @error('store.qty_to_buy_threshold') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+                <div class="mb-3">
+                    <label>Material Quantity to Buy Threshold</label>
+                    <input  type="number" step="0.000001" wire:model.defer="store.material_qty_to_buy_threshold" required class="form-control" name="material_qty_to_buy_threshold" placeholder="Material Quantity to Buy Threshold"/>
+                    @error('store.material_qty_to_buy_threshold') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <div class="mb-3">
                     <label>Material Near Expiry Days</label>
@@ -83,7 +91,7 @@
                     @error('store.footer_notes') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
-                @if(userCanView('store_settings.update'))
+                @if(userCanView('store_settings.view'))
                 <button type="button" wire:click="update" class="btn btn-lg btn-primary btn-block">
                     <i wire:loading.remove wire:target="update"  class="fa fa-save"></i>
                     <span wire:loading wire:target="update" class="spinner-border spinner-border-sm me-2" role="status"></span>

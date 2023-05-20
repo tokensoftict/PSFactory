@@ -51,5 +51,6 @@
 @endsection
 
 @section('content')
+
     <x-payment-by-payment-method-report-components :filters="$filters['filters']"/>
 @endsection

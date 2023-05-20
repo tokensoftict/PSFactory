@@ -157,4 +157,39 @@ class MaterialTransferReportController extends Controller
         return setPageContent('reports.materialtransferreport.bincard', $data);
     }
 
+
+    public function opening_report(Request $request)
+    {
+        $data = [
+            'title' => 'Material Opening Report',
+            'subtitle' => 'Daily Material Opening report',
+            'filters' => [
+                'from' =>todaysDate(),
+                'filters' => [
+                    'date_added' => todaysDate(),
+                ]
+            ]
+        ];
+        if($request->get('filter'))
+        {
+            $data['filters'] = $request->get('filter');
+            $data['filters']['filters']['date_added'] = Arr::only(array_values( $request->get('filter')), [0,1]);
+
+        }
+
+        return setPageContent('reports.materialtransferreport.materialopening', $data);
+    }
+
+    public function material_nearos(Request $request){
+        $data = [
+            'title' => 'Material Near OS Report',
+            'subtitle' => 'Material Near OS Report',
+            'filters' => [
+                'filters' => [
+                ]
+            ]
+        ];
+
+        return view('reports.materialtransferreport.materialnearoutstock', $data);
+    }
 }

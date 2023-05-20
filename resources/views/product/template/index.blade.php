@@ -24,7 +24,7 @@
 
 
 @section('content')
-
+    <div class="table-responsive">
     <livewire:product-module.template.datatable.product-template-component-datatable/>
-
+    </div>
 @endsection

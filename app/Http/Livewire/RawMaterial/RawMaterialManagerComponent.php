@@ -33,6 +33,10 @@ class RawMaterialManagerComponent extends Component
                 'options'=> Department::where('department_type','Store')->get()->toArray()
             ],
             'lead_time' => ['label' => 'Lead Time', 'type'=>'text'],
+            'divide_by_carton' => ['label' => 'Divide By Carton When Returning ?', 'type'=>'select', 'options'=> [
+                ['name'=>'Yes','id'=>"1"],
+                ['name'=>'No','id'=>"0"],
+            ]],
         ];
 
         $this->newValidateRules = [

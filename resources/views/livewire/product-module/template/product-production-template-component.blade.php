@@ -10,7 +10,7 @@
 
         <div class="col-lg-3 col-sm-6 col-12"  wire:ignore>
             <div class="mb-3">
-                <label>Select Stock</label>
+                <label>Select Product</label>
                 <select class="select form-control" x-init="select2Alpine('stock_id')" id="stock_id"  x-ref="stock_id" x-model="stock_id" name="stock_id">
                     <option value="">Select Stock</option>
                     @foreach($this->stocks as $stock)

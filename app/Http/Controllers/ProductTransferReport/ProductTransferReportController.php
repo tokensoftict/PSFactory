@@ -156,4 +156,42 @@ class ProductTransferReportController extends Controller
     }
 
 
+    public function product_opening(Request $request)
+    {
+        $data = [
+            'title' => 'Product Opening Report',
+            'subtitle' => 'Daily Product Opening report',
+            'filters' => [
+                'from' =>todaysDate(),
+                'filters' => [
+                    'date_added' => todaysDate(),
+                ]
+            ]
+        ];
+        if($request->get('filter'))
+        {
+            $data['filters'] = $request->get('filter');
+            $data['filters']['filters']['date_added'] = Arr::only(array_values( $request->get('filter')), [0,1]);
+
+        }
+
+        return setPageContent('reports.producttransferreport.productopeningreport', $data);
+    }
+
+
+    public function product_nearoutofstock(Request $request)
+    {
+        $data = [
+            'title' => 'Product Near OS Report',
+            'subtitle' => 'Product Near OS Report',
+            'filters' => [
+                'filters' => [
+                ]
+            ]
+        ];
+
+        return view('reports.producttransferreport.productneartoutsofstock', $data);
+    }
+
+
 }
