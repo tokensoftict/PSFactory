@@ -70,11 +70,13 @@ class CreateNewRawmaterialReturnsComponent extends Component
 
                }
                else {
+                   /*
                    $returns = $count->returns + $item['measurement'];
                    if($returns > $count->measurement){
                        $error = true;
                        $material_items[$key]["error"] = " You can not return more than ".($count->measurement-$count->returns).' '.$count->unit." for ".$item['name'];
                    }
+                   */
                }
             }
         }
