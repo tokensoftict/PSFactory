@@ -100,7 +100,7 @@ class Rawmaterial extends Model
 
         foreach($batches as $batch) {
             if($batch->measurement - $measurement < 0){
-                $quantity = $measurement - $batch->measurement;
+                $measurement = $measurement - $batch->measurement;
                 $b = $batch->toArray();
                 $b['measurement'] = $batch->measurement;
                 $b['from'] = 'measurement';
@@ -111,14 +111,15 @@ class Rawmaterial extends Model
                 $b['measurement'] = $measurement;
                 $b['from'] = 'measurement';
                 $batch_ids[$batch->id] = $b;
-                $quantity = 0;
+                $measurement = 0;
             }
-            if($quantity === 0)  return $batch_ids;
+
+            if($measurement === 0)  return $batch_ids;
         }
 
-        if($quantity != 0) return false;
+        if($measurement != 0) return false;
 
-        if($quantity == 0) return $batch_ids;
+        if($measurement == 0) return $batch_ids;
 
         return false;
     }

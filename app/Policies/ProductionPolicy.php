@@ -134,7 +134,7 @@ class ProductionPolicy
     {
         if(!userCanView("production.rollback")) return  false;
 
-        if($production->return->status_id == status('Approved')) return false; // Material Return has already bee approved
+        if(isset($production->return) && $production->return->status_id == status('Approved')) return false; // Material Return has already bee approved
 
         if($production->status_id !== status('Ready')) return false;
 

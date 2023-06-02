@@ -54,10 +54,10 @@
                 </div>
             </div>
 
-            <div class="table-top">
-                <div class="search-set">
+            <div class="row">
+                <div class="col-md-8">
                 </div>
-                <div class="float-end">
+                <div class="col-md-4">
                     @if($this->showApproval)
                         @if(userCanView('rawmaterial.approverequest'))
                             <a href="javascript:void(0);"  onclick="confirm('Are you sure you want to approve this request ?, this can not be reversed') || event.stopImmediatePropagation()"   wire:click.prevent="approveRequest" wire:loading.attr="disabled" wire:target="approveRequest,declineRequest" class="btn btn-success">Approve Request
