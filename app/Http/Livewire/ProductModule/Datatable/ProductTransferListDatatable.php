@@ -206,8 +206,7 @@ class ProductTransferListDatatable extends DataTableComponent
         $this->emit('$refresh');
 
         //$this->dispatchBrowserEvent('closeModal');
-
-        return true;
+        return redirect()->route('product.transfers');
     }
 
 }
