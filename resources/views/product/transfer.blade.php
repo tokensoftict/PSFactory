@@ -14,7 +14,11 @@
         window.onload = function (){
             let myModal = "";
             $(document).ready(function(){
-                myModal = new bootstrap.Modal(document.getElementById("simpleDatatableComponentModal"), {});
+                myModal = new bootstrap.Modal(document.getElementById("simpleDatatableComponentModal"), {
+                    backdrop : 'static',
+                    keyboard : false,
+                    focus : true
+                });
             });
             window.addEventListener('openModal', (e) => {
                 myModal.show();

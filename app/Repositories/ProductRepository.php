@@ -58,4 +58,14 @@ class ProductRepository
         })->get();
     }
 
+
+    public static function convertPiecesToCarton() : void
+    {
+        $stocks = Stock::where('status', 1)->get();
+        foreach ($stocks as $stock)
+        {
+
+        }
+    }
+
 }

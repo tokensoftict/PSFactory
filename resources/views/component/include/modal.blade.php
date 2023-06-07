@@ -72,7 +72,11 @@
     window.onload = function (){
         let myModal = "";
         $(document).ready(function(){
-            myModal = new bootstrap.Modal(document.getElementById("simpleComponentModal"), {});
+            myModal = new bootstrap.Modal(document.getElementById("simpleComponentModal"), {
+                backdrop : 'static',
+                keyboard : false,
+                focus : true
+            });
         });
         window.addEventListener('openModal', (e) => {
             myModal.show();
