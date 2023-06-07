@@ -5,6 +5,7 @@ namespace App\Http\Livewire\ProductModule\Datatable;
 use App\Classes\Settings;
 use App\Jobs\AddLogToProductBinCard;
 use App\Models\Stockbatch;
+use App\Repositories\ProductRepository;
 use App\Traits\SimpleDatatableComponentTrait;
 use Carbon\Carbon;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -148,7 +149,6 @@ class ProductTransferListDatatable extends DataTableComponent
         $id = Stockbatch::create($transfer_data);
 
 
-
         $this->productTransfer->stock->updateAvailableQuantity();
 
 
@@ -171,6 +171,8 @@ class ProductTransferListDatatable extends DataTableComponent
         dispatch(new AddLogToProductBinCard($bincards));
 
         $this->productTransfer->transferable->update(['status_id'=>status("Complete")]);
+
+        ProductRepository::convertPiecesToCarton();
 
         $this->alert(
             "success",

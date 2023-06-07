@@ -153,6 +153,28 @@ class Stock extends Model
         return $quantity;
     }
 
+    public function totalBalancePieces()
+    {
+        $quantity = 0;
+
+        $depts = salesDepartments(true);
+
+        foreach ($depts as $dept) {
+
+            if($dept->quantity_column != "quantity")
+            {
+                $column_pack =  $dept->quantity_column.'quantity';
+                $column_pieces = $dept->quantity_column.'pieces';
+            }else{
+                $column_pack = "quantity";
+                $column_pieces = "pieces";
+            }
+
+            $quantity += $this->stockbatches()->where($column_pieces, ">", 0)->sum($column_pieces);
+        }
+        return $quantity;
+    }
+
     public function updateAvailableQuantity()
     {
         $depts = salesDepartments(true);
