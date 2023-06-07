@@ -185,7 +185,7 @@ class ProductTransferListDatatable extends DataTableComponent
             ]
         );
 
-        $this->emit('$refresh');
+        //$this->emit('$refresh');
 
         $this->dispatchBrowserEvent('closeModal');
 
