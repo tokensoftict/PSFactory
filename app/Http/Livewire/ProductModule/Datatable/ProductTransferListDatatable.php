@@ -109,6 +109,24 @@ class ProductTransferListDatatable extends DataTableComponent
 
         $dept = $this->productTransfer->transferable->department;
 
+        if($this->productTransfer->status_id == status("Approved"))
+        {
+
+            $this->alert(
+                "error",
+                "Product Inventory",
+                [
+                    'position' => 'center',
+                    'timer' => 1500,
+                    'toast' => false,
+                    'text' =>  "Production have already been approved!!..",
+                ]
+            );
+
+            return redirect()->route('product.transfers');
+        }
+
+
         if(!$dept)
         {
             $this->alert(
@@ -185,9 +203,9 @@ class ProductTransferListDatatable extends DataTableComponent
             ]
         );
 
-        //$this->emit('$refresh');
+        $this->emit('$refresh');
 
-        $this->dispatchBrowserEvent('closeModal');
+        //$this->dispatchBrowserEvent('closeModal');
 
         return true;
     }
