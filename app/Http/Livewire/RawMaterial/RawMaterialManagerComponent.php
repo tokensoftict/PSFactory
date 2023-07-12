@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\RawMaterial;
 
 use App\Models\Department;
+use App\Models\Materialgroup;
 use App\Models\Materialtype;
 use App\Models\Rawmaterial;
 use App\Traits\SimpleComponentTrait;
@@ -22,6 +23,9 @@ class RawMaterialManagerComponent extends Component
             'description' => ['label' => 'Description', 'type'=>'textarea'],
             'materialtype_id' => ['label' => 'Material Type', 'type'=>'select',
                 'options'=> Materialtype::all()->toArray()
+            ],
+            'materialgroup_id' => ['label' => 'Material Group', 'type'=>'select',
+                'options'=> Materialgroup::all()->toArray()
             ],
             'expiry' => ['label' => 'Can Material Expiry', 'type'=>'select',
                 'options'=> [

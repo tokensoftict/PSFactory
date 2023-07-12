@@ -171,6 +171,18 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('{id}', ['as' => 'destroy', 'uses' => 'MaterialTypeController@destroy']);
             });
 
+            Route::prefix('materialgroups')->as('materialgroups.')->group(function () {
+                Route::get('', ['as' => 'index', 'uses' => 'MaterialGroupController@index', 'visible' => true, 'custom_label'=>'Material Groups']);
+                Route::get('list', ['as' => 'list', 'uses' => 'MaterialGroupController@listAll']);
+                Route::get('create', ['as' => 'create', 'uses' => 'MaterialGroupController@create']);
+                Route::post('', ['as' => 'store', 'uses' => 'MaterialGroupController@store']);
+                Route::get('{id}', ['as' => 'show', 'uses' => 'MaterialGroupController@show']);
+                Route::get('{id}/edit', ['as' => 'edit', 'uses' => 'MaterialGroupController@edit']);
+                Route::get('{id}/toggle', ['as' => 'toggle', 'uses' => 'MaterialGroupController@toggle']);
+                Route::put('{id}', ['as' => 'update', 'uses' => 'MaterialGroupController@update']);
+                Route::delete('{id}', ['as' => 'destroy', 'uses' => 'MaterialGroupController@destroy']);
+            });
+
 
             Route::prefix('rawmaterial')->as('rawmaterial.')->group(function () {
                 Route::get('', ['as' => 'index', 'uses' => 'RawMaterialController@index', 'visible' => true, 'custom_label'=>'Material Manager']);

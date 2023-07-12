@@ -46,6 +46,8 @@ class RawMaterialDataTable extends DataTableComponent
 
             Column::make("Type", "materialtype.name")
                 ->searchable(),
+            Column::make("Group", "materialgroup.name")
+                ->searchable(),
             BooleanColumn::make('Expiry','expiry')
                 ->yesNo(),
             BooleanColumn::make('Divide By Carton','divide_by_carton')

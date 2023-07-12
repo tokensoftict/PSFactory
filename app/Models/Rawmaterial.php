@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Department|null $department
  * @property Materialtype|null $materialtype
+ * @property Materialgroup|null $materialgroup
  * @property Collection|Rawmaterialbatch[] $rawmaterialbatches
  * @property Collection|Rawmaterialbincard[] $rawmaterialbincards
  * @property Collection|Rawmaterialopening[] $rawmaterialopenings
@@ -73,6 +74,12 @@ class Rawmaterial extends Model
     public function materialtype()
     {
         return $this->belongsTo(Materialtype::class);
+    }
+
+
+    public function materialgroup()
+    {
+        return $this->belongsTo(Materialgroup::class);
     }
 
     public function rawmaterialbatches()
