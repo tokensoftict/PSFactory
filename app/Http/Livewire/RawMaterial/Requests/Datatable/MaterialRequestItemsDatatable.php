@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\RawMaterial\Requests\Datatable;
 
 
+use App\Classes\ExportDataTableComponent;
 use App\Models\MaterialRequestItem;
 use App\Traits\SimpleDatatableComponentTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +11,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 
-class MaterialRequestItemsDatatable extends DataTableComponent
+class MaterialRequestItemsDatatable extends ExportDataTableComponent
 {
     protected $model = MaterialRequestItem::class;
 

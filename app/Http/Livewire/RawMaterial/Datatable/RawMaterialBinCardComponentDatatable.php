@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\RawMaterial\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Traits\SimpleDatatableComponentTrait;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Rawmaterialbincard;
 use Illuminate\Database\Eloquent\Builder;
 
-class RawMaterialBinCardComponentDatatable extends DataTableComponent
+class RawMaterialBinCardComponentDatatable extends ExportDataTableComponent
 {
 
 

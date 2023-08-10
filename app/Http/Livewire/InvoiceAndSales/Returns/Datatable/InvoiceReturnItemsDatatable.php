@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\InvoiceAndSales\Returns\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Traits\SimpleDatatableComponentTrait;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\InvoiceReturnsItem;
 use Illuminate\Database\Eloquent\Builder;
 
-class InvoiceReturnItemsDatatable extends DataTableComponent
+class InvoiceReturnItemsDatatable extends ExportDataTableComponent
 {
 
     use SimpleDatatableComponentTrait;

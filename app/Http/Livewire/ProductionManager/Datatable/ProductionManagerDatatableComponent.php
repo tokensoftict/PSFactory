@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\ProductionManager\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Classes\Settings;
 use App\Traits\ProductionTrait;
 use App\Traits\SimpleDatatableComponentTrait;
@@ -11,7 +12,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Production;
 use Illuminate\Database\Eloquent\Builder;
 
-class ProductionManagerDatatableComponent extends DataTableComponent
+class ProductionManagerDatatableComponent extends ExportDataTableComponent
 {
     protected $model = Production::class;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\InvoiceAndSales\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Models\Invoice;
 use App\Traits\SimpleDatatableComponentTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,7 +10,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Invoiceitem;
 
-class IncentiveReportDatatable extends DataTableComponent
+class IncentiveReportDatatable extends ExportDataTableComponent
 {
 
     public  array $filters;

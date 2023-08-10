@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\RawMaterial\Requests\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Classes\Settings;
 use App\Traits\SimpleDatatableComponentTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,7 +10,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\MaterialRequest;
 
-class MaterialRequestDatatable extends DataTableComponent
+class MaterialRequestDatatable extends ExportDataTableComponent
 {
 
     use SimpleDatatableComponentTrait;

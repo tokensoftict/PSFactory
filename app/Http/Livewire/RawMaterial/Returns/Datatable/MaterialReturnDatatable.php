@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\RawMaterial\Returns\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Traits\SimpleDatatableComponentTrait;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\MaterialReturn;
 use Illuminate\Database\Eloquent\Builder;
 
-class MaterialReturnDatatable extends DataTableComponent
+class MaterialReturnDatatable extends ExportDataTableComponent
 {
     protected $model = MaterialReturn::class;
 

@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\ProductModule\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Traits\SimpleDatatableComponentTrait;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Stockopening;
 use Illuminate\Database\Eloquent\Builder;
 
-class ProductOpeningDataTable extends DataTableComponent
+class ProductOpeningDataTable extends ExportDataTableComponent
 {
     use SimpleDatatableComponentTrait;
 

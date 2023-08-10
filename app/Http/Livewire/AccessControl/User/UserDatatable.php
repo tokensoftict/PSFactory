@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\AccessControl\User;
 
 
+use App\Classes\ExportDataTableComponent;
 use App\Traits\SimpleDatatableComponentTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -10,7 +11,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use App\Models\User;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class UserDatatable extends DataTableComponent
+class UserDatatable extends ExportDataTableComponent
 {
 
     use SimpleDatatableComponentTrait, LivewireAlert;

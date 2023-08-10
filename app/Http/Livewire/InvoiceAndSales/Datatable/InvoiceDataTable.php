@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\InvoiceAndSales\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Classes\Settings;
 use App\Traits\SimpleDatatableComponentTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +11,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Invoice;
 
-class InvoiceDataTable extends DataTableComponent
+class InvoiceDataTable extends ExportDataTableComponent
 {
 
     use SimpleDatatableComponentTrait,LivewireAlert;

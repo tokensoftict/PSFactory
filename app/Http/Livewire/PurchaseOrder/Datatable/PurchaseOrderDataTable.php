@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\PurchaseOrder\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Classes\Settings;
 use App\Events\CompletePuchaseOrderEvent;
 use App\Models\Purchaseorder;
@@ -12,7 +13,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
-class PurchaseOrderDataTable extends DataTableComponent
+class PurchaseOrderDataTable extends ExportDataTableComponent
 {
 
     use SimpleDatatableComponentTrait;

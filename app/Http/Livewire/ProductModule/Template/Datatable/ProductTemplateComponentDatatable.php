@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\ProductModule\Template\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Classes\Settings;
 use App\Models\Stock;
 use App\Traits\SimpleDatatableComponentTrait;
@@ -11,7 +12,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\ProductionTemplate;
 
 
-class ProductTemplateComponentDatatable extends DataTableComponent
+class ProductTemplateComponentDatatable extends ExportDataTableComponent
 {
 
     use SimpleDatatableComponentTrait;

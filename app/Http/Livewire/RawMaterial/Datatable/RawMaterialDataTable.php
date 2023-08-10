@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\RawMaterial\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Classes\Settings;
 use App\Traits\SimpleDatatableComponentTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +11,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Rawmaterial;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 
-class RawMaterialDataTable extends DataTableComponent
+class RawMaterialDataTable extends ExportDataTableComponent
 {
 
     use SimpleDatatableComponentTrait;

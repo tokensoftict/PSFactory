@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\ProductModule\Datatable;
 
+use App\Classes\ExportDataTableComponent;
 use App\Traits\SimpleDatatableComponentTrait;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Nearoutofstock;
 use Illuminate\Database\Eloquent\Builder;
 
-class ProductNearoutotstock extends DataTableComponent
+class ProductNearoutotstock extends ExportDataTableComponent
 {
 
     use SimpleDatatableComponentTrait;
