@@ -123,7 +123,11 @@
         </tr>
         <tr>
             <th align="left">Customer</th>
-            <td>{{ $invoice->customer->firstname }} {{ $invoice->customer->lastname }}</td>
+            @if($invoice->customer->type === "COMPANY")
+                <td>{{ $invoice->customer->company_name }}</td>
+            @else
+                <td>{{ $invoice->customer->firstname }} {{ $invoice->customer->lastname }}</td>
+            @endif
         </tr>
         <tr>
             <th align="left">Sales Rep.</th>
