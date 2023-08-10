@@ -15,7 +15,7 @@ use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\View\Component;
 
-class reportFilterComponent extends Component
+class ReportFilterComponent extends Component
 {
 
     public array $filters;
