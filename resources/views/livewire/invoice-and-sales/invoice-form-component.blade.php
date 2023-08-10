@@ -366,9 +366,8 @@
             {
                 if(parseInt(this.items[index]['quantity']) > parseInt(this.items[index]['av_qty']))
                 {
-                    console.log(this.items[index]['quantity'] +"---->---"+ this.items[index]['av_qty']);
-                    //alert("Total available quantity is "+this.items[index]['av_qty']);
-                    //this.items[index]['quantity'] = this.items[index]['av_qty'];
+                    alert("Total available quantity is "+this.items[index]['av_qty']);
+                    this.items[index]['quantity'] = this.items[index]['av_qty'];
                 }
                 this.items[index]['total_cost_price'] = this.items[index]['cost_price'] * this.items[index]['quantity'];
                 this.items[index]['total_selling_price'] = this.items[index]['selling_price'] * this.items[index]['quantity'];
