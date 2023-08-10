@@ -167,7 +167,7 @@
         <tr class="product_row">
             <td>#</td>
             <td align="left"><b>Name</b></td>
-            <td align="center"><b>Batch Number</b></td>
+           <!-- <td align="center"><b>Batch Number</b></td> -->
             <td align="center"><b>Quantity</b></td>
             <td align="center"><b>Price</b></td>
             <td align="center"><b>Discount Price</b></td>
@@ -184,7 +184,7 @@
             <tr>
                 <td align="left">{{ $loop->iteration }}</td>
                 <td align="left" class="text-left">{{ $item->stock->name }}</td>
-                <td align="center">{{ implode("<br/>", $batchNumber) }}</td>
+               <!-- <td align="center">{{ implode("<br/>", $batchNumber) }}</td>-->
                 <td align="center" class="text-center">{{ $item->quantity }}</td>
                 <td align="center" class="text-center">{{ number_format($item->selling_price,2) }}</td>
                 <td align="right" class="text-right">{{ number_format(($item->selling_price-$item->discount_amount),2) }}</td>
@@ -195,7 +195,7 @@
         <tfoot>
         <tr>
             <td></td>
-            <td></td>
+           <!-- <td></td> -->
             <td></td>
             <td></td>
             <td></td>
@@ -204,7 +204,7 @@
         </tr>
         <tr>
             <td></td>
-            <td></td>
+            <!--  <td></td> -->
             <td></td>
             <td></td>
             <td></td>
@@ -213,7 +213,7 @@
         </tr>
         <tr>
             <td></td>
-            <td></td>
+            <!--   <td></td> -->
             <td></td>
             <td></td>
             <td></td>
