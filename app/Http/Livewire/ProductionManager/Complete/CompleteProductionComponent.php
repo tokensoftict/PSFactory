@@ -118,7 +118,7 @@ class CompleteProductionComponent extends Component
             }
 
 
-            if(!isset($items['returns'])) { // returns as already been typed by group product
+            if($items['rawmaterial']['materialgroup_id'] == NULL) { // if the raw material have been grouped the dont calculate
                 $validate = ($items['measurement'] - $yield_quantity) - $items['rough'];
             }else{
                 $validate = $items['rough'];
@@ -185,7 +185,7 @@ class CompleteProductionComponent extends Component
             }
 
 
-            if(empty($items['returns'])) { // returns as already been typed by group product
+            if($items['rawmaterial']['materialgroup_id'] == NULL) { // if the raw material have been grouped the dont calculate
 
                 $item->returns = ($items['measurement'] - $yield_quantity) - $items['rough'];
 
