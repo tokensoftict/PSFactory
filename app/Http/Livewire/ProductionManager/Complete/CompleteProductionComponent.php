@@ -185,7 +185,7 @@ class CompleteProductionComponent extends Component
             }
 
 
-            if(!isset($items['returns'])) { // returns as already been typed by group product
+            if(empty($items['returns'])) { // returns as already been typed by group product
 
                 $item->returns = ($items['measurement'] - $yield_quantity) - $items['rough'];
 
