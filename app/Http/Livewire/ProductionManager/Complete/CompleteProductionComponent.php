@@ -7,6 +7,7 @@ use App\Models\MaterialReturn;
 use App\Models\Production;
 use App\Models\Rawmaterial;
 use App\Repositories\MaterialReturnRepository;
+use App\Repositories\ProductionRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -17,6 +18,8 @@ class CompleteProductionComponent extends Component
     use LivewireAlert;
 
     public Production $production;
+
+    private ProductionRepository $productionRepository;
 
     public array $data;
 
@@ -35,9 +38,9 @@ class CompleteProductionComponent extends Component
         'data.expiry_date.required' => 'Expiry Date is required',
     ];
 
-    public function boot()
+    public function boot(ProductionRepository $productionRepository)
     {
-
+        $this->productionRepository = $productionRepository;
     }
 
     public function mount()
@@ -114,7 +117,12 @@ class CompleteProductionComponent extends Component
                 $yield_quantity = floor(($this->data['yield_quantity'] / $this->production->stock->carton));
             }
 
-            $validate =  ($items['measurement'] - $yield_quantity) - $items['rough'];
+
+            if(!isset($items['returns'])) { // returns as already been typed by group product
+                $validate = ($items['measurement'] - $yield_quantity) - $items['rough'];
+            }else{
+                $validate = $items['rough'];
+            }
 
             if($validate < 0)
             {
@@ -150,6 +158,21 @@ class CompleteProductionComponent extends Component
 
             $item = $this->production->production_material_items()->whereRawmaterialId($items['rawmaterial_id'])->whereExtra(0)->first();
 
+            if($item == NULL) {
+                $this->alert(
+                    "error",
+                    "Production",
+                    [
+                        'position' => 'center',
+                        'timer' => 6000,
+                        'toast' => false,
+                        'text' =>  $items['rawmaterial']['name']." is not in production template, unable to continue",
+                    ]
+                );
+
+                return false;
+            }
+
             $item->rough = $items['rough'];
 
             $yield_quantity = $this->data['yield_quantity'];
@@ -161,7 +184,15 @@ class CompleteProductionComponent extends Component
                 $yield_quantity = floor(($this->data['yield_quantity'] / $this->production->stock->carton));
             }
 
-            $item->returns =  ($items['measurement'] - $yield_quantity) - $items['rough'];
+
+            if(!isset($items['returns'])) { // returns as already been typed by group product
+
+                $item->returns = ($items['measurement'] - $yield_quantity) - $items['rough'];
+
+            }else{
+
+                $item->returns = $items['returns'];
+            }
 
             $item->update();
 
@@ -178,6 +209,12 @@ class CompleteProductionComponent extends Component
             }
 
         }
+
+       $reports =  $this->productionRepository->calculatePackagingReports($this->production);
+
+        $this->production->packaging_reports = $reports;
+
+        $this->production->update();
 
         if(count($data['material_return_items']) > 0) {
 

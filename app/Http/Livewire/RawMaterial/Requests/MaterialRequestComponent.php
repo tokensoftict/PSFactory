@@ -108,7 +108,7 @@ class MaterialRequestComponent extends Component
             $item->update();
         }
 
-        event(new MaterialApprovedEvent($this->items)); // triger material items bincard event
+        event(new MaterialApprovedEvent($this->items)); // trigger material items bin-card event
 
 
         $approval_status = $this->materialRequest->material_request_items->count() ===  $this->materialRequest->material_request_items()

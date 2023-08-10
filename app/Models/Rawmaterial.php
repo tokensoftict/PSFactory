@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $cost_price
  * @property string|null $description
  * @property int|null $materialtype_id
+ * @property int|null $materialgroup_id
  * @property int|null $department_id
  * @property bool $expiry
  * @property bool $divide_by_carton
@@ -48,7 +49,8 @@ class Rawmaterial extends Model
         'materialtype_id' => 'int',
         'department_id' => 'int',
         'status' => 'bool',
-        'divide_by_carton' => 'bool'
+        'divide_by_carton' => 'bool',
+        'packaging_reports' => 'json'
     ];
 
     protected $fillable = [
@@ -57,6 +59,8 @@ class Rawmaterial extends Model
         'cost_price',
         'description',
         'materialtype_id',
+        'materialgroup_id',
+        'packaging_reports',
         'department_id',
         'expiry',
         'status',

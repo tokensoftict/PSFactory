@@ -68,29 +68,35 @@
 
     <table class="table table-bordered table-striped">
         <thead>
-            <tr>
-                <th>#</th>
-                <th>Material Name</th>
-                <th>Department</th>
-                <th>Quantity / Measurement</th>
-                <th>Rough</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th>Material Name</th>
+            <th>Department</th>
+            <th>Quantity / Measurement</th>
+            <th>Rough</th>
+            <th>Returns</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach($this->productionItems as $key=>$item)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item['rawmaterial']['name'] }}</td>
-                    <td>{{ $item['rawmaterial']['department']['name'] }}</td>
-                    <td>{{ $item['measurement'] }}</td>
-                    <td>
-                        <input type="number" step="0.000001" wire:model.defer="productionItems.{{ $key }}.rough" class="form-control">
-                        @if(isset($item['error']))
-                            <span class="font-size-13 text-danger d-block">{{ $item['error'] }}</span>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
+        @foreach($this->productionItems as $key=>$item)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $item['rawmaterial']['name'] }}</td>
+                <td>{{ $item['rawmaterial']['department']['name'] }}</td>
+                <td>{{ $item['measurement'] }}</td>
+                <td>
+                    <input type="number" step="0.000001" wire:model.defer="productionItems.{{ $key }}.rough" class="form-control">
+                    @if(isset($item['error']))
+                        <span class="font-size-13 text-danger d-block">{{ $item['error'] }}</span>
+                    @endif
+                </td>
+                <td>
+                    @if($item['rawmaterial']['materialgroup_id'] !== NULL)
+                        <input type="number" step="0.000001" wire:model.defer="productionItems.{{ $key }}.returns" class="form-control">
+                    @endif
+                </td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
 

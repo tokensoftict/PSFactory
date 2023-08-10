@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $ending_oriental
  * @property int|null $ending_labelling
  * @property int|null $department_id
- *
+ * @property array|null $packaging_reports
  * @property User $user
  * @property MaterialRequest|null $material_request
  * @property ProductionTemplate $production_template
@@ -80,7 +80,8 @@ class Production extends Model
 		'ending_unscrabler' => 'int',
 		'ending_unibloc' => 'int',
 		'ending_oriental' => 'int',
-		'ending_labelling' => 'int'
+		'ending_labelling' => 'int',
+        'packaging_reports' => 'json'
 	];
 
 	protected $dates = [
@@ -115,7 +116,8 @@ class Production extends Model
 		'ending_unibloc',
 		'ending_oriental',
 		'ending_labelling',
-        'department_id'
+        'department_id',
+        'packaging_reports'
 	];
 
 	public function user()

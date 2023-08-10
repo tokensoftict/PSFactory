@@ -4,11 +4,13 @@ namespace App\Repositories;
 
 use App\Classes\Settings;
 use App\Events\MaterialRequestEvent;
+use App\Models\Materialgroup;
 use App\Models\Production;
 use App\Models\ProductionMaterialItem;
 use App\Models\Rawmaterial;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class ProductionRepository
 {
@@ -186,6 +188,8 @@ class ProductionRepository
 
     private function prepareProductionItems(array $item, Production $production, $extra = false) : array
     {
+        $checkIfProductExist = $production->production_material_items()->where('rawmaterial_id',$item['rawmaterial_id'])->count();
+        $extra = $checkIfProductExist > 0 ? 1 : 0;
         $material = Rawmaterial::find($item['rawmaterial_id']);
         $item['production_date'] = $production->production_date;
         $item['production_time'] = $production->production_time;
@@ -228,6 +232,71 @@ class ProductionRepository
        $production->update();
 
        return true;
+    }
+
+
+    public function calculatePackagingReports(Production $production)
+    {
+        $items = $production->production_material_items()
+            ->with(['rawmaterial','rawmaterial.department', 'rawmaterial.materialtype'])
+            ->select(
+                'rawmaterial_id',
+                DB::raw('MAX(rough) as rough'),
+                DB::raw('MAX(returns) as returns'),
+                DB::raw('SUM(measurement) as measurement'),
+                DB::raw('SUM(total_cost_price) as total_cost_price'),
+            )
+            ->where('department_id', 2)
+            ->groupBy('rawmaterial_id')
+            ->get()
+            ->map(function($item){
+                $item['rough'] = $item['rough'] > 0 ? $item['rough'] : 0;
+                $item['returns'] =  $item['returns'] > 0 ?  $item['returns'] : 0;
+                return $item;
+            })->toArray();
+
+        $groups = Materialgroup::select('id','name')->get();
+
+        $items = collect($items);
+
+        $reportGroups = [];
+
+        foreach ($groups as $group){
+            $reportGroups[] =  [
+                'type'=> 'group',
+                'id' => $group->id,
+                'name' => $group->name,
+                'requested_qty' => $items->sum(function ($item) use ($group, $production){
+                    if($item['rawmaterial']['materialgroup_id'] == $group->id){
+                        return $item['measurement'];
+                    }
+                    return 0;
+                }),
+                'yield' => $production->yield_quantity,
+                'returns' => $items->sum(function ($item) use ($group, $production){
+                    if($item['rawmaterial']['materialgroup_id'] == $group->id){
+                        return $item['returns'];
+                    }
+                    return 0;
+                })
+            ];
+        }
+
+        $items->each(function($item, $index) use ($production, &$reportGroups){
+            if($item['rawmaterial']['materialgroup_id'] == NULL)
+            {
+                $reportGroups[] = [
+                    'type' => 'item',
+                    'name' => $item['rawmaterial']['name'],
+                    'id' => $item['rawmaterial_id'],
+                    'requested_qty' => $item['measurement'],
+                    'yield' => $production->yield_quantity,
+                    'returns' => $item['returns']
+                ];
+            }
+        });
+
+        return $reportGroups;
     }
 
 }

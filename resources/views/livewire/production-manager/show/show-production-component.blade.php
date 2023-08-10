@@ -18,7 +18,7 @@
                                 <li><a class="dropdown-item" href="{{ route('production.transfer', $this->production->id) }}">Transfer Production</a></li>
                             @endcan
                             @can('rollback', $this->production)
-                                    <li><a onclick="confirm('Are you sure you want to rollback this production to complete  ?') || event.stopImmediatePropagation()" wire:click.prevent="rollbackProduction({{ $this->production->id }})" href="javascript:" class="dropdown-item">RollBack Complete</a></li>
+                                <li><a onclick="confirm('Are you sure you want to rollback this production to complete  ?') || event.stopImmediatePropagation()" wire:click.prevent="rollbackProduction({{ $this->production->id }})" href="javascript:" class="dropdown-item">RollBack Complete</a></li>
                             @endcan
                             @can('complete', $this->production)
                                 <li><a class="dropdown-item" href="{{ route('production.complete', $this->production->id) }}">Complete Production</a></li>
@@ -80,6 +80,19 @@
             <span class="d-block pb-2"><strong>Unibloc : </strong>{{$this->production->ending_unibloc- $this->production->starting_unibloc }}</span>
             <span class="d-block pb-2"><strong>Oriental : </strong>{{ $this->production->ending_oriental-$this->production->starting_oriental }}</span>
             <span class="d-block pb-2"><strong>Labelling : </strong>{{ $this->production->ending_labelling- $this->production->starting_labelling }}</span>
+            @php
+                $collectReport = collect($this->packageReport);
+                $count = $collectReport->filter(function($item){
+                    return $item['type'] == 'group';
+                })->count();
+            @endphp
+            @if($count > 0)
+                @foreach($this->packageReport as $report)
+                    @if($report['type'] == "group")
+                        <span>{{ $report['name'] }} (Returns): {{ $report['returns'] }}</span>
+                    @endif
+                @endforeach
+            @endif
         </address>
 
     </div>

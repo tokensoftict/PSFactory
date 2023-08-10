@@ -29,6 +29,10 @@ return new class extends Migration
         Schema::table('material_return_items', function (Blueprint $table) {
             $table->decimal("edited_measurement",20,5)->change();
         });
+
+        Schema::table('rawmaterials', function (Blueprint $table) {
+            $table->decimal("measurement",20,5)->change();
+        });
     }
 
     /**
@@ -38,6 +42,7 @@ return new class extends Migration
      */
     public function down()
     {
+
         Schema::table('purchaseorderitems', function (Blueprint $table) {
             $table->decimal("measurement",8,2)->change();
         });
@@ -54,5 +59,10 @@ return new class extends Migration
         Schema::table('material_return_items', function (Blueprint $table) {
             $table->decimal("edited_measurement",8,2)->change();
         });
+
+        Schema::table('rawmaterials', function (Blueprint $table) {
+            $table->decimal("measurement",8,2)->change();
+        });
+
     }
 };
