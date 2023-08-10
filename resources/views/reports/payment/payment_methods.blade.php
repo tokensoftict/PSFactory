@@ -46,7 +46,7 @@
 
 @section('pageHeaderAction')
 
-    <x-report-filter-component :filters="$filters"/>
+    <x-Report-filter-component :filters="$filters"/>
 
 @endsection
 
