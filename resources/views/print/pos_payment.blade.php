@@ -79,9 +79,12 @@
             <td>{{ twelveHourClock($payment->payment_time) }}</td>
         </tr>
         <tr>
-            <td>Customer</td>
-
-            <td>{{ $payment->customer->firstname.' '.$payment->customer->lastname }}</td>
+            <th align="left">Customer</th>
+            @if($payment->customer->type === "COMPANY")
+                <td>{{ $payment->customer->company_name }}</td>
+            @else
+                <td>{{ $payment->customer->firstname }} {{ $payment->customer->lastname }}</td>
+            @endif
         </tr>
         <tr>
             <td>Cashier</td>

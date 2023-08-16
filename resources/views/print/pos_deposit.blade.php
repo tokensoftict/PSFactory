@@ -92,10 +92,14 @@
             <td>{{ date("h:i a",strtotime($deposit->deposit_time)) }}</td>
         </tr>
         <tr>
-            <td>Customer</td>
-            <td>{{ $deposit->customer->firstname }} {{ $deposit->customer->lastname }}</td>
+            <th align="left">Customer</th>
+            @if($deposit->customer->type === "COMPANY")
+                <td>{{ $deposit->customer->company_name }}</td>
+            @else
+                <td>{{ $deposit->customer->firstname }} {{ $deposit->customer->lastname }}</td>
+            @endif
         </tr>
-        <tr>        <tr>
+        <tr>
             <td>Mode of Payment</td>
             <td>
                 @if($deposit->paymentMethodTable->count() > 1)
