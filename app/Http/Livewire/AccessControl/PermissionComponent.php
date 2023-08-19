@@ -26,6 +26,7 @@ class PermissionComponent extends Component
 
     public function mount()
     {
+        $this->privileges = [];
         $id = $this->usergroup->id;
         $this->modules = Module::where('status', '=', '1')
             ->with(['tasks','tasks.permissions' => function ($q) use ($id) {
