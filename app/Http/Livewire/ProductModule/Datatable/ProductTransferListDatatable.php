@@ -64,7 +64,7 @@ class ProductTransferListDatatable extends ExportDataTableComponent
             Column::make("Action","id")
                 ->format(function($value, $row, Column $column) {
 
-                    $htm = "No Action";
+                    $html = "No Action";
 
                     if (($row->status_id === status('Pending') && userCanView('product.approveTransfer')) || $row->status_id !== status('Pending')){
                         $html = '<div class="dropdown"><button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-dots-horizontal-rounded"></i></button>';

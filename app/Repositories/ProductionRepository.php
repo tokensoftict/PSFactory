@@ -195,7 +195,7 @@ class ProductionRepository
         $item['production_time'] = $production->production_time;
         $item['department_id'] =   $material->department_id;
         $item['returns'] = 0;
-        $item['extra'] = !$extra ? 0 : 1;
+        $item['extra'] = $extra;
         $item['production_id'] = $production->id;
         $item['convert_measurement'] = UnitConverterRepository::convert(
             $material->materialtype->production_measurement_unit,

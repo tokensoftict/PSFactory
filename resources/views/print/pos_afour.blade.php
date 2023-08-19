@@ -107,7 +107,7 @@
 
     </table>
 
-    <table  @if($invoice->status_id === status('Dispatched')) style="margin-top: -90px;" @else style="margin-top: -20px;" @endif  class="inv_info">
+    <table  @if($invoice->status_id === status('Dispatched')) style="margin-top: -90px;" @else style="margin-top: 10px;" @endif  class="inv_info">
 
         <tr>
             <th  align="left">Reference Number</th>

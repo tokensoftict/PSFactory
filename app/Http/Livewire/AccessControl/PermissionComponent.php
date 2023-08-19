@@ -63,6 +63,7 @@ class PermissionComponent extends Component
         $this->usergroup->group_tasks()->sync($selectedPrivileges);
 
         Cache::forget('route-permission-'.$this->usergroup->id);
+        Cache::forget('usergroups');
         loadUserMenu($this->usergroup->id);
         $this->alert(
             "success",
