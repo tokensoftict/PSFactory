@@ -8,6 +8,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 abstract class ExportDataTableComponent extends DataTableComponent
 {
 
+    public array $perPageAccepted = [100, 200, 500, 1000, -1];
 
     public function getExportBuilder() : Builder
     {
