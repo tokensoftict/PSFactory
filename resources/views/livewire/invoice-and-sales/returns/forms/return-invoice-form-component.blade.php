@@ -54,7 +54,7 @@
                             <div class="col-6">
                             <div class="mb-3">
                                 <label>Return Reason</label>
-                                <select class="form-control" id="invoice_returns_reason_id" name="invoice_returns_reason_id" x-model="invoice_returns_reason_id" x-init="select2Alpine('invoice_returns_reason_id')">
+                                <select class="form-control" required id="invoice_returns_reason_id" name="invoice_returns_reason_id" x-model="invoice_returns_reason_id" x-init="select2Alpine('invoice_returns_reason_id')">
                                     <option value="">Select Reason</option>
                                     @foreach( $this->invoiceReasons as $reason)
                                         <option value="{{ $reason->id }}">{{ $reason->title }}</option>

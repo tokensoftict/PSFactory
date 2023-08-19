@@ -70,7 +70,7 @@ class PurchaseOrderRepository
     {
         $name = explode(" ",$name);
 
-        return  Rawmaterial::query()->with(['materialtype'])->where(function($query) use(&$name){
+        return  Rawmaterial::query()->with(['materialtype'])->where('status', "1")->where(function($query) use(&$name){
             foreach ($name as $char) {
                 $query->where('name', 'LIKE', "%$char%");
             }
