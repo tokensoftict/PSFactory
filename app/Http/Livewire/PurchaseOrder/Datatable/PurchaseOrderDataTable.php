@@ -26,7 +26,7 @@ class PurchaseOrderDataTable extends ExportDataTableComponent
 
     public function builder(): Builder
     {
-        return Purchaseorder::query()->select('*')->filterdata($this->filters);
+        return Purchaseorder::query()->select('*')->filterdata($this->filters)->orderBy('purchaseorders.id', 'DESC');
 
     }
 

@@ -187,7 +187,7 @@
         <div class="col-lg-4 col-sm-6 col-12">
             <div class="mb-3">
                 <label>Yield</label>
-                <input type="text" class="form-control" wire:model.defer="data.yield_quantity" placeholder="Yield Quantity">
+                <input type="text" readonly class="form-control" wire:model.defer="data.yield_quantity" placeholder="Yield Quantity">
                 @error('data.yield_quantity') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
         </div>

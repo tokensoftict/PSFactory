@@ -17,6 +17,8 @@ class ShowProductionComponent extends Component
 
     public $departments;
 
+    public array $production_items;
+
     private $packageReport;
 
     public function boot()

@@ -189,7 +189,7 @@ class ProductTransferListDatatable extends ExportDataTableComponent
 
         dispatch(new AddLogToProductBinCard($bincards));
 
-        $this->productTransfer->transferable->update(['status_id'=>status("Complete")]);
+        //$this->productTransfer->transferable->update(['status_id'=>status("Complete")]); dont complete the production
 
         ProductRepository::convertPiecesToCarton();
 

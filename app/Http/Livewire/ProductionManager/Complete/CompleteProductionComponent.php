@@ -6,6 +6,7 @@ use App\Jobs\AddLogToRawMaterialBinCard;
 use App\Models\MaterialReturn;
 use App\Models\Production;
 use App\Models\Rawmaterial;
+use App\Models\Stockbatch;
 use App\Repositories\MaterialReturnRepository;
 use App\Repositories\ProductionRepository;
 use Carbon\Carbon;
@@ -135,7 +136,7 @@ class CompleteProductionComponent extends Component
 
         if($error === true) return true;
 
-        $this->data['status_id'] = status('Ready');
+        $this->data['status_id'] = status('Complete');
 
         $this->data['completed_id'] = auth()->id();
 
@@ -238,6 +239,8 @@ class CompleteProductionComponent extends Component
             ]
         );
 
+        Stockbatch::where('production_id', $this->production->id)->update(['expiry_date' => $this->production->expiry_date]);
+        // set th expiry date of the batch
         return redirect()->route('production.index');
     }
 

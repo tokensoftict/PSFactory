@@ -40,6 +40,7 @@ class ProductionRepository
         "name" => "",
         "measurement" => 0,
         "unit" => "",
+        'status_id'  => "5",
         // "returns" => 0,
         // "production_date" => "",
         // "production_time" => ""
@@ -100,8 +101,6 @@ class ProductionRepository
 
     public function requestMaterial(Production $production)
     {
-
-
         $eventData = [
             'request_date' => dailyDate(),
             'request_time' => Carbon::now()->toDateTimeLocalString(),
@@ -136,22 +135,25 @@ class ProductionRepository
 
     public function update(Production $production, $data) : Production
     {
-        $production->update($data);
+        return DB::transaction(function() use($production, $data){
 
-        $production->expected_quantity = $production->production_template->expected_quantity;
+            $production->update($data);
 
-        $production->update();
+            $production->expected_quantity = $production->production_template->expected_quantity;
 
-        $production->material_request()->delete(); // already requested material
+            $production->update();
 
-        $this->saveProductionMaterial($production);
+            $production->material_request()->delete(); // already requested material
 
-        if($production->status_id === status('Waiting-Material'))
-        {
-            $this->requestMaterial($production);
-        }
+            $this->saveProductionMaterial($production);
 
-        return $production;
+            if($production->status_id === status('Waiting-Material'))
+            {
+                $this->requestMaterial($production);
+            }
+
+            return $production;
+        });
     }
 
     public function get($id)
@@ -162,33 +164,37 @@ class ProductionRepository
     public function saveProductionMaterial(Production $production, $extra = false) : Production
     {
 
-        $data_items = $production->production_template->production_template_items()->get()->map->only(...array_keys(self::$productionMaterial))->toArray();
+        return DB::transaction(function() use($production, $extra){
+            $data_items = $production->production_template->production_template_items()->get()->map->only(...array_keys(self::$productionMaterial))->toArray();
 
-        $data = [];
-        foreach ($data_items as $item)
-        {
-            $data[] = new ProductionMaterialItem($this->prepareProductionItems($item, $production, $extra));
-        }
+            $data = [];
+            foreach ($data_items as $item)
+            {
+                $data[] = new ProductionMaterialItem($this->prepareProductionItems($item, $production, $extra));
+            }
 
-        $production->production_material_items()->delete();
+            $production->production_material_items()->delete();
 
-        $production->production_material_items()->saveMany($data);
+            $production->production_material_items()->saveMany($data);
 
-        return $production;
+            return $production;
+        });
     }
 
 
     public function createProductionExtraMaterial($production, array $item) : int
     {
-        return $production->production_material_items()->insertGetId(
-            $this->prepareProductionItems($item, $production, true)
-        );
+        return DB::transaction(function() use($production, $item){
+            return $production->production_material_items()->insertGetId(
+                $this->prepareProductionItems($item, $production, true)
+            );
+        });
     }
 
 
     private function prepareProductionItems(array $item, Production $production, $extra = false) : array
     {
-        $checkIfProductExist = $production->production_material_items()->where('rawmaterial_id',$item['rawmaterial_id'])->count();
+        $checkIfProductExist = $production->production_material_items()->where('rawmaterial_id',$item['rawmaterial_id'])->where('status_id', '!=', status('Declined'))->count();
         $extra = $checkIfProductExist > 0 ? 1 : 0;
         $material = Rawmaterial::find($item['rawmaterial_id']);
         $item['production_date'] = $production->production_date;
@@ -220,18 +226,18 @@ class ProductionRepository
     {
         $totalUsed = $production->production_material_items->sum('total_cost_price');
 
-       $cost_price = abs(round($totalUsed / $production->yield_quantity));
+        $cost_price = abs(round($totalUsed / $production->yield_quantity));
 
-       if($cost_price >= $production->stock->selling_price)
-       {
-           return "Cost Price Generated is greater or equal to current Selling Price (".money($production->stock->selling_price).") Cost Price =".money($cost_price)." Please re-confirm selling price";
-       }
+        if($cost_price >= $production->stock->selling_price)
+        {
+            return "Cost Price Generated is greater or equal to current Selling Price (".money($production->stock->selling_price).") Cost Price =".money($cost_price)." Please re-confirm selling price";
+        }
 
-       $production->cost_price = abs(round($totalUsed / $production->yield_quantity));
+        $production->cost_price = abs(round($totalUsed / $production->yield_quantity));
 
-       $production->update();
+        $production->update();
 
-       return true;
+        return true;
     }
 
 

@@ -29,6 +29,7 @@ class TransferProductionComponent extends Component
     public function mount()
     {
         $this->data = $this->production->toArray();
+        $this->data['yield_quantity'] = $this->data['yield_quantity'] - $this->data['total_transferred'];
         $this->data['carton_quantity_pcs'] = $this->data['yield_quantity'] % $this->production->stock->carton;
         $this->data['carton_quantity'] = floor($this->data['yield_quantity'] / $this->production->stock->carton);
         $this->data['tt_transfer'] = $this->data['carton_quantity']." carton";
@@ -77,16 +78,18 @@ class TransferProductionComponent extends Component
             'transfer_by_id' => auth()->id(),
             'status_id' => status('Pending'),
         ];
-
+/*
         ProductTransfer::where([
             'stock_id' =>  $this->production->stock_id,
             'transferable_type' => Production::class,
             'transferable_id' => $this->production->id,
         ])->delete();
-
+*/
         ProductTransfer::create($product_transfer);
 
-        $this->production->status_id = status('Transferred');
+        //$this->production->status_id = status('Transferred');
+
+        $this->production->total_transferred +=$this->data['yield_quantity'];
 
         $this->production->update();
 

@@ -24,7 +24,7 @@ class ProductionManagerDatatableComponent extends ExportDataTableComponent
 
     public function builder(): Builder
     {
-       return Production::query()->select('*')->filterdata($this->filters);
+        return Production::query()->select('*')->filterdata($this->filters);
 
     }
 
@@ -61,6 +61,15 @@ class ProductionManagerDatatableComponent extends ExportDataTableComponent
                         if(auth()->user()->can('edit', $row)) {
                             $html .= '<li><a href="' . route('production.edit', $row->id) . '" class="dropdown-item">Edit Production</a></li>';
                         }
+
+                        if(auth()->user()->can('enter_yield', $row)) {
+                            $html .= '<li><a href="' . route('production.enter_yield', $row->id) . '" class="dropdown-item">Edit Production Yield</a></li>';
+                        }
+
+                        if(auth()->user()->can('edit_production_item', $row)) {
+                            $html .= '<li><a href="' . route('production.edit_production_item', $row->id) . '" class="dropdown-item">Edit Production Items</a></li>';
+                        }
+
                         if(auth()->user()->can('transfer', $row)) {
                             $html .= '<li><a href="' . route('production.transfer', $row->id) . '" class="dropdown-item">Transfer Production</a></li>';
                         }

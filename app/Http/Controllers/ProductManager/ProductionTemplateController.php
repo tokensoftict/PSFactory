@@ -69,5 +69,20 @@ class ProductionTemplateController extends Controller
     }
 
 
+    public function duplicate(ProductionTemplate $productionTemplate)
+    {
+        $productionTemplate->load(['production_template_items']);
+
+        $newProductionTemplate = $productionTemplate->replicate();
+
+        $newProductionTemplate->name = $newProductionTemplate->name." - "."Duplicated";
+        $newProductionTemplate->push();
+
+        foreach ($productionTemplate->production_template_items as $item){
+            $newProductionTemplate->production_template_items()->save($item);
+        }
+        return redirect()->route('template.edit', $newProductionTemplate->id);
+    }
+
 
 }

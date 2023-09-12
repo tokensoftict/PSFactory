@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers\RawMaterialManager;
 
+use App\Classes\Settings;
 use App\Http\Controllers\Controller;
 use App\Models\MaterialRequest;
 use App\Models\MaterialReturn;
 use Illuminate\Http\Request;
+use PDF;
 
 class RawMaterialController extends Controller
 {
+    public Settings $settings;
+
+    public function __construct(Settings $settings)
+    {
+        $this->settings = $settings;
+    }
+
     public function index(){
 
         return setPageContent('rawmaterialmanager.index',['filters'=>[]]);
@@ -103,6 +112,17 @@ class RawMaterialController extends Controller
     public function toggle()
     {
 
+    }
+
+    public function printMaterialRequest(MaterialRequest $materialRequest)
+    {
+        $data['materialRequest'] =$materialRequest;
+        $data['store'] = $this->settings->store();
+        $pdf = PDF::loadView("print.transfer_print",$data);
+        $pdf->getMpdf()->SetWatermarkText(strtoupper($materialRequest->status->name));
+        $pdf->getMpdf()->showWatermarkText = true;
+
+        return $pdf->stream('document.pdf');
     }
 
 }

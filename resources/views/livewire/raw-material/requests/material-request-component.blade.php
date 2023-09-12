@@ -45,73 +45,82 @@
 
             </div>
 
-            <div class="row">
-                <div class=" col-12">
-                    <div class="mb-3">
-                        <label>Description</label>
-                        <span class="form-control">{{  $this->materialRequest->description }}</span>
+            @if(\Illuminate\Support\Str::length($this->materialRequest->description) > 1)
+                <div class="row">
+                    <div class=" col-12">
+                        <div class="mb-3">
+                            <label>Description</label>
+                            <span class="form-control">{{  $this->materialRequest->description }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
-            <div class="row">
-                <div class="col-md-8">
-                </div>
-                <div class="col-md-4">
-                    @if($this->showApproval)
-                        @if(userCanView('rawmaterial.approverequest'))
-                            <a href="javascript:void(0);"  onclick="confirm('Are you sure you want to approve this request ?, this can not be reversed') || event.stopImmediatePropagation()"   wire:click.prevent="approveRequest" wire:loading.attr="disabled" wire:target="approveRequest,declineRequest" class="btn btn-success">Approve Request
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <h3>Request Item(s) List
 
-                                <i wire:loading.remove wire:target="approveRequest" class="fa fa-check"></i>
-                                <span wire:loading wire:target="approveRequest" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            </a>
+                        <span class="float-end">
+                        @if($this->showApproval)
+                            @if(userCanView('rawmaterial.approverequest'))
+                                <a href="javascript:void(0);"  onclick="confirm('Are you sure you want to approve this request ?, this can not be reversed') || event.stopImmediatePropagation()"   wire:click.prevent="approveRequest" wire:loading.attr="disabled" wire:target="approveRequest,declineRequest" class="btn btn-success btn-sm">Approve Request
+
+                                    <i wire:loading.remove wire:target="approveRequest" class="fa fa-check"></i>
+                                    <span wire:loading wire:target="approveRequest" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                </a>
+                            @endif
+                            @if(userCanView('rawmaterial.declinerequest'))
+                                <a href="javascript:void(0);" onclick="confirm('Are you sure you want to decline this request ?, this can not be reversed') || event.stopImmediatePropagation()" wire:click.prevent="declineRequest" wire:target="approveRequest,declineRequest" wire:loading.attr="disabled"  class="btn btn-primary btn-sm">Decline Request
+
+                                    <i wire:loading.remove wire:target="declineRequest" class="fa fa-trash"></i>
+
+                                    <span wire:loading wire:target="declineRequest" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                </a>
+                            @endif
                         @endif
-                        &nbsp;  &nbsp;  &nbsp;
-                        @if(userCanView('rawmaterial.declinerequest'))
-                            <a href="javascript:void(0);" onclick="confirm('Are you sure you want to decline this request ?, this can not be reversed') || event.stopImmediatePropagation()" wire:click.prevent="declineRequest" wire:target="approveRequest,declineRequest" wire:loading.attr="disabled"  class="btn btn-primary">Decline Request
 
-                                <i wire:loading.remove wire:target="declineRequest" class="fa fa-trash"></i>
-
-                                <span wire:loading wire:target="declineRequest" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            </a>
+                        @if(userCanView('rawmaterial.print'))
+                                &nbsp;   &nbsp;
+                            <a href="{{ route('rawmaterial.print', $materialRequest->id) }}" class="btn btn-primary btn-sm  print">Print <i class="fa fa-print"></i></a>
                         @endif
-                    @endif
-
+                        </span>
+                    </h3>
                 </div>
-            </div>
-            <h3>Request Item(s) List</h3>
-            <div class="table-responsive">
-                <br/>
-                <table class="table" wire:ignore>
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Material Name</th>
-                        <th>Department</th>
-                        <th>Request</th>
-                        <th>Status</th>
-                        <th>Convert Measurement</th>
-                        <th>Resolved Date</th>
-                        <th>Resolved Time</th>
-                        <th>Resolved By</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($this->items as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->department->name }}</td>
-                            <td>{{ $item->measurement }} {{ $item->unit }}</td>
-                            <td>{!! showStatus($item->status_id) !!}</td>
-                            <td> {{ $item->convert_measurement }} {{ $item->convert_unit }}</td>
-                            <td>{{ $item->resolve_date ? eng_str_date($item->resolve_date) : "" }}</td>
-                            <td>{{ $item->resolve_time ? twelveHourClock($item->resolve_time) : "" }}</td>
-                            <td>{{ $item->resolve_by->name ?? "" }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                <div class="col-lg-12" >
+                    <div class="table-responsive">
+                        <br/>
+                        <table class="table" wire:ignore>
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Material Name</th>
+                                <th>Department</th>
+                                <th>Request</th>
+                                <th>Status</th>
+                                <th>Convert Measurement</th>
+                                <th>Resolved Date</th>
+                                <th>Resolved Time</th>
+                                <th>Resolved By</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($this->items as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->department->name }}</td>
+                                    <td>{{ $item->measurement }} {{ $item->unit }}</td>
+                                    <td>{!! showStatus($item->status_id) !!}</td>
+                                    <td> {{ $item->convert_measurement }} {{ $item->convert_unit }}</td>
+                                    <td>{{ $item->resolve_date ? eng_str_date($item->resolve_date) : "" }}</td>
+                                    <td>{{ $item->resolve_time ? twelveHourClock($item->resolve_time) : "" }}</td>
+                                    <td>{{ $item->resolve_by->name ?? "" }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -88,4 +88,14 @@ class MaterialRequest extends Model
 	}
 
 
+    public function print_material_request_item_by_department()
+    {
+        if(in_array(auth()->user()->department_id, [1,2])){
+            return $this->material_request_items->filter(function($item){
+                return $item->department_id ==  auth()->user()->department_id;
+            });
+        }
+        return $this->material_request_items;
+    }
+
 }

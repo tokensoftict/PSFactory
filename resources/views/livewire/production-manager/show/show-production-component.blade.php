@@ -17,6 +17,12 @@
                             @can('transfer', $this->production)
                                 <li><a class="dropdown-item" href="{{ route('production.transfer', $this->production->id) }}">Transfer Production</a></li>
                             @endcan
+                            @can('enter_yield', $this->production)
+                                <li><a class="dropdown-item" href="{{ route('production.enter_yield', $this->production->id) }}">Enter Production Yield</a></li>
+                            @endcan
+                            @can('edit_production_item', $this->production)) {
+                                <li><a class="dropdown-item" href="{{ route('production.edit_production_item', $row->id) }}" class="dropdown-item">Edit Production Items</a></li>
+                            @endcan
                             @can('rollback', $this->production)
                                 <li><a onclick="confirm('Are you sure you want to rollback this production to complete  ?') || event.stopImmediatePropagation()" wire:click.prevent="rollbackProduction({{ $this->production->id }})" href="javascript:" class="dropdown-item">RollBack Complete</a></li>
                             @endcan
@@ -59,6 +65,7 @@
             <span class="d-block pb-2"> <strong>Batch Number : </strong>{{ $this->production->batch_number }}</span>
             <span class="d-block pb-2"> <strong>Expected Quantity : </strong>{{ $this->production->expected_quantity }}</span>
             <span class="d-block pb-2"> <strong>Yield Quantity: </strong>{{ $this->production->yield_quantity }}</span>
+            <span class="d-block pb-2"> <strong>Total Transfer: </strong>{{ $this->production->total_transferred }}</span>
         </address>
 
 
@@ -117,6 +124,7 @@
                         <th>Returns</th>
                         <th>Resolved Date</th>
                         <th>Resolved Time</th>
+                        <th>Status</th>
                         <th>Resolved By</th>
                     </tr>
                     </thead>
@@ -129,9 +137,9 @@
             DB::raw('SUM(measurement) as measurement'),
             DB::raw('SUM(total_cost_price) as total_cost_price'),
             DB::raw('Max(approved_date) as approved_date'),
-             DB::raw('Max(approved_time) as approved_time'),
-               DB::raw('Max(approved_by) as approved_by'),
-                  DB::raw('Max(approved_by) as approved_by'),
+            DB::raw('Max(approved_time) as approved_time'),
+            DB::raw('Max(approved_by) as approved_by'),
+            DB::raw('Max(status_id) as status_id'),
         )
             ->where('department_id', $department->id)
             ->groupBy('rawmaterial_id')
@@ -152,6 +160,7 @@
                             <td>{{ $item->returns }} {{ $item->rawmaterial->materialtype->production_measurement_unit }}</td>
                             <td>{{ $item->approved_date ?  eng_str_date($item->approved_date) : "" }}</td>
                             <td>{{ $item->approved_time ? twelveHourClock($item->approved_time) : "" }}</td>
+                            <td>{!! showStatus($item->status_id) !!}</td>
                             <td>{{ $item->approved->name ?? "" }}</td>
                         </tr>
                     @endforeach

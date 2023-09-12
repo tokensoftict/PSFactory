@@ -93,4 +93,29 @@ class ProductionController extends Controller
     }
 
 
+
+    public function edit_production_item(Production $production)
+    {
+        $data = [
+            'production'=> $production,
+            'title'=>'Edit Production Item',
+            'subtitle'=>'Edit Production Item',
+        ];
+
+        return view('production.edit_production_item',$data);
+    }
+
+
+
+    public function enter_yield(Production $production)
+    {
+        $data = [
+            'production'=> $production,
+            'title'=>'Enter Production Yield',
+            'subtitle'=>'Enter Production Yield',
+        ];
+
+        return view('production.enter_production_yield',$data);
+    }
+
 }

@@ -81,6 +81,10 @@ class ProductTemplateComponentDatatable extends ExportDataTableComponent
                         if (userCanView('template.update')) {
                             $html .= '<a href="' . route('template.update', $row->id) . '" class="dropdown-item">Edit Template</a></li>';
                         }
+
+                        if (userCanView('template.duplicate')) {
+                            $html .= '<a href="' . route('template.duplicate', $row->id) . '" class="dropdown-item">Duplicate Template</a></li>';
+                        }
                     }
                     $html .='</ul>';
                     return $html;

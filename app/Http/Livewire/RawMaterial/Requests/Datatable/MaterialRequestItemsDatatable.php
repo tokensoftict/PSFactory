@@ -21,7 +21,7 @@ class MaterialRequestItemsDatatable extends ExportDataTableComponent
 
     public function builder(): Builder
     {
-        return  MaterialRequestItem::query()->select("*")->filterdata($this->filters);
+        return  MaterialRequestItem::query()->select("*")->filterdata($this->filters)->orderBy('id', 'DESC');
 
     }
 

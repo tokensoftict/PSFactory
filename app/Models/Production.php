@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $status_id
  * @property string|null $remark
  * @property int $user_id
+ * @property int $total_transferred
  * @property int|null $completed_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -51,6 +52,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Status $status
  * @property Stock $stock
  * @property Collection|ProductionMaterialItem[] $production_material_items
+ * @property Collection|ProductionYieldHistory[] $production_yield_histories
  *
  * @package App\Models
  */
@@ -81,7 +83,8 @@ class Production extends Model
 		'ending_unibloc' => 'int',
 		'ending_oriental' => 'int',
 		'ending_labelling' => 'int',
-        'packaging_reports' => 'json'
+        'packaging_reports' => 'json',
+        'total_transferred' => 'int'
 	];
 
 	protected $dates = [
@@ -117,7 +120,8 @@ class Production extends Model
 		'ending_oriental',
 		'ending_labelling',
         'department_id',
-        'packaging_reports'
+        'packaging_reports',
+        'total_transferred',
 	];
 
 	public function user()
@@ -159,6 +163,11 @@ class Production extends Model
 	{
 		return $this->hasMany(ProductionMaterialItem::class);
 	}
+
+    public function production_yield_histories()
+    {
+        return $this->hasMany(ProductionYieldHistory::class);
+    }
 
     public function scopefilterdepartment($query)
     {

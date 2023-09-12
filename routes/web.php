@@ -208,6 +208,8 @@ Route::middleware(['auth'])->group(function () {
 
                 Route::get('material/requests/{materialRequest}/decline', ['as' => 'declinerequest', 'uses' => 'RawMaterialController@declinerequest',  'custom_label'=>'Decline Transfer Requests']);
 
+                Route::get('material/requests/{materialRequest}/print', ['as' => 'print', 'uses' => 'RawMaterialController@printMaterialRequest',  'custom_label'=>'Print Transfer Requests']);
+
 
 
                 Route::get('material/returns', ['as' => 'returns', 'uses' => 'RawMaterialController@returns', 'visible' => true, 'custom_label'=>'Material Returns']);
@@ -303,6 +305,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('', ['as' => 'store', 'uses' => 'ProductionTemplateController@store']);
                 Route::get('{productionTemplate}', ['as' => 'show', 'uses' => 'ProductionTemplateController@show']);
                 Route::get('{productionTemplate}/edit', ['as' => 'edit', 'uses' => 'ProductionTemplateController@edit']);
+                Route::get('{productionTemplate}/duplicate', ['as' => 'duplicate', 'uses' => 'ProductionTemplateController@duplicate', 'custom_label'=>'Duplicate Production Template']);
                 Route::get('{productionTemplate}/toggle', ['as' => 'toggle', 'uses' => 'ProductionTemplateController@toggle']);
                 Route::put('{productionTemplate}', ['as' => 'update', 'uses' => 'ProductionTemplateController@update']);
                 Route::delete('{productionTemplate}', ['as' => 'destroy', 'uses' => 'ProductionTemplateController@destroy']);
@@ -319,10 +322,12 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('', ['as' => 'store', 'uses' => 'ProductionController@store']);
                 Route::get('/rollback', ['as' => 'rollback', 'uses' => 'ProductionController@rollback']);
                 Route::get('{production}/edit', ['as' => 'edit', 'uses' => 'ProductionController@edit']);
+                Route::get('{production}/edit_production_item', ['as' => 'edit_production_item', 'uses' => 'ProductionController@edit_production_item', 'custom_label'=> 'Edit Production Items']);
                 Route::put('{production}', ['as' => 'update', 'uses' => 'ProductionController@update']);
                 Route::get('{production}/delete', ['as' => 'destroy', 'uses' => 'ProductionController@destroy']);
                 Route::get('{production}/complete', ['as' => 'complete', 'uses' => 'ProductionController@complete']);
                 Route::get('{production}/transfer', ['as' => 'transfer', 'uses' => 'ProductionController@transfer', 'custom_label'=> 'Transfer Production']);
+                Route::get('{production}/enter_yield', ['as' => 'enter_yield', 'uses' => 'ProductionController@enter_yield', 'custom_label'=> 'Enter Production Yield']);
             });
         });
 
