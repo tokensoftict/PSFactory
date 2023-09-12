@@ -8,7 +8,7 @@
                         <select class="form-control" x-init="select2Alpine('request_id')" id="request_id" x-ref="production_id" x-model="request_id" name="request_id">
                             <option value="">Select Production</option>
                             @foreach($this->productions as $production)
-                                <option value="{{ $production->id }}">{{ $production->name }}</option>
+                                <option value="{{ $production->id }}">{{ $production->name }} - {{ $production->productionline->name }}</option>
                             @endforeach
                         </select>
                     </div>
