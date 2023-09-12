@@ -130,7 +130,7 @@ class ProductionMaterialItem extends Model
     {
         $department_id = auth()->user()->department_id;
 
-        if($department_id !== NULL) return $query;
+        if($department_id == NULL) return $query;
 
         return $query->where($this->table.'.department_id', $department_id);
     }
