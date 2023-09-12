@@ -32,6 +32,7 @@ class ProductBinCardComponentDatatable extends ExportDataTableComponent
             Column::make("Name", "stock.name")->searchable(),
             Column::make("User", "user.name")->sortable()->searchable(),
             Column::make("Type", "type")->sortable(),
+            Column::make("Batch Number", "stockbatch.batch_number")->sortable(),
             Column::make("Date", "date_added")->sortable(),
             Column::make("In", "in")->sortable(),
             Column::make("Out", "out")->sortable(),
