@@ -41,9 +41,8 @@ class MaterialRequestDatatable extends ExportDataTableComponent
                     return eng_str_date($value);
                 }),
             Column::make("Production Batch", "id")->format(function($value, $row, Column $column){
-                return $row->request->name ?? "N/A";
-            })
-                ,
+                return  $row->request?->name . " - ".$row->request?->batch_number ?? "N/A";
+            }),
             Column::make("Request time", "request_time")
                 ->format(function($value, $row, Column $column){
                     return twelveHourClock($value);
