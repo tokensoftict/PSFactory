@@ -4,6 +4,7 @@ namespace App\Http\Livewire\RawMaterial\Requests\Datatable;
 
 use App\Classes\ExportDataTableComponent;
 use App\Classes\Settings;
+use App\Models\Production;
 use App\Traits\SimpleDatatableComponentTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -21,7 +22,7 @@ class MaterialRequestDatatable extends ExportDataTableComponent
 
     public function builder(): Builder
     {
-        return  MaterialRequest::query()->select("*")->filterdata($this->filters)->orderBy('material_requests.id', 'DESC');
+        return  MaterialRequest::query()->select("*")->with(['request'])->filterdata($this->filters)->orderBy('material_requests.id', 'DESC');
 
     }
 
@@ -39,6 +40,10 @@ class MaterialRequestDatatable extends ExportDataTableComponent
                 ->format(function($value, $row, Column $column){
                     return eng_str_date($value);
                 }),
+            Column::make("Production Batch", "id")->format(function($value, $row, Column $column){
+                return $row->request->name ?? "N/A";
+            })
+                ,
             Column::make("Request time", "request_time")
                 ->format(function($value, $row, Column $column){
                     return twelveHourClock($value);

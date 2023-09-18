@@ -183,4 +183,9 @@ class Production extends Model
     {
         return $this->morphOne(MaterialReturn::class,'return');
     }
+
+    public function request()
+    {
+        return $this->morphOne(MaterialRequest::class,'request');
+    }
 }

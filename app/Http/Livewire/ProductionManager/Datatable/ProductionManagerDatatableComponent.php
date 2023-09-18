@@ -36,6 +36,9 @@ class ProductionManagerDatatableComponent extends ExportDataTableComponent
                 ->sortable()->searchable(),
             Column::make("Product", "stock.name")
                 ->sortable()->searchable(),
+            Column::make("Date", 'production_date')->format(function ($value, $row, Column $column){
+                return $row->production_date->format('d/m/Y');
+            })->sortable()->searchable(),
             Column::make("Department", "department.name")
                 ->sortable()->searchable(),
             Column::make("Template", "production_template.name")

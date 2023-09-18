@@ -32,6 +32,18 @@
                 </div>
                 <div class="col-lg-3 col-sm-7 col-12">
                     <div class="mb-3">
+                        <label>Production</label>
+                        <span class="form-control">{{ $this->materialRequest->request->name ?? "N/A" }}</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-7 col-12">
+                    <div class="mb-3">
+                        <label>Status</label>
+                        <span class="form-control">{!! showStatus($this->materialRequest->status_id) ?? "N/A" !!}</span>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-7 col-12">
+                    <div class="mb-3">
                         <label>Time</label>
                         <span class="form-control">{{ twelveHourClock($this->materialRequest->request_time) }}</span>
                     </div>
