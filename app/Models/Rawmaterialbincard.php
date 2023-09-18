@@ -17,10 +17,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $rawmaterialbatch_id
  * @property int|null $rawmaterial_id
  * @property int|null $user_id
- * @property int $in
- * @property int $out
- * @property int $return
- * @property int $total
+ * @property float $in
+ * @property float $out
+ * @property float $return
+ * @property float $total
  * @property string $type
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -41,10 +41,10 @@ class Rawmaterialbincard extends Model
 		'rawmaterialbatch_id' => 'int',
 		'rawmaterial_id' => 'int',
 		'user_id' => 'int',
-		'in' => 'int',
-		'out' => 'int',
-		'return' => 'int',
-		'total' => 'int'
+		'in' => 'float',
+		'out' => 'float',
+		'return' => 'float',
+		'total' => 'float'
 	];
 
 	protected $fillable = [
