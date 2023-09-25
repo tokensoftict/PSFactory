@@ -167,8 +167,6 @@ class ProductionPolicy
         if(!userCanView("production.enter_yield")) return  false;
 
         if(
-            $production->status_id === status('Complete')
-            ||
             $production->status_id === status('Pending')
             ||
             $production->status_id === status('Waiting-Material')
