@@ -167,7 +167,7 @@ class ProductionPolicy
         if(!userCanView("production.enter_yield")) return  false;
 
         if(
-            $production->status_id === status('Decline')
+            $production->status_id === status('Declined')
             ||
             $production->status_id === status('Pending')
             ||
