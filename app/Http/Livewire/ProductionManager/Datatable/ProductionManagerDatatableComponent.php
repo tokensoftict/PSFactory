@@ -55,7 +55,7 @@ class ProductionManagerDatatableComponent extends ExportDataTableComponent
             Column::make("Action","id")
                 ->format(function($value, $row, Column $column){
                     $html = "No action";
-                    if(can(['view','edit','transfer','complete','delete'], $row)) {
+                    if(can(['view','edit','transfer','complete','delete', 'enter_yield'], $row)) {
                         $html = '<div class="dropdown"><button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-dots-horizontal-rounded"></i></button>';
                         $html .= '<ul class="dropdown-menu dropdown-menu-end">';
                         if(auth()->user()->can('view', $row)) {
