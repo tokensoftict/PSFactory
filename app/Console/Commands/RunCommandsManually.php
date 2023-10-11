@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Classes\Settings;
+use App\Models\Stockopening;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
@@ -31,6 +32,13 @@ class RunCommandsManually extends Command
     {
 
         $settings = app(Settings::class);
+
+        $open = Stockopening::where('date_added',todaysDate())->count();
+
+
+        if($open === 0) {
+            Artisan::call('open:stock');
+        }
 
         if($settings->get('p_run_nears') === "run"){
             $settings->put("p_run_nears", 'running');
