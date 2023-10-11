@@ -21,6 +21,8 @@ Route::get('/auth', ['as' => 'login', 'uses' => 'Auth\LoginController@index']);
 
 Route::match(['get', 'post'], 'logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
+
+
 Route::middleware(['auth'])->group(function () {
 
     Route::match(['post','get'],'/profile','Auth\LoginController@profile')->name('profile');
@@ -28,6 +30,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard','DashboardController@index')->name('dashboard');
 
     Route::get('/reports','ReportsController@index')->name('reports');
+
+    Route::get('/run_p_nearos', 'ReportsController@run_p_nearos')->name('run_p_nearos');
+
+    Route::get('/run_nearos', 'ReportsController@run_nearos')->name('run_nearos');
 
 
     Route::prefix('ajax')->namespace('Ajax')->group(function () {

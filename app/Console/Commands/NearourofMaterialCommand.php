@@ -66,7 +66,7 @@ class NearourofMaterialCommand extends Command
                 })
                 ->groupBy('rawmaterial_id')->first();
 
-            if($_material->count() > 0) {
+            if($_material) {
                 $p = $_material->toArray();
                 $qty+=$p['convert_measurement'];
             }
@@ -74,9 +74,8 @@ class NearourofMaterialCommand extends Command
             $thresholad_score = round(abs(($qty/$day) * $supply_days));
 
             $now_qty = $material->measurement;
-
+            $qty_to_buy = $qty * $threshold_day;
             if($thresholad_score > $now_qty){
-                $qty_to_buy = $qty * $threshold_day;
                 $insert = [
                     'rawmaterial_id' => $material->id,
                     'threshold_type'=>"THRESHOLD",
@@ -99,14 +98,14 @@ class NearourofMaterialCommand extends Command
 
             if(isset($insert))
             {
-                Stockopening::create($insert);
+                Nearoutofmaterial::create($insert);
             }
 
         }
 
         $settings->put('material_nearos_status', 'okay');
         $settings->put('material_nearos_status_last_run', Carbon::now()->toDateTimeLocalString());
-
+        $settings->put('m_run_nears', 'okay');
         return Command::SUCCESS;
     }
 }

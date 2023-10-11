@@ -79,9 +79,10 @@ class NearoutofstockCommand extends Command
 
             $now_qty = $stock->totalBalance();
 
+            $qty_to_buy = $qty * $threshold_day;
 
             if($thresholad_score > $now_qty){
-                $qty_to_buy = $qty * $threshold_day;
+
                 $insert = [
                     'stock_id' => $stock->id,
                     'threshold_type'=>"THRESHOLD",
@@ -111,6 +112,7 @@ class NearoutofstockCommand extends Command
 
         $settings->put('nearos_status', 'okay');
         $settings->put('nearos_last_run', Carbon::now()->toDateTimeLocalString());
+        $settings->put('p_run_nears', 'okay');
 
         return Command::SUCCESS;
     }
