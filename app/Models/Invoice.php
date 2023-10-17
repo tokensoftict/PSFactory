@@ -45,7 +45,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $checked_by
  * @property int|null $packed_by
  * @property int|null $dispatched_by
- *
+ * @property string|null $vehicle_number
+
+ * @property string|null $driver_name
+ * @property string|null $driver_phone_number
+ * @property string|null $received_by
  * @property User|null $user
  * @property Customer|null $customer
  * @property Status $status
@@ -118,7 +122,11 @@ class Invoice extends Model
 		'checked_by',
 		'packed_by',
 		'dispatched_by',
-        'department_id'
+        'department_id',
+        'vehicle_number',
+        'driver_name',
+        'driver_phone_number',
+        'received_by',
 	];
 
     protected $with =['invoiceitems.stock'];

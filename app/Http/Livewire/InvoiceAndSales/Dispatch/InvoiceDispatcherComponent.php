@@ -29,7 +29,10 @@ class InvoiceDispatcherComponent extends Component
         $this->data['picked_by'] = "";
         $this->data['checked_by'] = "";
         $this->data['packed_by'] = "";
-        $this->data['dispatched_by'] = "";
+        $this->data['vehicle_number'] = "";
+        $this->data['driver_name'] = "";
+        $this->data['driver_phone_number'] = "";
+        $this->data['received_by'] = "";
 
     }
 

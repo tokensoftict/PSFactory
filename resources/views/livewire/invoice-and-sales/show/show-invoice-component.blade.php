@@ -130,6 +130,29 @@
             <span class="d-block pb-1 pt-1"> Dispatched By : </span>
             <strong  class="d-block pb-1 pt-1">{{ $this->invoice->dispatched->name ?? "Not Available" }}</strong>
 
+            <br/>
+            <span class="d-block pb-1 pt-1"> Dispatched By : </span>
+            <strong  class="d-block pb-1 pt-1">{{ $this->invoice->dispatched->name ?? "Not Available" }}</strong>
+
+
+            <br/>
+            <span class="d-block pb-1 pt-1"> Vehicle Number : </span>
+            <strong  class="d-block pb-1 pt-1">{{ $this->invoice->vehicle_number ?? "Not Available" }}</strong>
+
+
+            <br/>
+            <span class="d-block pb-1 pt-1"> Driver Name : </span>
+            <strong  class="d-block pb-1 pt-1">{{ $this->invoice->driver_name ?? "Not Available" }}</strong>
+
+
+            <br/>
+            <span class="d-block pb-1 pt-1"> Driver Phone Number : </span>
+            <strong  class="d-block pb-1 pt-1">{{ $this->invoice->driver_phone_number ?? "Not Available" }}</strong>
+
+            <br/>
+            <span class="d-block pb-1 pt-1"> Received By : </span>
+            <strong  class="d-block pb-1 pt-1">{{ $this->invoice->received_by ?? "Not Available" }}</strong>
+
 
 
         </div>
