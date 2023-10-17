@@ -71,15 +71,14 @@ class ProductionTemplateController extends Controller
 
     public function duplicate(ProductionTemplate $productionTemplate)
     {
-        $productionTemplate->load(['production_template_items']);
+        $newProductionTemplate = $productionTemplate->toArray();
 
-        $newProductionTemplate = $productionTemplate->replicate();
+        $newProductionTemplate['name'] = $newProductionTemplate['name']." - "."Duplicated";
 
-        $newProductionTemplate->name = $newProductionTemplate->name." - "."Duplicated";
-        $newProductionTemplate->push();
+        $newProductionTemplate = ProductionTemplate::create($newProductionTemplate);
 
-        foreach ($productionTemplate->production_template_items as $item){
-            $newProductionTemplate->production_template_items()->save($item);
+        foreach ($productionTemplate->production_template_items()->get() as $item){
+            $newProductionTemplate->production_template_items()->create($item->toArray());
         }
         return redirect()->route('template.edit', $newProductionTemplate->id);
     }
