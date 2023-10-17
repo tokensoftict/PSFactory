@@ -49,6 +49,10 @@ class InvoiceDispatcherComponent extends Component
                 'data.checked_by' => 'required',
                 'data.packed_by' => 'required',
                 'data.dispatched_by' => 'required',
+                'data.driver_name' => 'required',
+                'data.vehicle_number' => 'required',
+                'data.driver_phone_number' => 'required',
+                'data.received_by' => 'required',
             ]
         );
 
