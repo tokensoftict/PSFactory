@@ -99,6 +99,7 @@ class NearourofMaterialCommand extends Command
             if(isset($insert))
             {
                 Nearoutofmaterial::create($insert);
+                unset($insert);
             }
 
         }

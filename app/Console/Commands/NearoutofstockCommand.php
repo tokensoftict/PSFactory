@@ -106,6 +106,7 @@ class NearoutofstockCommand extends Command
             if(isset($insert))
             {
                 Stockopening::create($insert);
+                unset($insert);
             }
 
         }

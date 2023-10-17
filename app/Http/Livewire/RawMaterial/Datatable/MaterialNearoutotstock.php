@@ -32,12 +32,16 @@ class MaterialNearoutotstock extends ExportDataTableComponent
             Column::make("Threshold type", "threshold_type")
                 ->sortable(),
             Column::make("To Buy", "toBuy")
+                ->format( fn($value, $row, Column $column) => number_format($value))
                 ->sortable(),
             Column::make("Threshold", "threshold")
+                ->format( fn($value, $row, Column $column) => number_format($value))
                 ->sortable(),
             Column::make("Quantity", "quantity")
+                ->format( fn($value, $row, Column $column) => number_format($value))
                 ->sortable(),
             Column::make("Used", "used")
+                ->format( fn($value, $row, Column $column) => number_format($value))
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
