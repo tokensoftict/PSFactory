@@ -52,7 +52,7 @@ class InvoiceDispatcherComponent extends Component
                 'data.driver_name' => 'required',
                 'data.vehicle_number' => 'required',
                 'data.driver_phone_number' => 'required',
-                'data.received_by' => 'required',
+                //'data.received_by' => 'required',
             ]
         );
 

@@ -78,7 +78,7 @@ class ProductRepository
                     $column_pieces = "pieces";
                 }
 
-                if($stock->{$column_pieces} > $stock->carton){ // piesces can be convert
+                if($stock->{$column_pieces} >= $stock->carton){ // piesces can be convert
 
                     $reminder = $stock->{$column_pieces} % $stock->carton;
 
