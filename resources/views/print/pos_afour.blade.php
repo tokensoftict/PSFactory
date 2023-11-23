@@ -130,7 +130,11 @@
             @endif
         </tr>
         <tr>
-            <th align="left">Sales Rep.</th>
+            <th align="left">Customer Phone No.</th>
+            <td>{{ $invoice->customer->phone_number }}</td>
+        </tr>
+        <tr>
+            <th align="left">User.</th>
             <td>{{ $invoice->last_updated->name }}</td>
         </tr>
         <tr>
