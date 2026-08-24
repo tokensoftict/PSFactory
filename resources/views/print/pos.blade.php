@@ -84,7 +84,7 @@
         </tr>
         <tr>
             <th align="left">Customer Address :</th>
-            <td>{{ $invoice->customer->address }}</td>
+            <td>{{ $invoice->customer->address }} {{ $invoice->customer->state->name }}</td>
         </tr>
         <tr>
             <th align="left">Sales Rep.</th>
