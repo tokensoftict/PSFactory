@@ -87,6 +87,10 @@
             @endif
         </tr>
         <tr>
+            <th align="left">Customer Address :</th>
+            <td>{{ $invoice->customer->address }}</td>
+        </tr>
+        <tr>
             <td>Cashier</td>
             <td>{{ $payment->user->name }}</td>
         </tr>

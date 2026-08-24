@@ -130,6 +130,10 @@
             @endif
         </tr>
         <tr>
+            <th align="left">Customer Address :</th>
+            <td>{{ $invoice->customer->address }}</td>
+        </tr>
+        <tr>
             <th align="left">Customer Phone No.</th>
             <td>{{ $invoice->customer->phone_number }}</td>
         </tr>

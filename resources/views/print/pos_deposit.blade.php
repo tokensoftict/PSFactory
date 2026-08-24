@@ -100,6 +100,10 @@
             @endif
         </tr>
         <tr>
+            <th align="left">Customer Address :</th>
+            <td>{{ $invoice->customer->address }}</td>
+        </tr>
+        <tr>
             <td>Mode of Payment</td>
             <td>
                 @if($deposit->paymentMethodTable->count() > 1)
