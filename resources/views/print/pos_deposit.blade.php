@@ -101,7 +101,7 @@
         </tr>
         <tr>
             <th align="left">Customer Address :</th>
-            <td>{{ $invoice->customer->address }} {{ $invoice->customer->state->name }}</td>
+            <td>{{ optional($invoice->customer)->address }} {{ optional($invoice->customer)->state->name }}</td>
         </tr>
         <tr>
             <td>Mode of Payment</td>
