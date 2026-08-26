@@ -88,7 +88,7 @@
         </tr>
         <tr>
             <th align="left">Customer Address :</th>
-            <td>{{ optional($invoice->customer)->address }} {{ optional($invoice->customer)->state->name }}</td>
+            <td>{{ optional($invoice->customer)->address }} {{ optional($invoice->customer->state)->name }}</td>
         </tr>
         <tr>
             <td>Cashier</td>
